@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "imaginestore", "w7pay\imaginestore.csproj", "{19CA76F0-CE09-4943-B6D2-B6C9ECBF7C99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19CA76F0-CE09-4943-B6D2-B6C9ECBF7C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19CA76F0-CE09-4943-B6D2-B6C9ECBF7C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19CA76F0-CE09-4943-B6D2-B6C9ECBF7C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19CA76F0-CE09-4943-B6D2-B6C9ECBF7C99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D7AFE05-769E-4C0A-AC08-E68626421623}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Data.6.0.1304.0\lib\NET45
+	EndGlobalSection
+EndGlobal

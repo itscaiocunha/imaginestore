@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
-using Sdk.BankingApi;
 using System.Reflection.PortableExecutable;
 
 namespace w7pay
@@ -739,9 +738,9 @@ namespace w7pay
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
             JavaScriptSerializer serialize = new System.Web.Script.Serialization.JavaScriptSerializer();
-            
+
             var restclient = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/installation_stock_balances?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI");
-            var restrequest = new RestRequest(Method.POST);
+            var restrequest = new RestRequest(Method.GET);
             restrequest.AddHeader("Accept", "application/json");
 
             IRestResponse responses = restclient.Execute(restrequest);
@@ -752,44 +751,44 @@ namespace w7pay
             {
                 string barcode = result["good"][i]["barcode"].ToString();
 
-            JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            string dados = "{'call': 'ListarPosEstoque', 'app_key': '2985236014761', 'app_secret': 'fae7916a76427bddc6488208cf7f45d4', 'param': [{'nPagina': 1, 'nRegPorPagina': 50, 'dDataPosicao': '11/04/2024', 'cExibeTodos': 'S', 'codigo_local_estoque': 0}]}";
-            var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
-            var request = new RestRequest(Method.POST);
-            string env = JsonConvert.SerializeObject(dados);
-            request.AddParameter(
-                "application/json",
-                env,
-                ParameterType.RequestBody);
+                string dados = "{'call': 'ListarPosEstoque', 'app_key': '2985236014761', 'app_secret': 'fae7916a76427bddc6488208cf7f45d4', 'param': [{'nPagina': 1, 'nRegPorPagina': 50, 'dDataPosicao': '11/04/2024', 'cExibeTodos': 'S', 'codigo_local_estoque': 0}]}";
+                var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
+                var request = new RestRequest(Method.POST);
+                string env = JsonConvert.SerializeObject(dados);
+                request.AddParameter(
+                    "application/json",
+                    env,
+                    ParameterType.RequestBody);
 
-            IRestResponse response = client.Execute(request);
-            dynamic resultado = serializer.DeserializeObject(response.Content);
-            int qtde = resultado["produtos"].Length;
+                IRestResponse response = client.Execute(request);
+                dynamic resultado = serializer.DeserializeObject(response.Content);
+                int qtde = resultado["produtos"].Length;
 
-            for (int i = 0; i < qtde; i++)
-            {
-                string nCodProd = resultado["produtos"][i]["nCodProd"].ToString();
-                string nSaldo = resultado["produtos"][i]["nSaldo"].ToString();
-                string cDescricao = resultado["produtos"][i]["cDescricao"].ToString();
+                for (int e = 0; e < qtde; e++)
+                {
+                    string nCodProd = resultado["produtos"][i]["nCodProd"].ToString();
+                    string nSaldo = resultado["produtos"][i]["nSaldo"].ToString();
+                    string cDescricao = resultado["produtos"][i]["cDescricao"].ToString();
 
-                //if (reader["id"].ToString() != "")
-                //{
-                //    DbCommand command3 = db.GetSqlStringCommand(
-                //"UPDATE estoque SET sald = @nSaldo where barcode = @nCodProd");
-                //    db.AddInParameter(command3, "@nCodProd", DbType.Int32, Convert.ToInt32(reader["nCodProd"].ToString()));
-                //    db.AddInParameter(command3, "@nSaldo", DbType.Int32, Convert.ToInt16("nSaldo"));
-                //    try
-                //    {
-                //        db.ExecuteNonQuery(command3);
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        string erro = ex.Message;
-                //    }
-                //}
-                //else
-                //{
+                    //if (reader["id"].ToString() != "")
+                    //{
+                    //    DbCommand command3 = db.GetSqlStringCommand(
+                    //"UPDATE estoque SET sald = @nSaldo where barcode = @nCodProd");
+                    //    db.AddInParameter(command3, "@nCodProd", DbType.Int32, Convert.ToInt32(reader["nCodProd"].ToString()));
+                    //    db.AddInParameter(command3, "@nSaldo", DbType.Int32, Convert.ToInt16("nSaldo"));
+                    //    try
+                    //    {
+                    //        db.ExecuteNonQuery(command3);
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        string erro = ex.Message;
+                    //    }
+                    //}
+                    //else
+                    //{
                     DbCommand command3 = db.GetSqlStringCommand(
                     "INSERT INTO estoque (id, name, type, manufacturer_id, category_id, upc_code, distribution_center_id, sald) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald)");
                     db.AddInParameter(command3, "@id", DbType.Int32, 0);
@@ -810,13 +809,13 @@ namespace w7pay
                     {
                         string erro = ex.Message;
                     }
-                //}
+                    //}
+                }
             }
         }
-    
-  
 
-            public static void GETProdutos()
+
+        public static void GETProdutos()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
@@ -829,7 +828,7 @@ namespace w7pay
             IRestResponse response = client.Execute(request);
 
             dynamic resultado = serializer.DeserializeObject(response.Content);
-                    
+
             foreach (var info in resultado)
             {
                 string id = info["id"].ToString();
@@ -865,7 +864,7 @@ namespace w7pay
                 {
                     image = "";
                 }
-                
+
                 using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                               "SELECT * from produtos where id = '" + id + "'"))
                 {

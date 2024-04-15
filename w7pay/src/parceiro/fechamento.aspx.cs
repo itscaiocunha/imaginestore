@@ -1,7 +1,5 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.Practices.EnterpriseLibrary.Data;
-using Sdk.BankingApi;
-using Sdk.PixApi;
 using System;
 using System.Collections.Generic;
 using System.Data;

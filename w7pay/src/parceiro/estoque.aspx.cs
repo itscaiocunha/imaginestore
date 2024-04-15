@@ -81,7 +81,7 @@ namespace w7pay.src.parceiro
                                     db.AddInParameter(command3, "@idlocation", DbType.Int32, Convert.ToInt32(idlocation));
                                     db.AddInParameter(command3, "@name_location", DbType.String, name_location);
                                     db.AddInParameter(command3, "@idmachine", DbType.Int32, Convert.ToInt32(idmachine));
-                                    db.AddInParameter(command3, "@name_machine", DbType.String, name_machine);                                    
+                                    db.AddInParameter(command3, "@name_machine", DbType.String, name_machine);
 
 
                                     db.ExecuteNonQuery(command3);
@@ -92,7 +92,7 @@ namespace w7pay.src.parceiro
                                     lblteste.Text = "Erro 1: " + ex.Message;
                                 }
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 lblteste.Text = "Erro Leitura: " + ex.Message;
                             }
@@ -126,7 +126,7 @@ namespace w7pay.src.parceiro
                             //else
                             //{
 
-                            
+
                             //}
                         }
                     }

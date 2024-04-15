@@ -114,6 +114,7 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
+                <asp:Label ID="lblteste" runat="server"></asp:Label>
          <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select top 1000 f.name, l.name, c.name, m.asset_number, ct.descricao, p.name, coil, quantity, value , occurred_at from vendas v (nolock)
 join clientes c on c.id = v.client_id
 join locais l on l.id = v.location_id

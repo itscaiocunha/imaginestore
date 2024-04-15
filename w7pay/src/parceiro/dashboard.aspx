@@ -306,8 +306,7 @@ order by qtde">
 </asp:ChartArea>
     </ChartAreas>
 </asp:Chart>                 
-         <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-             select count(quantity) as qtde, sum(value) as fatura, convert(varchar,month(v.occurred_at))+'/'+  convert(varchar,year(v.occurred_at)) as mesano from vendas v (nolock)
+         <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select count(quantity) as qtde, sum(value) as fatura, convert(varchar,month(v.occurred_at))+'/'+  convert(varchar,year(v.occurred_at)) as mesano from vendas v (nolock)
 join clientes c on c.id = v.client_id
 join locais l on l.id = v.location_id
 join maquinas m on m.id = v.machine_id

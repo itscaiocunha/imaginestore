@@ -130,7 +130,7 @@ namespace w7pay.src.parceiro
 
                 string fileName = "FechamentoFinanceiro.xlsx";
 
-                string filePath = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "C:\\Users\\Workstation W7\\Documents\\FechamentoFinanceiro.xlsx");
+                string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
 
                 GenerateFile("Fechamento Financeiro", filePath, lista);
 

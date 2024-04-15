@@ -651,7 +651,6 @@ namespace w7pay
         public static void GETEstoques()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
-
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
@@ -766,11 +765,11 @@ namespace w7pay
                 dynamic resultado = serializer.DeserializeObject(response.Content);
                 int qtde = resultado["produtos"].Length;
 
-                for (int e = 0; e < qtde; e++)
-                {
-                    string nCodProd = resultado["produtos"][i]["nCodProd"].ToString();
-                    string nSaldo = resultado["produtos"][i]["nSaldo"].ToString();
-                    string cDescricao = resultado["produtos"][i]["cDescricao"].ToString();
+            for (int e = 0; e < qtde; e++)
+            {
+                string nCodProd = resultado["produtos"][i]["nCodProd"].ToString();
+                string nSaldo = resultado["produtos"][i]["nSaldo"].ToString();
+                string cDescricao = resultado["produtos"][i]["cDescricao"].ToString();
 
                     //if (reader["id"].ToString() != "")
                     //{
@@ -790,7 +789,7 @@ namespace w7pay
                     //else
                     //{
                     DbCommand command3 = db.GetSqlStringCommand(
-                    "INSERT INTO estoque (id, name, type, manufacturer_id, category_id, upc_code, distribution_center_id, sald) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald)");
+                    "INSERT INTO estoque (id, name, type, manufacturer_id, category_id, upc_code, distribution_center_id, sald, idclient, name_client) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald) values (@id, @name, @type, @manufacturer_id, @category_id, @uoc_code, @sald, @idclient, @name_client)");
                     db.AddInParameter(command3, "@id", DbType.Int32, 0);
                     db.AddInParameter(command3, "@name", DbType.String, cDescricao);
                     db.AddInParameter(command3, "@type", DbType.String, "Product");
@@ -809,13 +808,13 @@ namespace w7pay
                     {
                         string erro = ex.Message;
                     }
-                    //}
-                }
+                //}
             }
         }
+    
+  
 
-
-        public static void GETProdutos()
+            public static void GETProdutos()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 

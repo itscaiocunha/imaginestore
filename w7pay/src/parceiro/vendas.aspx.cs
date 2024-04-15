@@ -37,9 +37,9 @@ namespace w7pay.src.parceiro
 
             IRestResponse responses = restclient.Execute(restrequest);
             dynamic result = serialize.DeserializeObject(responses.Content);
-            int tot = result.Length;
+            int total = result.Length;
 
-            for (int r = 0; r < tot; r++)
+            for (int r = 0; r < total; r++)
             {
 
                 string barcode = result[r]["good"]["barcode"].ToString();

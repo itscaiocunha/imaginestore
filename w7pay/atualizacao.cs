@@ -765,11 +765,11 @@ namespace w7pay
                 dynamic resultado = serializer.DeserializeObject(response.Content);
                 int qtde = resultado["produtos"].Length;
 
-            for (int e = 0; e < qtde; e++)
-            {
-                string nCodProd = resultado["produtos"][i]["nCodProd"].ToString();
-                string nSaldo = resultado["produtos"][i]["nSaldo"].ToString();
-                string cDescricao = resultado["produtos"][i]["cDescricao"].ToString();
+                for (int e = 0; e < qtde; e++)
+                {
+                    string nCodProd = resultado["produtos"][i]["nCodProd"].ToString();
+                    string nSaldo = resultado["produtos"][i]["nSaldo"].ToString();
+                    string cDescricao = resultado["produtos"][i]["cDescricao"].ToString();
 
                     //if (reader["id"].ToString() != "")
                     //{
@@ -808,10 +808,10 @@ namespace w7pay
                     {
                         string erro = ex.Message;
                     }
-                //}
+                    //}
+                }
             }
         }
-    
   
 
             public static void GETProdutos()

@@ -13,8 +13,8 @@
                         <div class="page-title-container">
             <div class="row g-0">
               <!-- Title Start -->
-              <div class="col-auto mb-3 mb-md-0 me-auto">
-                <div class="w-auto sw-md-30">
+                  <div class="col-auto mb-3 mb-md-0 me-auto">
+                    <div class="w-auto sw-md-30">
                   <img src="img/logo/logo.png" alt="Logo" width="200">
                 </div>
               </div>

@@ -142,14 +142,15 @@
                                     </ChartAreas>
                                 </asp:Chart>                    
          <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-             select count(quantity) as qtde, sum(value) as fatura, max(c.name) as nomecliente from vendas v (nolock)
+             select count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(c.name) as nomecliente from vendas v (nolock)
                 join clientes c on c.id = v.client_id
                 join locais l on l.id = v.location_id
                 join maquinas m on m.id = v.machine_id
                 join produtos p on p.id = v.good_id
                 join fornecedores f on f.id = p.manufacturer_id
                 join categorias ct on ct.id = p.category_id
-                where p.manufacturer_id = @id
+                join estoque e on e.upc_code = v.upc_code
+                where p.manufacturer_id = @id and ((e.name_client = 'CD' and v.occurred_at >= dateadd(day, -30, getdate())) or e.name_client != 'CD')
                 group by c.id
                 having count(quantity) &gt; 0
                 order by qtde">
@@ -205,7 +206,8 @@
                 join produtos p on p.id = v.good_id
                 join fornecedores f on f.id = p.manufacturer_id
                 join categorias ct on ct.id = p.category_id
-                             where p.manufacturer_id = @id
+                join estoque e on e.upc_code = v.upc_code
+                             where p.manufacturer_id = @id and ((e.name_client = 'CD' and v.occurred_at >= dateadd(day, -30, getdate())) or e.name_client != 'CD')
                 group by c.id
                 having count(quantity) &gt; 0
                 order by qtde  "> 
@@ -260,7 +262,8 @@
                 join produtos p on p.id = v.good_id
                 join fornecedores f on f.id = p.manufacturer_id
                 join categorias ct on ct.id = p.category_id
-                             where p.manufacturer_id = @id
+                join estoque e on e.upc_code = v.upc_code 
+                             where p.manufacturer_id = @id and ((e.name_client = 'CD' and v.occurred_at >= dateadd(day, -30, getdate())) or e.name_client != 'CD')
                 group by p.id
                 having count(quantity) &gt; 0
                 order by qtde">
@@ -310,17 +313,17 @@
 </asp:Chart>                 
          <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
              "select count(quantity) as qtde, cast(sum(value) as decimal (10,2)) as fatura, convert(varchar,month(v.occurred_at))+'/'+  convert(varchar,year(v.occurred_at)) as mesano from vendas v (nolock)
-                join clientes c on c.id = v.client_id
-                join locais l on l.id = v.location_id
-                join maquinas m on m.id = v.machine_id
-                join produtos p on p.id = v.good_id
-                join estoque e on e.id = v.good_id
-                join fornecedores f on f.id = p.manufacturer_id
-                join categorias ct on ct.id = p.category_id
-                             where p.manufacturer_id = @id
-                group by month(v.occurred_at), year(v.occurred_at)
-                having count(quantity) > 0
-                order by year(v.occurred_at), month(v.occurred_at)">
+   join clientes c on c.id = v.client_id
+   join locais l on l.id = v.location_id
+   join maquinas m on m.id = v.machine_id
+   join produtos p on p.id = v.good_id
+   join fornecedores f on f.id = p.manufacturer_id
+   join categorias ct on ct.id = p.category_id
+   join estoque e on e.upc_code = v.upc_code 
+                where p.manufacturer_id = @id and e.name_client = 'CD' and v.occurred_at >= DATEADD(day, -30, GETDATE())
+   group by month(v.occurred_at), year(v.occurred_at)
+   having count(quantity) > 0
+   order by year(v.occurred_at), month(v.occurred_at)">
                           <SelectParameters>
     <asp:SessionParameter Name="id" SessionField="idempresa" />
 </SelectParameters>

@@ -112,6 +112,8 @@
                             <i data-acorn-icon="send"></i> Visualizar Fechamento
                         </asp:LinkButton>
 
+                        <br />
+                        <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
 
 
                     </div>

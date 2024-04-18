@@ -46,12 +46,15 @@
                                     </span>
                                 </button>
                                 <div class="dropdown-menu shadow dropdown-menu-end">
-                                    <asp:LinkButton ID="btnDownloadExcel" runat="server" CssClass="btn btn-primary"
-                                        OnClick="btnDownloadExcel_Click">Excel</asp:LinkButton>
-                                    <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-primary"
-                                        OnClick="btnDownloadPDF_Click">PDF</asp:LinkButton>
-                                    <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-primary"
-                                        OnClick="btnDownloadCSV_Click">CSV</asp:LinkButton>
+                                    <asp:LinkButton ID="btnDownloadExcel" runat="server"
+                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadPDF_Click">Excel
+                                    </asp:LinkButton>
+                                    <%--<asp:LinkButton ID="btnDownloadPDf" runat="server"
+                                        CssClass="btn btn-primary export-pdf" OnClick="btnDownloadPDf_Click">Pdf
+                                    </asp:LinkButton>
+                                    <asp:LinkButton ID="btnDownloadCSV" runat="server"
+                                        CssClass="btn btn-primary export-cvs" OnClick="btnDownloadCSV_Click">Csv
+                                    </asp:LinkButton>--%>
                                 </div>
                             </div>
                         </div>
@@ -94,16 +97,18 @@
                             OnClick="lkbFiltro_Click">
                             <i data-acorn-icon="send"></i> Visualizar Fechamento
                         </asp:LinkButton>
-                        
+
+                    </div>
+
+                    <!-- Download Button -->
+                    <div>
                         <br />
                         <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
                         <br />
                         <a href="../../assets/FechamentoFinanceiro.pdf">Abrir PDF</a>
                         <br />
                         <a href="../../assets/FechamentoFinanceiro.csv">Abrir CSV</a>
-
                     </div>
-
 
                     <!-- Search End -->
                     <br />

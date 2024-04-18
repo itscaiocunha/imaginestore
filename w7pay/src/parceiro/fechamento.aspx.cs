@@ -6,6 +6,9 @@ using System.Data;
 using System.IO;
 using System.Web.UI.WebControls;
 using w7pay.src.cliente;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
 
 
 
@@ -202,6 +205,8 @@ namespace w7pay.src.parceiro
             planilha.Cell("M1").Value = "Estoque Loja";
             planilha.Cell("N1").Value = "Saldo";
         }
+
+
 
     }
 }

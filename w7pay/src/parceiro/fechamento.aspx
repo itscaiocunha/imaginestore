@@ -48,6 +48,10 @@
                                 <div class="dropdown-menu shadow dropdown-menu-end">
                                     <asp:LinkButton ID="btnDownloadExcel" runat="server" CssClass="btn btn-primary"
                                         OnClick="btnDownloadExcel_Click">Excel</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-primary"
+                                        OnClick="btnDownloadPDF_Click">PDF</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-primary"
+                                        OnClick="btnDownloadCSV_Click">CSV</asp:LinkButton>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +97,10 @@
                         
                         <br />
                         <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
+                        <br />
+                        <a href="../../assets/FechamentoFinanceiro.pdf">Abrir PDF</a>
+                        <br />
+                        <a href="../../assets/FechamentoFinanceiro.csv">Abrir CSV</a>
 
                     </div>
 

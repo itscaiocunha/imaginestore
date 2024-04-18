@@ -51,6 +51,24 @@ namespace w7pay.src.parceiro
         protected global::System.Web.UI.WebControls.LinkButton btnDownloadExcel;
 
         /// <summary>
+        /// Controle LinkButton1.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+
+        /// <summary>
+        /// Controle LinkButton2.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
+
+        /// <summary>
         /// Controle ddlAnoMes.
         /// </summary>
         /// <remarks>

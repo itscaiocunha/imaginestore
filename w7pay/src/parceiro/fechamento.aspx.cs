@@ -7,6 +7,8 @@ using System.IO;
 using System.Web.UI.WebControls;
 using w7pay.src.cliente;
 
+
+
 namespace w7pay.src.parceiro
 {
     public partial class fechamento : System.Web.UI.Page
@@ -132,7 +134,7 @@ namespace w7pay.src.parceiro
 
                 string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
 
-                GenerateFile("Fechamento Financeiro", filePath, lista);
+                GenerateExcel("Fechamento Financeiro", filePath, lista);
 
                 lblMensagem.Text = "Arquivo de Excel gerado com sucesso.";
 
@@ -148,7 +150,7 @@ namespace w7pay.src.parceiro
             }
         }
 
-        static void GenerateFile(string tabName, string filePath, ICollection<FechamentoModel> lista)
+        static void GenerateExcel(string tabName, string filePath, ICollection<FechamentoModel> lista)
         {
             if (File.Exists(filePath))
                 File.Delete(filePath);
@@ -183,7 +185,6 @@ namespace w7pay.src.parceiro
 
         }
 
-
         static void GenerateHeader(IXLWorksheet planilha)
         {
             planilha.Cell("A1").Value = "Mês/Ano";
@@ -201,5 +202,6 @@ namespace w7pay.src.parceiro
             planilha.Cell("M1").Value = "Estoque Loja";
             planilha.Cell("N1").Value = "Saldo";
         }
+
     }
 }

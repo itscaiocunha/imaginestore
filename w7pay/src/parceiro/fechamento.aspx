@@ -47,7 +47,7 @@
                                 </button>
                                 <div class="dropdown-menu shadow dropdown-menu-end">
                                     <asp:LinkButton ID="btnDownloadExcel" runat="server"
-                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadPDF_Click">Excel
+                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Excel
                                     </asp:LinkButton>
                                     <%--<asp:LinkButton ID="btnDownloadPDf" runat="server"
                                         CssClass="btn btn-primary export-pdf" OnClick="btnDownloadPDf_Click">Pdf

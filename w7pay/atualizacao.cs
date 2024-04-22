@@ -18,6 +18,8 @@ using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Reflection.PortableExecutable;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using w7pay.src;
 
 namespace w7pay
 {
@@ -757,7 +759,7 @@ namespace w7pay
         }
 
 
-            public static void GETEstoquesCD()
+        public static void GETEstoquesCD()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
@@ -837,85 +839,85 @@ namespace w7pay
                 }
             }
         }
-  
 
-            public static void GETProdutos()
+
+        public static void GETProdutos()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-
-            var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/products?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI");
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Accept", "application/json");
-
-            IRestResponse response = client.Execute(request);
-
-            dynamic resultado = serializer.DeserializeObject(response.Content);
-
-            foreach (var info in resultado)
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                          "select v.Código_do_produto as barcode, v.Produto, e.name from estoque_VM v left join produtos e on v.Produto = e.name where e.name is NULL"))
             {
-                string id = info["id"].ToString();
-                string name = info["name"].ToString();
-                string tipe = info["type"].ToString();
-                string manufacturer_id = info["manufacturer_id"].ToString();
-                string category_id = info["category_id"].ToString();
-                string upc_code = info["upc_code"].ToString();
-                string barcode = "";
-                try
+                if (reader.Read())
                 {
-                    barcode = info["barcode"].ToString();
-                }
-                catch
-                {
-                    barcode = "";
-                }
-                string cost_price = "0";
-                try
-                {
-                    cost_price = info["default_price"].ToString();
-                }
-                catch
-                {
-                    cost_price = "0";
-                }
-                string image = "";
-                try
-                {
-                    image = info["image"].ToString();
-                }
-                catch
-                {
-                    image = "";
-                }
+                    var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/products?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&barcode=" + reader["barcode"].ToString() + "");
+                    var request = new RestRequest(Method.GET);
+                    request.AddHeader("Accept", "application/json");
 
-                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT * from produtos where id = '" + id + "'"))
-                {
-                    if (reader.Read())
+                    IRestResponse response = client.Execute(request);
+
+                    dynamic resultado = serializer.DeserializeObject(response.Content);
+
+                    foreach (var info in resultado)
                     {
-                        DbCommand command3 = db.GetSqlStringCommand(
-                        "UPDATE produtos SET name = @name, type = @type, manufacturer_id = @manufacturer_id, category_id = @category_id, upc_code = @upc_code, barcode = @barcode, default_price = @default_price, image = @image, update_date = getdate()  where id = @id");
-                        db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));
-                        db.AddInParameter(command3, "@name", DbType.String, name);
-                        db.AddInParameter(command3, "@type", DbType.String, tipe);
-                        db.AddInParameter(command3, "@manufacturer_id", DbType.Int32, Convert.ToInt32(manufacturer_id));
-                        db.AddInParameter(command3, "@category_id", DbType.Int32, Convert.ToInt32(category_id));
-                        db.AddInParameter(command3, "@upc_code", DbType.String, upc_code);
-                        db.AddInParameter(command3, "@barcode", DbType.String, barcode);
-                        db.AddInParameter(command3, "@default_price", DbType.Double, Convert.ToDouble(cost_price));
-                        db.AddInParameter(command3, "@image", DbType.String, image);
+                        string id = info["id"].ToString();
+                        string name = info["name"].ToString();
+                        string tipe = info["type"].ToString();
+                        string manufacturer_id = info["manufacturer_id"].ToString();
+                        string category_id = info["category_id"].ToString();
+                        string upc_code = info["upc_code"].ToString();
+                        string barcode = "";
                         try
                         {
-                            db.ExecuteNonQuery(command3);
+                            barcode = info["barcode"].ToString();
                         }
-                        catch (Exception ex)
+                        catch
                         {
-                            string erro = ex.Message;
+                            barcode = "";
                         }
-                    }
-                    else
-                    {
+                        string cost_price = "0";
+                        try
+                        {
+                            cost_price = info["default_price"].ToString();
+                        }
+                        catch
+                        {
+                            cost_price = "0";
+                        }
+                        string image = "";
+                        try
+                        {
+                            image = info["image"].ToString();
+                        }
+                        catch
+                        {
+                            image = "";
+                        }
+
+
+                        //    DbCommand command3 = db.GetSqlStringCommand(
+                        //    "UPDATE produtos SET name = @name, type = @type, manufacturer_id = @manufacturer_id, category_id = @category_id, upc_code = @upc_code, barcode = @barcode, default_price = @default_price, image = @image, update_date = getdate()  where id = @id");
+                        //    db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));
+                        //    db.AddInParameter(command3, "@name", DbType.String, name);
+                        //    db.AddInParameter(command3, "@type", DbType.String, tipe);
+                        //    db.AddInParameter(command3, "@manufacturer_id", DbType.Int32, Convert.ToInt32(manufacturer_id));
+                        //    db.AddInParameter(command3, "@category_id", DbType.Int32, Convert.ToInt32(category_id));
+                        //    db.AddInParameter(command3, "@upc_code", DbType.String, upc_code);
+                        //    db.AddInParameter(command3, "@barcode", DbType.String, barcode);
+                        //    db.AddInParameter(command3, "@default_price", DbType.Double, Convert.ToDouble(cost_price));
+                        //    db.AddInParameter(command3, "@image", DbType.String, image);
+                        //    try
+                        //    {
+                        //        db.ExecuteNonQuery(command3);
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        string erro = ex.Message;
+                        //    }
+                        //}
+                        //else
+                        //{
                         DbCommand command3 = db.GetSqlStringCommand(
                         "insert into produtos (id, name, type, manufacturer_id, category_id, upc_code, barcode, default_price, image, create_date) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @barcode, @default_price, @image, getdate())");
                         db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));

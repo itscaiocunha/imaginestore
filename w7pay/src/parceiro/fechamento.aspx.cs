@@ -206,7 +206,15 @@ namespace w7pay.src.parceiro
             planilha.Cell("N1").Value = "Saldo";
         }
 
+        protected void btnDownloadPDf_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        protected void btnDownloadCSV_Click(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }

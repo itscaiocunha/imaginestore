@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Data;
 using Newtonsoft.Json;
 using RestSharp;
+using Sdk.BankingApi;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,7 +29,7 @@ namespace w7pay.src.parceiro
                     Response.Redirect("../sessao.aspx", false);
                 }
             }
-
+             
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
             JavaScriptSerializer serialize = new System.Web.Script.Serialization.JavaScriptSerializer();
 
@@ -40,13 +41,9 @@ namespace w7pay.src.parceiro
             IRestResponse responses = cliente.Execute(requere);
 
             dynamic result = serialize.DeserializeObject(responses.Content);
-            int qtde = result.Count;
+            int qtde = 47;
 
-            List<long> listaNaoEstoque = new List<long>();
-
-            listaNaoEstoque.AddRange(new long[] {6879291650, 6902157478, 6900741284, 6910062042, 6903646981, 6900561856});
-
-            long[] arrayNaoEstoque = listaNaoEstoque.ToArray();
+            //listaNaoEstoque.AddRange(new long[] {6879291650, 6902157478, 6900741284, 6910062042, 6903646981, 6900561856});
 
             try
             {
@@ -55,62 +52,55 @@ namespace w7pay.src.parceiro
                     try
                     {
                         string codigo_local_estoque = result["locaisEncontrados"][i]["codigo_local_estoque"].ToString();
+                        string descricao = result["locaisEncontrados"][i]["descricao"].ToString();
 
-                        var tot = 5;
-                        for (int y = 0; y < tot; y++) 
+                        string dados = "{\"call\": \"ListarPosEstoque\", \"app_key\": \"2985236014761\", \"app_secret\": \"fae7916a76427bddc6488208cf7f45d4\", \"param\": [{\"nPagina\": 2, \"nRegPorPagina\": 1000, \"dDataPosicao\": \"22/04/2024\", \"cExibeTodos\": \"S\", \"codigo_local_estoque\": \"" + codigo_local_estoque + "\"}]}";
+
+                        var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
+                        var request = new RestRequest(Method.POST);
+                        request.AddParameter("application/json", dados, ParameterType.RequestBody);
+
+                        IRestResponse response = client.Execute(request);
+
+                        dynamic resultado = serialize.DeserializeObject(response.Content);
+
+                        try
                         {
-                            if (codigo_local_estoque != arrayNaoEstoque[y].ToString()) 
+                            dynamic produtos = resultado["produtos"];
+
+                            foreach (var produto in produtos)
                             {
-                                string dados = "{\"call\": \"ListarPosEstoque\", \"app_key\": \"2985236014761\", \"app_secret\": \"fae7916a76427bddc6488208cf7f45d4\", \"param\": [{\"nPagina\": 1, \"nRegPorPagina\": 1000, \"dDataPosicao\": \"15/04/2024\", \"cExibeTodos\": \"S\", \"codigo_local_estoque\": \"" + codigo_local_estoque + "\"}]}";
-                                var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
-                                var request = new RestRequest(Method.POST);
-                                request.AddParameter("application/json", dados, ParameterType.RequestBody);
-
-                                IRestResponse response = client.Execute(request);
-
-                                dynamic resultado = serialize.DeserializeObject(response.Content);
-                                //int qtde = resultado.Count;
-
-                                try
+                                string nSaldo = produto["nSaldo"].ToString();
+                                string cCodigo = produto["cCodigo"].ToString();
+                                string cDescricao = produto["cDescricao"].ToString();
                                 {
-                                    //for (int i = 0; i < qtde; i++)
-                                    dynamic produtos = resultado["produtos"];
-
-                                    foreach (var produto in produtos)
+                                    try
                                     {
-                                        string nSaldo = produto["nSaldo"].ToString();
-                                        string cCodigo = produto["cCodigo"].ToString();
-                                        string cDescricao = produto["cDescricao"].ToString();
-                                        {
-                                            try
-                                            {
-                                                DbCommand command3 = db.GetSqlStringCommand(
-                                                "INSERT INTO estoque (id, name, type, manufacturer_id, category_id, upc_code, sald, idclient, name_client) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald, @idclient, @name_client)");
-                                                db.AddInParameter(command3, "@id", DbType.Int32, 0);
-                                                db.AddInParameter(command3, "@name", DbType.String, cDescricao);
-                                                db.AddInParameter(command3, "@type", DbType.String, "Product");
-                                                db.AddInParameter(command3, "@manufacturer_id", DbType.Int32, 0);
-                                                db.AddInParameter(command3, "@category_id", DbType.Int32, 0);
-                                                db.AddInParameter(command3, "@upc_code", DbType.String, cCodigo);
-                                                db.AddInParameter(command3, "@sald", DbType.Int32, nSaldo);
-                                                db.AddInParameter(command3, "@idclient", DbType.Int32, 99999);
-                                                db.AddInParameter(command3, "@name_client", DbType.String, "CD");
+                                        DbCommand command3 = db.GetSqlStringCommand(
+                                        "INSERT INTO estoque (id, name, type, manufacturer_id, category_id, upc_code, sald, idclient, name_client) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald, @idclient, @name_client)");
+                                        db.AddInParameter(command3, "@id", DbType.Int32, 0);
+                                        db.AddInParameter(command3, "@name", DbType.String, cDescricao);
+                                        db.AddInParameter(command3, "@type", DbType.String, "ProductCD");
+                                        db.AddInParameter(command3, "@manufacturer_id", DbType.Int32, 0);
+                                        db.AddInParameter(command3, "@category_id", DbType.Int32, 0);
+                                        db.AddInParameter(command3, "@upc_code", DbType.String, cCodigo);
+                                        db.AddInParameter(command3, "@sald", DbType.Int32, nSaldo);
+                                        db.AddInParameter(command3, "@idclient", DbType.String, codigo_local_estoque);
+                                        db.AddInParameter(command3, "@name_client", DbType.String, descricao);
 
-                                                db.ExecuteNonQuery(command3);
-                                                lblteste.Text = "ok, inserido";
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                lblteste.Text = "Erro Leitura: " + ex.Message;
-                                            }
-                                        }
+                                        db.ExecuteNonQuery(command3);
+                                        lblteste.Text = "ok, inserido";
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        lblteste.Text = "Erro Leitura: " + ex.Message;
                                     }
                                 }
-                                catch (Exception ex)
-                                {
-                                    lblteste.Text = "Erro Leitura: " + ex.Message;
-                                }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            lblteste.Text = "Erro Leitura: " + ex.Message;
                         }
                     }
                     catch (Exception ex)

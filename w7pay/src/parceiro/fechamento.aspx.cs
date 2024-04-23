@@ -9,6 +9,8 @@ using w7pay.src.cliente;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
+//using iTextSharp.text;
+//using iTextSharp.text.pdf;
 
 
 
@@ -206,10 +208,43 @@ namespace w7pay.src.parceiro
             planilha.Cell("N1").Value = "Saldo";
         }
 
-        protected void btnDownloadPDf_Click(object sender, EventArgs e)
-        {
+        //protected void btnDownloadPDf_Click(object sender, EventArgs e)
+        //{
+        //    // Create a new document
+        //    Document document = new Document);
 
-        }
+        //    try
+        //    {
+        //        // Set up a PdfWriter to write to a memory stream
+        //        MemoryStream memoryStream = new MemoryStream();
+        //        PdfWriter.GetInstance(document, memoryStream);
+
+        //        // Open the document for writing
+        //        document.Open();
+
+        //        // Add content to the document
+        //        Paragraph paragraph = new Paragraph("Hello, this is a PDF created using iTextSharp in C#.");
+        //        document.Add(paragraph);
+
+        //        // Close the document
+        //        document.Close();
+
+        //        // Send the PDF to the browser for download
+        //        Response.Clear();
+        //        Response.ContentType = "application/pdf";
+        //        Response.AddHeader("Content-Disposition", "attachment; filename=example.pdf");
+        //        Response.BinaryWrite(memoryStream.ToArray());
+        //        Response.End();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("An error occurred: " + ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        document.Dispose();
+        //    }
+        //}
 
         protected void btnDownloadCSV_Click(object sender, EventArgs e)
         {

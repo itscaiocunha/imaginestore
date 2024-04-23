@@ -9,8 +9,10 @@ using w7pay.src.cliente;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
-//using iTextSharp.text;
-//using iTextSharp.text.pdf;
+using System.Text;using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iText.StyledXmlParser.Jsoup.Nodes;
+using Document = iTextSharp.text.Document;
 
 
 
@@ -208,48 +210,104 @@ namespace w7pay.src.parceiro
             planilha.Cell("N1").Value = "Saldo";
         }
 
-        //protected void btnDownloadPDf_Click(object sender, EventArgs e)
-        //{
-        //    // Create a new document
-        //    Document document = new Document);
+        protected void btnDownloadPDF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var lista = GenerateDataFromGridView(gdvDetalhes);
 
-        //    try
-        //    {
-        //        // Set up a PdfWriter to write to a memory stream
-        //        MemoryStream memoryStream = new MemoryStream();
-        //        PdfWriter.GetInstance(document, memoryStream);
+                string fileName = "FechamentoFinanceiro.pdf";
 
-        //        // Open the document for writing
-        //        document.Open();
+                string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
 
-        //        // Add content to the document
-        //        Paragraph paragraph = new Paragraph("Hello, this is a PDF created using iTextSharp in C#.");
-        //        document.Add(paragraph);
+                GeneratePDF(filePath, lista);
 
-        //        // Close the document
-        //        document.Close();
+                lblMensagem.Text = "Arquivo PDF gerado com sucesso.";
 
-        //        // Send the PDF to the browser for download
-        //        Response.Clear();
-        //        Response.ContentType = "application/pdf";
-        //        Response.AddHeader("Content-Disposition", "attachment; filename=example.pdf");
-        //        Response.BinaryWrite(memoryStream.ToArray());
-        //        Response.End();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write("An error occurred: " + ex.Message);
-        //    }
-        //    finally
-        //    {
-        //        document.Dispose();
-        //    }
-        //}
+                Response.Clear();
+                Response.ContentType = "application/pdf";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+                Response.TransmitFile(filePath);
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                lblMensagem.Text = "Ocorreu um erro ao gerar o arquivo PDF: " + ex.Message;
+            }
+        }
+
+        static void GeneratePDF(string filePath, ICollection<FechamentoModel> lista)
+        {
+            iTextSharp.text.Document document = new iTextSharp.text.Document();
+            iTextSharp.text.pdf.PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+            document.Open();
+
+            iTextSharp.text.Paragraph title = new iTextSharp.text.Paragraph("Fechamento Financeiro");
+            title.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+            document.Add(title);
+
+            PdfPTable table = new PdfPTable(14);
+
+            foreach (var property in typeof(FechamentoModel).GetProperties())
+            {
+                table.AddCell(new PdfPCell(new Phrase(property.Name)));
+            }
+
+            // Adiciona dados
+            foreach (var item in lista)
+            {
+                foreach (var property in typeof(FechamentoModel).GetProperties())
+                {
+                    table.AddCell(new PdfPCell(new Phrase(property.GetValue(item)?.ToString())));
+                }
+            }
+
+            document.Add(table);
+            document.Close();
+        }
 
         protected void btnDownloadCSV_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var lista = GenerateDataFromGridView(gdvDetalhes);
 
+                string fileName = "FechamentoFinanceiro.csv";
+
+                string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
+
+                GenerateCSV(filePath, lista);
+
+                lblMensagem.Text = "Arquivo CSV gerado com sucesso.";
+
+                Response.Clear();
+                Response.ContentType = "text/csv";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+                Response.TransmitFile(filePath);
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                lblMensagem.Text = "Ocorreu um erro ao gerar o arquivo CSV: " + ex.Message;
+            }
         }
 
+        static void GenerateCSV(string filePath, ICollection<FechamentoModel> lista)
+        {
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                // Escreve o cabeçalho
+                writer.WriteLine("mesano,fornecedor,ean,nomeproduto,qtde_mes_anterior,entrada,valor,qtde_venda,faturamento,qtde_dishonest,valor_dishonest,estoquecd,estoqueloja,saldo");
+
+                // Escreve os dados
+                foreach (var item in lista)
+                {
+                    writer.WriteLine($"{item.mesano},{item.fornecedor},{item.ean},{item.nomeproduto},{item.qtde_mes_anterior},{item.entrada},{item.valor},{item.qtde_venda},{item.faturamento},{item.qtde_dishonest},{item.valor_dishonest},{item.estoquecd},{item.estoqueloja},{item.saldo}");
+                }
+            }
+        }
     }
 }

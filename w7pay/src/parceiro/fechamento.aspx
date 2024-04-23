@@ -49,9 +49,9 @@
                                     <asp:LinkButton ID="btnDownloadExcel" runat="server"
                                         CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Excel
                                     </asp:LinkButton>
-                                    <asp:LinkButton ID="btnDownloadPDf" runat="server"
+<%--                                    <asp:LinkButton ID="btnDownloadPDf" runat="server"
                                         CssClass="btn btn-primary export-pdf" OnClick="btnDownloadPDf_Click">Pdf
-                                    </asp:LinkButton>
+                                    </asp:LinkButton>--%>
                                     <asp:LinkButton ID="btnDownloadCSV" runat="server"
                                         CssClass="btn btn-primary export-cvs" OnClick="btnDownloadCSV_Click">Csv
                                     </asp:LinkButton>

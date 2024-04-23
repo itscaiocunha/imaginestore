@@ -41,9 +41,7 @@ namespace w7pay.src.parceiro
             IRestResponse responses = cliente.Execute(requere);
 
             dynamic result = serialize.DeserializeObject(responses.Content);
-            int qtde = 47;
-
-            //listaNaoEstoque.AddRange(new long[] {6879291650, 6902157478, 6900741284, 6910062042, 6903646981, 6900561856});
+            int qtde = 47;           
 
             try
             {
@@ -54,7 +52,7 @@ namespace w7pay.src.parceiro
                         string codigo_local_estoque = result["locaisEncontrados"][i]["codigo_local_estoque"].ToString();
                         string descricao = result["locaisEncontrados"][i]["descricao"].ToString();
 
-                        string dados = "{\"call\": \"ListarPosEstoque\", \"app_key\": \"2985236014761\", \"app_secret\": \"fae7916a76427bddc6488208cf7f45d4\", \"param\": [{\"nPagina\": 2, \"nRegPorPagina\": 1000, \"dDataPosicao\": \"22/04/2024\", \"cExibeTodos\": \"S\", \"codigo_local_estoque\": \"" + codigo_local_estoque + "\"}]}";
+                        string dados = "{\"call\": \"ListarPosEstoque\", \"app_key\": \"2985236014761\", \"app_secret\": \"fae7916a76427bddc6488208cf7f45d4\", \"param\": [{\"nPagina\": 3, \"nRegPorPagina\": 1000, \"dDataPosicao\": \"22/04/2024\", \"cExibeTodos\": \"S\", \"codigo_local_estoque\": \"" + codigo_local_estoque + "\"}]}";
 
                         var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
                         var request = new RestRequest(Method.POST);

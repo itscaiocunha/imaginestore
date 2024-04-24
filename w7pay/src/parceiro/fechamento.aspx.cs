@@ -299,10 +299,9 @@ namespace w7pay.src.parceiro
 
             using (StreamWriter writer = new StreamWriter(filePath))
             {
-                // Escreve o cabeçalho
+
                 writer.WriteLine("mesano,fornecedor,ean,nomeproduto,qtde_mes_anterior,entrada,valor,qtde_venda,faturamento,qtde_dishonest,valor_dishonest,estoquecd,estoqueloja,saldo");
 
-                // Escreve os dados
                 foreach (var item in lista)
                 {
                     writer.WriteLine($"{item.mesano},{item.fornecedor},{item.ean},{item.nomeproduto},{item.qtde_mes_anterior},{item.entrada},{item.valor},{item.qtde_venda},{item.faturamento},{item.qtde_dishonest},{item.valor_dishonest},{item.estoquecd},{item.estoqueloja},{item.saldo}");

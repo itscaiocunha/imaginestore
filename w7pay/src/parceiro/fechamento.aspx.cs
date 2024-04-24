@@ -210,61 +210,61 @@ namespace w7pay.src.parceiro
             planilha.Cell("N1").Value = "Saldo";
         }
 
-        protected void btnDownloadPDF_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var lista = GenerateDataFromGridView(gdvDetalhes);
+        //protected void btnDownloadPDF_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var lista = GenerateDataFromGridView(gdvDetalhes);
 
-                string fileName = "FechamentoFinanceiro.pdf";
+        //        string fileName = "FechamentoFinanceiro.pdf";
 
-                string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
+        //        string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
 
-                GeneratePDF(filePath, lista);
+        //        GeneratePDF(filePath, lista);
 
-                lblMensagem.Text = "Arquivo PDF gerado com sucesso.";
+        //        lblMensagem.Text = "Arquivo PDF gerado com sucesso.";
 
-                Response.Clear();
-                Response.ContentType = "application/pdf";
-                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
-                Response.TransmitFile(filePath);
-                Response.End();
-            }
-            catch (Exception ex)
-            {
-                lblMensagem.Text = "Ocorreu um erro ao gerar o arquivo PDF: " + ex.Message;
-            }
-        }
+        //        Response.Clear();
+        //        Response.ContentType = "application/pdf";
+        //        Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+        //        Response.TransmitFile(filePath);
+        //        Response.End();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblMensagem.Text = "Ocorreu um erro ao gerar o arquivo PDF: " + ex.Message;
+        //    }
+        //}
 
-        static void GeneratePDF(string filePath, ICollection<FechamentoModel> lista)
-        {
-            iTextSharp.text.Document document = new iTextSharp.text.Document();
-            iTextSharp.text.pdf.PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
-            document.Open();
+        //static void GeneratePDF(string filePath, ICollection<FechamentoModel> lista)
+        //{
+        //    iTextSharp.text.Document document = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4.Rotate());
+        //    iTextSharp.text.pdf.PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+        //    document.Open();
 
-            iTextSharp.text.Paragraph title = new iTextSharp.text.Paragraph("Fechamento Financeiro");
-            title.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
-            document.Add(title);
+        //    iTextSharp.text.Paragraph title = new iTextSharp.text.Paragraph("Fechamento Financeiro");
+        //    title.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+        //    document.Add(title);
 
-            PdfPTable table = new PdfPTable(14);
+        //    PdfPTable table = new PdfPTable(14);
 
-            foreach (var property in typeof(FechamentoModel).GetProperties())
-            {
-                table.AddCell(new PdfPCell(new Phrase(property.Name)));
-            }
+        //    foreach (var property in typeof(FechamentoModel).GetProperties())
+        //    {
+        //        table.AddCell(new PdfPCell(new Phrase(property.Name)));
+        //    }
 
-            // Adiciona dados
-            foreach (var item in lista)
-            {
-                foreach (var property in typeof(FechamentoModel).GetProperties())
-                {
-                    table.AddCell(new PdfPCell(new Phrase(property.GetValue(item)?.ToString())));
-                }
-            }
+        //    foreach (var item in lista)
+        //    {
+        //        foreach (var property in typeof(FechamentoModel).GetProperties())
+        //        {
+        //            table.AddCell(new PdfPCell(new Phrase(property.GetValue(item)?.ToString())));
+        //        }
+        //    }
 
-            document.Add(table);
-            document.Close();
-        }
+        //    document.Add(table);
+        //    document.Close();
+        //}
+
 
         protected void btnDownloadCSV_Click(object sender, EventArgs e)
         {

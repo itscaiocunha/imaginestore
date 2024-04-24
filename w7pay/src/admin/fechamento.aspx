@@ -112,11 +112,18 @@
                             <i data-acorn-icon="send"></i> Visualizar Fechamento
                         </asp:LinkButton>
 
+                    </div>
+
+                    <!-- Download Button -->
+                    <div>
                         <br />
                         <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
-
-
+                        <br />
+                        <%--<a href="../../assets/FechamentoFinanceiro.pdf">Abrir PDF</a>
+                        <br />--%>
+                        <a href="../../assets/FechamentoFinanceiro.csv">Abrir CSV</a>
                     </div>
+
                     <!-- Search End -->
                     <br />
                     <div class="col-sm-12 col-md-7 col-lg-4 col-xxl-12 text-end mb-1">

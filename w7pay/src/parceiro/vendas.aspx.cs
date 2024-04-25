@@ -28,6 +28,7 @@ namespace w7pay.src.parceiro
                 {
                     Response.Redirect("../sessao.aspx", false);
                 }
+                atualizacao.GETVendas();
             }
         }
     }

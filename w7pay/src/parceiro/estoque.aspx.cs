@@ -29,7 +29,7 @@ namespace w7pay.src.parceiro
                 }
             }
 
-            atualizacao.GETEstoques();
+            atualizacao.GETEstoque();
         }
     }
 }

@@ -151,7 +151,6 @@ namespace w7pay.src.parceiro
                 Response.TransmitFile(filePath);
                 Response.End();
 
-
             }
             catch (Exception ex)
             {

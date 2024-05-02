@@ -49,12 +49,6 @@
                                     <asp:LinkButton ID="btnDownloadExcel" runat="server"
                                         CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Excel
                                     </asp:LinkButton>
-                                    <%--<asp:LinkButton ID="btnDownloadPDf" runat="server"
-                                        CssClass="btn btn-primary export-pdf" OnClick="btnDownloadPDF_Click">Pdf
-                                    </asp:LinkButton>--%>
-                                    <asp:LinkButton ID="btnDownloadCSV" runat="server"
-                                        CssClass="btn btn-primary export-cvs" OnClick="btnDownloadCSV_Click">Csv
-                                    </asp:LinkButton>
                                 </div>
                             </div>
                         </div>
@@ -105,9 +99,6 @@
                         <br />
                         <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
                         <br />
-                        <%--<a href="../../assets/FechamentoFinanceiro.pdf">Abrir PDF</a>
-                        <br />--%>
-                        <a href="../../assets/FechamentoFinanceiro.csv">Abrir CSV</a>
                     </div>
 
                     <!-- Search End -->

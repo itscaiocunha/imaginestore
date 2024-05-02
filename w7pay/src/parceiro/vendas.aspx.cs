@@ -36,7 +36,7 @@ namespace w7pay.src.parceiro
                 //{
                 JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-                var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=01/05/2024&end_date=02/05/2024&good_id=931028");
+                var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=30/04/2024&end_date=02/05/2024&page=1&per_page=1000");
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("Accept", "application/json");
 
@@ -169,10 +169,10 @@ namespace w7pay.src.parceiro
                             DbCommand command3 = db.GetSqlStringCommand(
             "insert into vendas (id, occurred_at, client_id, location_id, machine_id, installation_id, planogram_item_id, good_id, coil, quantity, value, client_name, location_name, machine_model_name, type, " +
             "category_id, manufacturer_id, product_name, upc_code, barcode, point_of_sale, equipment_id, equipment_label_number, equipment_serial_number, masked_card_number, number_of_payments, request_number, " +
-            "issuer_authorization_code, machine_model, planogram_item, eft_provider, eft_authorizer, eft_card_brand, eft_card_type, payment_authorizer) values " +
+            "issuer_authorization_code, machine_model, planogram_item, eft_provider, eft_authorizer, eft_card_brand, eft_card_type, payment_authorizer, data_cricao) values " +
             "(@id, @occurred_at, @client_id, @location_id, @machine_id, @installation_id, @planogram_item_id, @good_id, @coil, @quantity, @value, @client_name, @location_name, @machine_model_name, @type, @" +
             "category_id, @manufacturer_id, @product_name, @upc_code, @barcode, @point_of_sale, @equipment_id, @equipment_label_number, @equipment_serial_number, @masked_card_number, @number_of_payments, @request_number, @" +
-            "issuer_authorization_code, @machine_model, @planogram_item, @eft_provider, @eft_authorizer, @eft_card_brand, @eft_card_type, @payment_authorizer)");
+            "issuer_authorization_code, @machine_model, @planogram_item, @eft_provider, @eft_authorizer, @eft_card_brand, @eft_card_type, @payment_authorizer, GETDATE())");
                         db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));
                         db.AddInParameter(command3, "@occurred_at", DbType.DateTime, Convert.ToDateTime(occurred_at));
                         db.AddInParameter(command3, "@client_id", DbType.Int32, Convert.ToInt32(client_id));
@@ -239,10 +239,6 @@ namespace w7pay.src.parceiro
                             lblteste.Text = "erro:" + ex;
                         }
                         }
-                        //    else
-                        //    {
-                        //        lblteste.Text = "erro";
-                        //    }
                     }
                 }
             }

@@ -20,6 +20,7 @@ using System.Reflection.PortableExecutable;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using w7pay.src;
+using iTextSharp.text.pdf;
 
 namespace w7pay
 {
@@ -403,7 +404,7 @@ namespace w7pay
             {
                 JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-                var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=01/04/2024&end_date=01/04/2024&page=1&per_page=1000");
+                var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=01/05/2024&end_date=01/05/2024&page=1&per_page=1000");
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("Accept", "application/json");
 
@@ -529,63 +530,63 @@ namespace w7pay
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                                   "SELECT * from vendas where id = '" + id + "'"))
                     {
-                        if (!reader.Read())
+                        if (reader.Read())
                         {
-                            DbCommand command3 = db.GetSqlStringCommand(
-                            "UPDATE vendas SET occurred_at = @occurred_at, client_id = @client_id, location_id = @location_id, machine_id = @machine_id, installation_id = @installation_id, " +
-                            "planogram_item_id = @planogram_item_id, good_id = @good_id, coil = @coil, quantity = @quantity, value = @value, client_name = @client_name, location_name= @location_name, " +
-                            "machine_model_name = @machine_model_name, type= @type, category_id = @category_id, manufacturer_id= @manufacturer_id,product_name= @product_name, upc_code= @upc_code, barcode=  @barcode, " +
-                            "point_of_sale= @point_of_sale, equipment_id= @equipment_id, equipment_label_number= @equipment_label_number, equipment_serial_number= @equipment_serial_number, masked_card_number = @masked_card_number" +
-                            "number_of_payments = @number_of_payments, request_number = @request_number, issuer_authorization_code=@issuer_authorization_code, machine_model = @machine_model, planogram_item = @planogram_item, " +
-                            "eft_provider = @eft_provider, eft_authorizer= @eft_authorizer, eft_card_brand = @eft_card_brand, eft_card_type = @eft_card_type, payment_authorizer = @payment_authorizer " +
-                            "where id = @id"); ;
-                            db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));
-                            db.AddInParameter(command3, "@occurred_at", DbType.DateTime, Convert.ToDateTime(occurred_at));
-                            db.AddInParameter(command3, "@client_id", DbType.Int32, Convert.ToInt32(client_id));
-                            db.AddInParameter(command3, "@location_id", DbType.Int32, Convert.ToInt32(location_id));
-                            db.AddInParameter(command3, "@machine_id", DbType.Int32, Convert.ToInt32(machine_id));
-                            db.AddInParameter(command3, "@installation_id", DbType.Int32, Convert.ToInt32(installation_id));
-                            db.AddInParameter(command3, "@planogram_item_id", DbType.Int32, Convert.ToInt32(planogram_item_id));
-                            db.AddInParameter(command3, "@good_id", DbType.Int32, Convert.ToInt32(good_id));
-                            db.AddInParameter(command3, "@coil", DbType.String, barcode);
-                            db.AddInParameter(command3, "@quantity", DbType.Int16, Convert.ToInt16(quantity));
-                            db.AddInParameter(command3, "@value", DbType.Double, Convert.ToDouble(value));
-                            db.AddInParameter(command3, "@client_name", DbType.String, client_name);
-                            db.AddInParameter(command3, "@location_name", DbType.String, location_id);
-                            db.AddInParameter(command3, "@machine_model_name", DbType.String, machine_model_id);
-                            db.AddInParameter(command3, "@type", DbType.String, type);
-                            db.AddInParameter(command3, "@category_id", DbType.String, category_id);
-                            db.AddInParameter(command3, "@manufacturer_id", DbType.String, manufacturer_id);
-                            db.AddInParameter(command3, "@product_name", DbType.String, name);
-                            db.AddInParameter(command3, "@upc_code", DbType.String, upc_code);
-                            db.AddInParameter(command3, "@barcode", DbType.String, barcode);
-                            db.AddInParameter(command3, "@point_of_sale", DbType.String, point_of_sale);
-                            db.AddInParameter(command3, "@equipment_id", DbType.String, equipment_id);
-                            db.AddInParameter(command3, "@equipment_label_number", DbType.String, equipment_label_number);
-                            db.AddInParameter(command3, "@equipment_serial_number", DbType.String, equipment_serial_number);
-                            db.AddInParameter(command3, "@masked_card_number", DbType.String, masked_card_number);
-                            db.AddInParameter(command3, "@number_of_payments", DbType.String, number_of_payments);
-                            db.AddInParameter(command3, "@request_number", DbType.String, request_number);
-                            db.AddInParameter(command3, "@issuer_authorization_code", DbType.String, issuer_authorization_code);
-                            db.AddInParameter(command3, "@machine_model", DbType.String, machine_model);
-                            db.AddInParameter(command3, "@planogram_item", DbType.String, planogram_item);
-                            db.AddInParameter(command3, "@eft_provider", DbType.String, eft_provider_id);
-                            db.AddInParameter(command3, "@eft_authorizer", DbType.String, eft_authorizer_id);
-                            db.AddInParameter(command3, "@eft_card_brand", DbType.String, eft_card_brand_id);
-                            db.AddInParameter(command3, "@eft_card_type", DbType.String, eft_card_type_id);
-                            db.AddInParameter(command3, "@payment_authorizer", DbType.String, payment_authorizer);
+                        //    DbCommand command3 = db.GetSqlStringCommand(
+                        //    "UPDATE vendas SET occurred_at = @occurred_at, client_id = @client_id, location_id = @location_id, machine_id = @machine_id, installation_id = @installation_id, " +
+                        //    "planogram_item_id = @planogram_item_id, good_id = @good_id, coil = @coil, quantity = @quantity, value = @value, client_name = @client_name, location_name= @location_name, " +
+                        //    "machine_model_name = @machine_model_name, type= @type, category_id = @category_id, manufacturer_id= @manufacturer_id,product_name= @product_name, upc_code= @upc_code, barcode=  @barcode, " +
+                        //    "point_of_sale= @point_of_sale, equipment_id= @equipment_id, equipment_label_number= @equipment_label_number, equipment_serial_number= @equipment_serial_number, masked_card_number = @masked_card_number" +
+                        //    "number_of_payments = @number_of_payments, request_number = @request_number, issuer_authorization_code=@issuer_authorization_code, machine_model = @machine_model, planogram_item = @planogram_item, " +
+                        //    "eft_provider = @eft_provider, eft_authorizer= @eft_authorizer, eft_card_brand = @eft_card_brand, eft_card_type = @eft_card_type, payment_authorizer = @payment_authorizer " +
+                        //    "where id = @id"); ;
+                        //    db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));
+                        //    db.AddInParameter(command3, "@occurred_at", DbType.DateTime, Convert.ToDateTime(occurred_at));
+                        //    db.AddInParameter(command3, "@client_id", DbType.Int32, Convert.ToInt32(client_id));
+                        //    db.AddInParameter(command3, "@location_id", DbType.Int32, Convert.ToInt32(location_id));
+                        //    db.AddInParameter(command3, "@machine_id", DbType.Int32, Convert.ToInt32(machine_id));
+                        //    db.AddInParameter(command3, "@installation_id", DbType.Int32, Convert.ToInt32(installation_id));
+                        //    db.AddInParameter(command3, "@planogram_item_id", DbType.Int32, Convert.ToInt32(planogram_item_id));
+                        //    db.AddInParameter(command3, "@good_id", DbType.Int32, Convert.ToInt32(good_id));
+                        //    db.AddInParameter(command3, "@coil", DbType.String, barcode);
+                        //    db.AddInParameter(command3, "@quantity", DbType.Int16, Convert.ToInt16(quantity));
+                        //    db.AddInParameter(command3, "@value", DbType.Double, Convert.ToDouble(value));
+                        //    db.AddInParameter(command3, "@client_name", DbType.String, client_name);
+                        //    db.AddInParameter(command3, "@location_name", DbType.String, location_id);
+                        //    db.AddInParameter(command3, "@machine_model_name", DbType.String, machine_model_id);
+                        //    db.AddInParameter(command3, "@type", DbType.String, type);
+                        //    db.AddInParameter(command3, "@category_id", DbType.String, category_id);
+                        //    db.AddInParameter(command3, "@manufacturer_id", DbType.String, manufacturer_id);
+                        //    db.AddInParameter(command3, "@product_name", DbType.String, name);
+                        //    db.AddInParameter(command3, "@upc_code", DbType.String, upc_code);
+                        //    db.AddInParameter(command3, "@barcode", DbType.String, barcode);
+                        //    db.AddInParameter(command3, "@point_of_sale", DbType.String, point_of_sale);
+                        //    db.AddInParameter(command3, "@equipment_id", DbType.String, equipment_id);
+                        //    db.AddInParameter(command3, "@equipment_label_number", DbType.String, equipment_label_number);
+                        //    db.AddInParameter(command3, "@equipment_serial_number", DbType.String, equipment_serial_number);
+                        //    db.AddInParameter(command3, "@masked_card_number", DbType.String, masked_card_number);
+                        //    db.AddInParameter(command3, "@number_of_payments", DbType.String, number_of_payments);
+                        //    db.AddInParameter(command3, "@request_number", DbType.String, request_number);
+                        //    db.AddInParameter(command3, "@issuer_authorization_code", DbType.String, issuer_authorization_code);
+                        //    db.AddInParameter(command3, "@machine_model", DbType.String, machine_model);
+                        //    db.AddInParameter(command3, "@planogram_item", DbType.String, planogram_item);
+                        //    db.AddInParameter(command3, "@eft_provider", DbType.String, eft_provider_id);
+                        //    db.AddInParameter(command3, "@eft_authorizer", DbType.String, eft_authorizer_id);
+                        //    db.AddInParameter(command3, "@eft_card_brand", DbType.String, eft_card_brand_id);
+                        //    db.AddInParameter(command3, "@eft_card_type", DbType.String, eft_card_type_id);
+                        //    db.AddInParameter(command3, "@payment_authorizer", DbType.String, payment_authorizer);
 
-                            try
-                            {
-                                db.ExecuteNonQuery(command3);
-                            }
-                            catch (Exception ex)
-                            {
-                                string erro = ex.Message;
-                            }
-                        }
-                        else
-                        {
+                        //    try
+                        //    {
+                        //        db.ExecuteNonQuery(command3);
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        string erro = ex.Message;
+                        //    }
+                        //}
+                        //else
+                        //{
                             DbCommand command3 = db.GetSqlStringCommand(
                             "insert into vendas (id, occurred_at, client_id, location_id, machine_id, installation_id, planogram_item_id, good_id, coil, quantity, value, client_name, location_name, machine_model_name, type, " +
                             "category_id, manufacturer_id, product_name, upc_code, barcode, point_of_sale, equipment_id, equipment_label_number, equipment_serial_number, masked_card_number, number_of_payments, request_number, " +
@@ -818,11 +819,11 @@ namespace w7pay
 
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                          "select v.Código_do_produto as barcode, v.Produto, e.name from estoque_VM v left join produtos e on v.Produto = e.name where e.name is NULL"))
+                          "SELECT distinct v.good_id, coil from  vendas v left join produtos p on p.id = v.good_id where p.id is null"))
             {
                 if (reader.Read())
                 {
-                    var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/products?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&barcode=" + reader["barcode"].ToString() + "");
+                    var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/products?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&barcode=" + reader["coil"].ToString() + "");
                     var request = new RestRequest(Method.GET);
                     request.AddHeader("Accept", "application/json");
 

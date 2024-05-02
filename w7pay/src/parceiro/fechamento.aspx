@@ -72,7 +72,7 @@
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="sdsAnoMes" runat="server"
                                 ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-                                SelectCommand="select distinct convert(varchar,year(occurred_at)) as anomes from vendas where occurred_at is not null order by anomes desc">
+                                SelectCommand=" select distinct substring(convert(varchar, mesano),3,4) as anomes from fechamento">
                             </asp:SqlDataSource>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="sdsMes" runat="server"
                                 ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-                                SelectCommand="select distinct convert(varchar,month(occurred_at)) as anomes, year(getDate()), month(getdate()) from vendas where occurred_at is not null order by year(getDate()) desc, month(getdate()) desc">
+                                SelectCommand="select distinct substring(convert(varchar, mesano),1,1) as anomes from fechamento">
                             </asp:SqlDataSource>
                         </div>
                     </div>

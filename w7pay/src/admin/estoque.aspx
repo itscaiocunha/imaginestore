@@ -119,7 +119,7 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select e.id, f.name as fornecedor, ct.descricao, e.name as produto, p.image, e.upc_code, e.total_quantity, e.committed_quantity, sald from estoque e (nolock)
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select e.id, f.name as fornecedor, ct.descricao, e.name as produto, p.image, e.upc_code, e.total_quantity, e.committed_quantity, sald from estoque1 e (nolock)
 join fornecedores f on f.id = e.manufacturer_id
 join categorias ct on ct.id = e.category_id
 join produtos p on p.id = e.id

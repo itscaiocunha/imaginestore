@@ -115,15 +115,11 @@
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
                 <asp:Label ID="lblteste" runat="server"></asp:Label>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select top 1000 f.name, l.name, c.name, m.asset_number, ct.descricao, p.name, coil, quantity, value , occurred_at from vendas v (nolock)
-join clientes c on c.id = v.client_id
-join locais l on l.id = v.location_id
-join maquinas m on m.id = v.machine_id
-join produtos p on p.id = v.good_id
-join fornecedores f on f.id = p.manufacturer_id
-join categorias ct on ct.id = p.category_id
-where p.manufacturer_id = @id
-order by f.name, l.name, c.name, m.asset_number, ct.descricao, p.name">
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select top 1000 f.name, v.location_name, v.client_name, v.machine_model_name , ct.descricao, v.product_name, coil, quantity, value , occurred_at from vendas v (nolock)
+join fornecedores f on f.id = v.manufacturer_id
+join categorias ct on ct.id = v.category_id
+where v.manufacturer_id = @id and v.occurred_at > getdate() - 7
+order by f.name, v.location_name, v.client_name, v.machine_model_name, ct.descricao, v.product_name">
                 <SelectParameters>
                     <asp:SessionParameter Name="id" SessionField="idempresa" />
                 </SelectParameters>

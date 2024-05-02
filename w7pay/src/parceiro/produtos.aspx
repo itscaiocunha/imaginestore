@@ -110,7 +110,7 @@
                       <asp:BoundField DataField="descricao" HeaderText="Categoria" SortExpression="descricao" />
                       <asp:BoundField DataField="name" HeaderText="Descrição" SortExpression="name" />                     
                       <asp:BoundField DataField="barcode" HeaderText="Code" SortExpression="barcode" />
-                      <asp:BoundField DataField="default_price" HeaderText="Valor" DataFormatString="{0:c2}" SortExpression="default_price" />
+                      <asp:BoundField DataField="cost_price" HeaderText="Valor" DataFormatString="{0:c2}" SortExpression="cost_price" />
                       
                   </Columns>
                   <EditRowStyle BackColor="#7C6F57" />

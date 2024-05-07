@@ -86,7 +86,7 @@ namespace w7pay.src
 
                                     lblsalvo.Text = "Cadastro Concluído!";
 
-                                    EnviarEmailCadastro(txtEmail.Text, txtCNPJCPF.Text, cript);
+                                    //EnviarEmailCadastro(txtEmail.Text, txtCNPJCPF.Text, txtSenha.Text);
                                 }
                                 catch( Exception ex)
                                 {
@@ -114,16 +114,16 @@ namespace w7pay.src
         private void EnviarEmailCadastro(string email, string cpf, string senha)
         {
             // corpo do e-mail
-            string strHtml = "<html xmlns='http://www.w3.org/1999/xhtml'><head><meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>";
+            string strHtml = "<html /*xmlns='http://www.w3.org/1999/xhtml*/'><head><meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>";
             strHtml = strHtml + "<title>ImagineStore</title></head><body><br>";
-            strHtml = strHtml + "<img src='https://global360.app.br/src/img/logo/logo_global.png' width='200' alt='Logo'>";
-            strHtml = strHtml + "<p><strong><font size='2' face='Verdana, Arial, Helvetica, sans-serif'>Novo Cadastro<br>Global 360 - Plataforma Digital</font></strong></p>";
+            strHtml = strHtml + "<img src='https://imaginestore.azurewebsites.net/src/img/logo/logo.png' width='200' alt='Logo'>";
+            strHtml = strHtml + "<p><strong><font size='2' face='Verdana, Arial, Helvetica, sans-serif'>Novo Cadastro<br>ImagineStore</font></strong></p>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p>Olá, tudo bem?</p>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p>Seu cadastro foi realizado com sucesso na plataforma.</p>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><strong>CPF:</strong>" + cpf + "</p>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><strong>E-mail:</strong>" + email + "</p><br><br>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><strong>Senha de acesso</strong><br>" + senha + "</p>";
-            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><a href='https://global360.app.br/src/login.aspx'>Plataforma Global 360</a></p>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><a href='gina: https://imaginestore.azurewebsites.net/src/login.aspx'>ImagineStore</a></p>";
             strHtml = strHtml + "</font><img src=''></body></html>";
 
             // Envio do e-mail

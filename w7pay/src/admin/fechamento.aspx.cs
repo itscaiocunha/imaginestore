@@ -183,6 +183,8 @@ namespace w7pay.src
                 Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
                 Response.TransmitFile(filePath);
                 Response.End();
+
+                lkDownload.Visible = true;
             }
             catch (Exception ex)
             {
@@ -244,52 +246,52 @@ namespace w7pay.src
             planilha.Cell("N1").Value = "Saldo";
         }
 
-        protected void btnDownloadPDf_Click(object sender, EventArgs e)
-        {
+        //protected void btnDownloadPDf_Click(object sender, EventArgs e)
+        //{
 
-        }
+        //}
 
-        protected void btnDownloadCSV_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var lista = GenerateDataFromGridView(gdvDetalhes);
+        //protected void btnDownloadCSV_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var lista = GenerateDataFromGridView(gdvDetalhes);
 
-                string fileName = "FechamentoFinanceiro.csv";
+        //        string fileName = "FechamentoFinanceiro.csv";
 
-                string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
+        //        string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
 
-                GenerateCSV(filePath, lista);
+        //        GenerateCSV(filePath, lista);
 
-                lblMensagem.Text = "Arquivo CSV gerado com sucesso.";
+        //        lblMensagem.Text = "Arquivo CSV gerado com sucesso.";
 
-                Response.Clear();
-                Response.ContentType = "text/csv";
-                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
-                Response.TransmitFile(filePath);
-                Response.End();
-            }
-            catch (Exception ex)
-            {
-                lblMensagem.Text = "Ocorreu um erro ao gerar o arquivo CSV: " + ex.Message;
-            }
-        }
+        //        Response.Clear();
+        //        Response.ContentType = "text/csv";
+        //        Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+        //        Response.TransmitFile(filePath);
+        //        Response.End();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblMensagem.Text = "Ocorreu um erro ao gerar o arquivo CSV: " + ex.Message;
+        //    }
+        //}
 
-        static void GenerateCSV(string filePath, ICollection<FechamentoModel> lista)
-        {
-            if (File.Exists(filePath))
-                File.Delete(filePath);
+        //static void GenerateCSV(string filePath, ICollection<FechamentoModel> lista)
+        //{
+        //    if (File.Exists(filePath))
+        //        File.Delete(filePath);
 
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
+        //    using (StreamWriter writer = new StreamWriter(filePath))
+        //    {
 
-                writer.WriteLine("mesano,fornecedor,ean,nomeproduto,qtde_mes_anterior,entrada,valor,qtde_venda,faturamento,qtde_dishonest,valor_dishonest,estoquecd,estoqueloja,saldo");
+        //        writer.WriteLine("mesano,fornecedor,ean,nomeproduto,qtde_mes_anterior,entrada,valor,qtde_venda,faturamento,qtde_dishonest,valor_dishonest,estoquecd,estoqueloja,saldo");
 
-                foreach (var item in lista)
-                {
-                    writer.WriteLine($"{item.mesano},{item.fornecedor},{item.ean},{item.nomeproduto},{item.qtde_mes_anterior},{item.entrada},{item.valor},{item.qtde_venda},{item.faturamento},{item.qtde_dishonest},{item.valor_dishonest},{item.estoquecd},{item.estoqueloja},{item.saldo}");
-                }
-            }
-        }
+        //        foreach (var item in lista)
+        //        {
+        //            writer.WriteLine($"{item.mesano},{item.fornecedor},{item.ean},{item.nomeproduto},{item.qtde_mes_anterior},{item.entrada},{item.valor},{item.qtde_venda},{item.faturamento},{item.qtde_dishonest},{item.valor_dishonest},{item.estoquecd},{item.estoqueloja},{item.saldo}");
+        //        }
+        //    }
+        //}
     }
 }

@@ -76,12 +76,12 @@
         <span class="label">Fechamento</span>
     </a>
 </li>
-                         <li>
+                      <li>
      <a href="vendas_loja.aspx">
          <i data-acorn-icon="cart" class="icon" data-acorn-size="18"></i>
          <span class="label">Vendas/Loja</span>
      </a>
- </li>
+ </li>   
                          <li>
      <a href="vendas_produto.aspx">
          <i data-acorn-icon="cart" class="icon" data-acorn-size="18"></i>

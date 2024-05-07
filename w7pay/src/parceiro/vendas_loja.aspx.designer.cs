@@ -42,13 +42,40 @@ namespace w7pay.src.parceiro
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// Controle txtBuscar.
+        /// Controle ddlLoja.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBuscar;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLoja;
+
+        /// <summary>
+        /// Controle sdsLojas.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsLojas;
+
+        /// <summary>
+        /// Controle txtDataInicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDataInicio;
+
+        /// <summary>
+        /// Controle txtDataFim.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDataFim;
 
         /// <summary>
         /// Controle lkbFiltro.
@@ -58,6 +85,15 @@ namespace w7pay.src.parceiro
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lkbFiltro;
+
+        /// <summary>
+        /// Controle lkbLimpar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lkbLimpar;
 
         /// <summary>
         /// Controle lblErro.

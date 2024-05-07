@@ -28,6 +28,7 @@ namespace w7pay.src
 
         protected void btnCadastrar_Click(object sender, EventArgs e)
         {
+            System.Threading.Thread.Sleep(200);
             //cria database
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
@@ -43,14 +44,14 @@ namespace w7pay.src
 
                         //atualizado os dado da empresa
                         DbCommand command1 = db.GetSqlStringCommand(
-                        "INSERT INTO imagine_empresa (CNPJ, EMAIL, TELEFONE, STATUS, DATA_CADASTRO, IDREVENDEDOR, TOKEN, IDPLANO) VALUES (@CNPJ, EMAIL, TELEFONE, STATUS, GETDATE(), IDREVENDEDOR, TOKEN, IDPLANO)");
+                        "INSERT INTO imagine_empresa (CNPJ, EMAIL, TELEFONE, STATUS, DATA_CADASTRO, IDREVENDEDOR, TOKEN, IDPLANO) VALUES (@CNPJ, @EMAIL, @TELEFONE, @STATUS, GETDATE(), @IDREVENDEDOR, @TOKEN, @IDPLANO)");
                         db.AddInParameter(command1, "@CNPJ", DbType.String, txtCNPJCPF.Text.Replace(".", "").Replace("/", "").Replace("-", ""));
                         db.AddInParameter(command1, "@EMAIL", DbType.String, txtEmail.Text);
                         db.AddInParameter(command1, "@TELEFONE", DbType.String, txtTelefone.Text.Replace(".", "").Replace("/", "").Replace("-", ""));
                         db.AddInParameter(command1, "@STATUS", DbType.String, "AGUARDANDO PAGAMENTO");
                         db.AddInParameter(command1, "@IDREVENDEDOR", DbType.String, hdfRevendedor.Value);
                         db.AddInParameter(command1, "@TOKEN", DbType.String, tkempresa);
-                        db.AddInParameter(command1, "@IDPLANO", DbType.Int16, ddlPlano.SelectedValue);
+                        db.AddInParameter(command1, "@IDPLANO", DbType.String, ddlPlano.SelectedValue);
 
                         db.ExecuteNonQuery(command1);
 
@@ -66,7 +67,7 @@ namespace w7pay.src
                                     string cript = Criptografia.Encrypt(txtSenha.Text).Replace("+", "=");
                                     //atualiza os dados de usuario
                                     DbCommand command = db.GetSqlStringCommand(
-                            "INSERT INTO imagine_usuario (NOMECOMPLETO, NOMEUSUARIO, EMAIL, IDEMPRESA, SENHA, DATA_CADASTRO, STATUS) values (@NOMECOMPLETO, NOMEUSUARIO, EMAIL, IDEMPRESA, SENHA, GETDATE(), 'AGUARDANDO PAGAMENTO')");
+                            "INSERT INTO imagine_usuario (NOMECOMPLETO, NOMEUSUARIO, EMAIL, IDEMPRESA, SENHA, DATA_CADASTRO, STATUS) values (@NOMECOMPLETO, @NOMEUSUARIO, @EMAIL, @IDEMPRESA, @SENHA, GETDATE(), 'AGUARDANDO PAGAMENTO')");
                                     db.AddInParameter(command, "@NOMECOMPLETO", DbType.String, "");
                                     db.AddInParameter(command, "@NOMEUSUARIO", DbType.String, "");
                                     db.AddInParameter(command, "@EMAIL", DbType.String, txtEmail.Text);
@@ -76,12 +77,16 @@ namespace w7pay.src
                                     db.ExecuteNonQuery(command);
 
                                     //insere dados de configuração de empresa
-                                    DbCommand command2 = db.GetSqlStringCommand(
-                                    "INSERT INTO imagine_config (IDEMPRESA, IDTIPOCHAVE, DATA_CADASTRO) VALUES (@IDEMPRESA, IDTIPOCHAVE, GETDATE())");
-                                    db.AddInParameter(command2, "@IDEMPRESA", DbType.Int16, Convert.ToInt16(reader["idempresa"].ToString()));
-                                    db.AddInParameter(command2, "@IDTIPOCHAVE", DbType.Int16, 1);
+                                    //DbCommand command2 = db.GetSqlStringCommand(
+                                    //"INSERT INTO imagine_config (IDEMPRESA, IDTIPOCHAVE, DATA_CADASTRO) VALUES (@IDEMPRESA, IDTIPOCHAVE, GETDATE())");
+                                    //db.AddInParameter(command2, "@IDEMPRESA", DbType.Int16, Convert.ToInt16(reader["idempresa"].ToString()));
+                                    //db.AddInParameter(command2, "@IDTIPOCHAVE", DbType.Int16, 1);
 
-                                    db.ExecuteNonQuery(command2);                                   
+                                    //db.ExecuteNonQuery(command2);
+
+                                    lblsalvo.Text = "Cadastro Concluído!";
+
+                                    EnviarEmailCadastro(txtEmail.Text, txtCNPJCPF.Text, cript);
                                 }
                                 catch( Exception ex)
                                 {
@@ -104,6 +109,25 @@ namespace w7pay.src
             {
                 lblMensagem.Text = "CNPJ já cadastrado em nosso sistema.";
             }
+        }
+
+        private void EnviarEmailCadastro(string email, string cpf, string senha)
+        {
+            // corpo do e-mail
+            string strHtml = "<html xmlns='http://www.w3.org/1999/xhtml'><head><meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>";
+            strHtml = strHtml + "<title>ImagineStore</title></head><body><br>";
+            strHtml = strHtml + "<img src='https://global360.app.br/src/img/logo/logo_global.png' width='200' alt='Logo'>";
+            strHtml = strHtml + "<p><strong><font size='2' face='Verdana, Arial, Helvetica, sans-serif'>Novo Cadastro<br>Global 360 - Plataforma Digital</font></strong></p>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p>Olá, tudo bem?</p>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p>Seu cadastro foi realizado com sucesso na plataforma.</p>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><strong>CPF:</strong>" + cpf + "</p>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><strong>E-mail:</strong>" + email + "</p><br><br>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><strong>Senha de acesso</strong><br>" + senha + "</p>";
+            strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p><a href='https://global360.app.br/src/login.aspx'>Plataforma Global 360</a></p>";
+            strHtml = strHtml + "</font><img src=''></body></html>";
+
+            // Envio do e-mail
+            Email.emailTxt("contato@w7agencia.com.br", email, "", "", "Global 360 - Novo Cadastro", strHtml, 1);
         }
 
         protected void Timer1_Tick(object sender, EventArgs e)

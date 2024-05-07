@@ -47,7 +47,16 @@
                       <div class="mb-3">
                         <label class="form-label">E-mail</label>
                         <asp:TextBox id="txtEmailUsuario" Enabled="false" CssClass="form-control" runat="server"></asp:TextBox>
-                      </div>                     
+                      </div> 
+                      
+                      <div class="mb-3 w-100">
+    <label class="form-label">Nova senha</label>
+     <asp:TextBox ID="txtNovaSenha" TextMode="Password" CssClass="form-control" runat="server" Required></asp:TextBox>
+    
+</div>
+<div class="w-100 mb-0">
+    <asp:Button ID="Button1" runat="server" Text="Atualizar Senha" CssClass="btn btn-outline-primary btn-icon btn-icon-start" OnClick="Button1_Click" />
+</div>
                   </div>
                 </div>
               </div>

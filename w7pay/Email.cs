@@ -81,19 +81,22 @@ namespace w7pay
             //db.AddInParameter(command, "@Email_data_envio", DbType.DateTime, DateTime.Now);
             //db.ExecuteNonQuery(command);
 
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+            SmtpClient client = new SmtpClient();
             client.Host = "smtp.gmail.com";
+            client.Port = 587;
             client.UseDefaultCredentials = false;
             client.EnableSsl = true;
-            client.Credentials = new System.Net.NetworkCredential("w7naoresponda@gmail.com", "Sqlw7@20w7");
+            client.Credentials = new NetworkCredential("w7naoresponda@gmail.com", "qofy rbrd yriu qazd");
+
             MailMessage mail = new MailMessage();
-            mail.Sender = new System.Net.Mail.MailAddress("w7naoresponda@gmail.com", "W7 Pay");
-            mail.From = new MailAddress("w7naoresponda@gmail.com", "W7 Pay");
+            mail.Sender = new MailAddress("w7naoresponda@gmail.com", "Imagine Store");
+            mail.From = new MailAddress("w7naoresponda@gmail.com", "Imagine Store");
             mail.To.Add(new MailAddress(para, para));
             mail.Subject = assunto;
             mail.Body = mensagem;
             mail.IsBodyHtml = true;
             mail.Priority = MailPriority.High;
+
             try
             {
                 client.Send(mail);

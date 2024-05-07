@@ -110,7 +110,7 @@
                       <asp:BoundField DataField="descricao" HeaderText="Categoria" SortExpression="descricao" />
                       <asp:BoundField DataField="name" HeaderText="Descrição" SortExpression="name" />                     
                       <asp:BoundField DataField="barcode" HeaderText="Code" SortExpression="barcode" />
-                      <asp:BoundField DataField="cost_price" HeaderText="Valor" DataFormatString="{0:c2}" SortExpression="cost_price" />
+                      <asp:BoundField DataField="valorcorreto" HeaderText="Valor" DataFormatString="R{0:c2}" SortExpression="valorcorreto" />
                       
                   </Columns>
                   <EditRowStyle BackColor="#7C6F57" />
@@ -124,7 +124,7 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select top 100 * from produtos p 
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select case when default_price = 0 or default_price is null then isnull(cost_price,0) else default_price end as valorcorreto, * from produtos p 
 left join categorias c on c.id = p.category_id
 where manufacturer_id = @id order by name">
                 <SelectParameters>

@@ -38,23 +38,59 @@
 
                             <!-- Export Dropdown Start -->
                             <div class="d-inline-block">
-                                <button class="btn p-0" data-bs-toggle="dropdown" type="button" data-bs-offset="0,3">
-                                    <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown"
-                                        data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip"
-                                        title="Export">
-                                        <i data-acorn-icon="download"></i>
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu shadow dropdown-menu-end">
-                                    <asp:LinkButton ID="btnDownloadExcel" runat="server"
-                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Excel
-                                    </asp:LinkButton>
-                                </div>
+                                <asp:LinkButton ID="btnDownloadExcel" runat="server"
+                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Exportar Excel
+                                    </asp:LinkButton>                                
+                            </div>
+                            <!-- Export Dropdown End -->
+                            <div>
+                                <br />
+                                <a runat="server" id="lkDownload" visible="true" href="../../assets/FechamentoFinanceiro.xlsx" style="font-size: 14px; color: #FF5858;">Abrir Excel</a>
+                                <br />
                             </div>
                         </div>
                     </div>
-                    <!-- Export Dropdown End -->
 
+                    <asp:UpdateProgress ID="LoaderBar" runat="server" DisplayAfter="300" DynamicLayout="true">
+                        <ProgressTemplate>
+                        <style type="text/css">
+                            .updateprogress-overlay {
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-color: rgba(0, 0, 0, 0.5);
+                                z-index: 1000; 
+                            }
+
+                            .updateprogress-centered {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                z-index: 1001; 
+                            }
+
+                            h1 {
+                                font-size: 24px;
+                                color: white;
+                            }
+
+                            h5 {
+                                font-size: 18px;
+                                color: white;
+                                text-align: center;
+                            }
+                            </style>
+                            <div class="updateprogress-centered">
+                                <h1>Gerando arquivo... Por favor aguarde!</h1>
+                                <h5>Clique em "Abrir Excel" para abrir o arquivo</h5>
+                            </div>
+                            <div class="updateprogress-overlay"></div>
+                        </ProgressTemplate>
+                    </asp:UpdateProgress>
+                    <!-- Export Dropdown End -->
 
                     <!-- Search Start -->
                     <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-4 mb-1">
@@ -91,15 +127,10 @@
                             OnClick="lkbFiltro_Click">
                             <i data-acorn-icon="send"></i> Visualizar Fechamento
                         </asp:LinkButton>
-
                     </div>
 
-                    <!-- Download Button -->
-                    <div>
-                        <br />
-                        <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
-                        <br />
-                    </div>
+                    <div class col-sm-13 col-md-6 col-lg-"
+
 
                     <!-- Search End -->
                     <br />
@@ -143,13 +174,11 @@
                                         <i data-acorn-icon="download"></i>
                                     </span>
                                     </button>>--%>
-
-
                             </div>
-                            <!-- Export Dropdown End -->
                         </div>
                     </div>
                 </div>
+                
                 <!-- Controls End -->
                 <!-- Discount List Start -->
                 <div class="row">
@@ -170,15 +199,15 @@
                                 <asp:BoundField DataField="qtde_mes_anterior" HeaderText="Quant. Mês Anterior"
                                     SortExpression="qtde_mes_anterior" />
                                 <asp:BoundField DataField="entrada" HeaderText="Entrada" SortExpression="entrada" />
-                                <asp:BoundField DataField="valor" DataFormatString="{0:c2}" HeaderText="Valor"
+                                <asp:BoundField DataField="valor" DataFormatString="R{0:c2}" HeaderText="Valor"
                                     SortExpression="valor" />
                                 <asp:BoundField DataField="qtde_venda" HeaderText="Quant. Venda"
-                                    SortExpression="qtde_venda" />
-                                <asp:BoundField DataField="faturamento" DataFormatString="{0:c2}"
+                                    SortExpression="qtde_venda" ItemStyle-Width="50px" />
+                                <asp:BoundField DataField="faturamento" DataFormatString="R{0:c2}"
                                     HeaderText="Valor Venda" SortExpression="faturamento" />
                                 <asp:BoundField DataField="qtde_dishonest" HeaderText="Quant. Dishonest"
                                     SortExpression="qtde_dishonest" />
-                                <asp:BoundField DataField="valor_dishonest" DataFormatString="{0:c2}"
+                                <asp:BoundField DataField="valor_dishonest" DataFormatString="R{0:c2}"
                                     HeaderText="Valor Dishonest" SortExpression="valor_dishonest" />
                                 <asp:BoundField DataField="estoquecd" HeaderText="Estoque CD"
                                     SortExpression="estoquecd" />
@@ -199,7 +228,9 @@
                             <SortedDescendingHeaderStyle BackColor="#15524A" />
                         </asp:GridView>
                         <asp:SqlDataSource ID="sdsDetalhes" runat="server"
-                            ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select * from fechamento
+                            ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select idfornecedor,ean, mesano, fornecedor, nomeproduto, case when qtde_mes_anterior = 0 then '-' else convert(varchar,qtde_mes_anterior) end as qtde_mes_anterior, case when entrada = 0 then '-' else convert(varchar,entrada) end as entrada, 
+valor, qtde_venda, faturamento, case when qtde_dishonest = 0 then '-' else convert(varchar,qtde_dishonest) end as qtde_dishonest, case when valor_dishonest = 0 then '-' else convert(varchar,valor_dishonest) end as valor_dishonest, 
+estoquecd, estoqueloja, saldo from fechamento
 where idfornecedor = @id and mesano = convert(varchar,@mes)+'/'+convert(varchar,@ano) order by faturamento desc">
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="hdfId" Name="id" PropertyName="Value" />

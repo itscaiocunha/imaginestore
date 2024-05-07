@@ -47,14 +47,9 @@
                                 </button>
                                 <div class="dropdown-menu shadow dropdown-menu-end">
                                     <asp:LinkButton ID="btnDownloadExcel" runat="server"
-                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Excel
+                                        CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Exportar Excel
                                     </asp:LinkButton>
-                                    <<%--asp:LinkButton ID="btnDownloadPDf" runat="server"
-                                        CssClass="btn btn-primary export-pdf" OnClick="btnDownloadPDf_Click">Pdf
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnDownloadCSV" runat="server"
-                                        CssClass="btn btn-primary export-cvs" OnClick="btnDownloadCSV_Click">Csv
-                                    </asp:LinkButton>--%>
+                                    <a runat="server" id="lkDownload" href="../../assets/FechamentoFinanceiro.xlsx" visible="false">Abrir Excel</a>
                                 </div>
                             </div>
                         </div>
@@ -114,16 +109,7 @@
 
                     </div>
 
-                    <!-- Download Button -->
-                    <div>
-                        <br />
-                        <a href="../../assets/FechamentoFinanceiro.xlsx">Abrir Excel</a>
-                        <br />
-                        <%--<a href="../../assets/FechamentoFinanceiro.pdf">Abrir PDF</a>
-                        <br />--%>
-                        <%--<a href="../../assets/FechamentoFinanceiro.csv">Abrir CSV</a>--%>
-                    </div>
-
+                   
                     <!-- Search End -->
                     <br />
                     <div class="col-sm-12 col-md-7 col-lg-4 col-xxl-12 text-end mb-1">

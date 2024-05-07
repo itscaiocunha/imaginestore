@@ -35,7 +35,7 @@
     <form id="form1" runat="server">
         <div id="root"> 
                 <div class="container">
-                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server">
                     </asp:ContentPlaceHolder>
                 </div>
             <!-- Layout Footer Start -->

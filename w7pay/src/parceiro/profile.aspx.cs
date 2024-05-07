@@ -152,5 +152,28 @@ namespace w7pay.src.parceiro
                 ddlUF.SelectedValue = uf.ToString();
             }
         }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            //atualiza a senha de acesso
+            Database db = DatabaseFactory.CreateDatabase("ConnectionString");
+            //criptografa a senha de aceso
+            string cript = Criptografia.Encrypt(txtNovaSenha.Text).Replace("+", "=");
+
+            DbCommand command = db.GetSqlStringCommand(
+            "UPDATE imagine_usuario set senha = @senha where idusuario = @idusuario");
+            db.AddInParameter(command, "@idusuario", DbType.Int16, Convert.ToInt16(hdfIdUsuario.Value));
+            db.AddInParameter(command, "@senha", DbType.String, cript);
+            try
+            {
+                db.ExecuteNonQuery(command);
+                lblMensagem.Text = "Senha atualizada com sucesso!";
+            }
+            catch(Exception ex)
+            {
+                lblMensagem.Text = "Erro ao tentar atualizar";
+            }
+
+        }
     }
 }

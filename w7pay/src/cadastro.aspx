@@ -61,6 +61,9 @@
                                     <div class="mb-3 w-100">
                                         <label class="form-label">Ao continuar, você concorda com nosso <a href="#" target="_blank">Aviso de Privacidade</a>.</label>
                                     </div>
+                                    <div>
+                                        <asp:Label ID="lblsalvo" runat="server"></asp:Label>
+                                    </div>
                                     <div class="mb-3 w-100" align="right">
                                         <a href="login.aspx" class="text-center">
                                             <span>Já tem conta?</span></a>
@@ -122,7 +125,38 @@
                                     <div class="w-100 mb-0">
                                         <asp:Button ID="btnLogin" runat="server" Text="Acessar o sistema" CssClass="btn btn-outline-primary btn-icon btn-icon-start" Visible="false" OnClick="btnLogin_Click" />
                                     </div>
+                                    <asp:UpdateProgress ID="LoaderBar" runat="server" DisplayAfter="300" DynamicLayout="true">
+                                        <ProgressTemplate>
+                                        <style type="text/css">
+                                            .updateprogress-overlay {
+                                                position: fixed;
+                                                top: 0;
+                                                left: 0;
+                                                width: 100%;
+                                                height: 100%;
+                                                background-color: rgba(0, 0, 0, 0.5);
+                                                z-index: 1000; 
+                                            }
 
+                                            .updateprogress-centered {
+                                                position: absolute;
+                                                top: 50%;
+                                                left: 50%;
+                                                transform: translate(-50%, -50%);
+                                                z-index: 1001; 
+                                            }
+
+                                            h1 {
+                                                font-size: 20px;
+                                                color: white;
+                                            }
+                                            </style>
+                                            <div class="updateprogress-centered">
+                                                <h1>Salvando... Por favor aguarde!</h1>
+                                            </div>
+                                            <div class="updateprogress-overlay"></div>
+                                        </ProgressTemplate>
+                                    </asp:UpdateProgress>                       
                                 </div>
                             </div>
                         </div>

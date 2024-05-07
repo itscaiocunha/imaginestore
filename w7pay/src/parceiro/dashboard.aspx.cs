@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -15,79 +16,99 @@ namespace w7pay.src.parceiro
         {
             if (!IsPostBack)
             {
-                try { 
-                hdfIdEmpresa.Value = Session["idempresa"].ToString();
-                lblMensagemBoasVindas.Text = "Bem-vindo, " + Session["nomeusuario"].ToString();
+                try
+                {
+                    hdfIdEmpresa.Value = Session["idempresa"].ToString();
+                    lblMensagemBoasVindas.Text = "Bem-vindo, " + Session["nomeusuario"].ToString();
 
-                    //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                    //         "SELECT (SELECT COUNT(*) FROM vendas where manufacturer_id = '" + hdfIdEmpresa.Value + "') + (select count(*) as qtde from VendasMLabs v join fornecedores f on f.name = v.FORNECEDOR where f.id =) AS qtde "))
-                    //{
-                    //    if (reader.Read())
-                    //    {
-                    //        lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
-                    //    }
-                    //    else
-                    //        lblTotalVendasRegistradas.Text = "0";
-                    //}
+                    txtDataInicio.Text = DateTime.Now.Date.AddDays(-7).ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);
+                    txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT SUM(try_cast(v.value as decimal(10,2))) as ganho, COUNT(*) as qtde FROM vendas v JOIN produtos p ON p.id = v.good_id where occurred_at > getDate() - 7 and p.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
                     {
                         if (reader.Read())
                         {
-                            lblTotalVendas7dias.Text = reader["qtde"].ToString() + " | R$ " + reader["ganho"].ToString();
+                            lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
+                            lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
                         }
                         else
+                        {
+                            lblTotalVendasPagas.Text = "R$ 0,00";
                             lblTotalVendasRegistradas.Text = "0";
-                    }
-
-                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT SUM(try_cast(v.value as decimal(10,2))) as ganho, COUNT(*) as qtde FROM vendas v JOIN produtos p ON p.id = v.good_id where occurred_at > getDate() - 30 and  p.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
-                    {
-                        if (reader.Read())
-                        {
-                            lblTotalVendas30dias.Text = reader["qtde"].ToString() + " | R$ " + reader["ganho"].ToString();
                         }
-                        else
-                            lblTotalVendas30dias.Text = "0";
                     }
 
                     //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                    //          "select SUM(try_cast(v.value as decimal(10, 2))) + SUM(try_cast(m.valor as decimal(10, 2))) as ganho from vendas v JOIN VendasMLabs m ON v.barcode = m.Cód_produto and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                    //          "SELECT count(*) as qtde from produtos where manufacturer_id  = '" + hdfIdEmpresa.Value + "'"))
                     //{
                     //    if (reader.Read())
                     //    {
-                    //        lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
+                    //        lblTotalNaoPagas.Text = reader["qtde"].ToString();
                     //    }
                     //    else
-                    //        lblTotalVendasPagas.Text = "0";
+                    //        lblTotalNaoPagas.Text = "0";
                     //}
 
-                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT count(*) as qtde from produtos where manufacturer_id  = '" + hdfIdEmpresa.Value + "'"))
-                    {
-                        if (reader.Read())
-                        {
-                            lblTotalNaoPagas.Text = reader["qtde"].ToString();
-                        }
-                        else
-                            lblTotalNaoPagas.Text = "0";
-                    }
-
-                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "select count(*) as qtde from base_dishonest d join produtos p on p.upc_code = d.[CÓDIGO EM BARRAS] where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
-                    {
-                        if (reader.Read())
-                        {
-                            lblTotalMensagens.Text = reader["qtde"].ToString();
-                        }
-                        else
-                            lblTotalMensagens.Text = "0";
-                    }
+                    //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                    //          "select count(*) as qtde from base_dishonest d join produtos p on p.upc_code = d.[CÓDIGO EM BARRAS] where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                    //{
+                    //    if (reader.Read())
+                    //    {
+                    //        lblTotalMensagens.Text = reader["qtde"].ToString();
+                    //    }
+                    //    else
+                    //        lblTotalMensagens.Text = "0";
+                    //}
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     lblMensagemBoasVindas.Text = ex.Message;
+                }
+            }
+        }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            string filtrodata = "";
+            DateTime datainicio = Convert.ToDateTime(txtDataInicio.Text.Substring(3,2)+"/"+ txtDataInicio.Text.Substring(0, 2)+"/"+ txtDataInicio.Text.Substring(6, 4));
+            DateTime datafim = Convert.ToDateTime(txtDataFim.Text.Substring(3, 2) + "/" + txtDataFim.Text.Substring(0, 2) + "/" + txtDataFim.Text.Substring(6, 4));
+
+            filtrodata = " and occurred_at >= '" + datainicio + "' and occurred_at <= '" + datafim + "' ";
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + ""))
+            {
+                if (reader.Read())
+                {
+                    lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
+                    lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
+                }
+                else
+                {
+                    lblTotalVendasPagas.Text = "R$ 0,00";
+                    lblTotalVendasRegistradas.Text = "0";
+                }
+            }
+        }
+
+        protected void lkbLimpar_Click(object sender, EventArgs e)
+        {
+            txtDataInicio.Text = DateTime.Now.Date.AddDays(-7).ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);
+            txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+            {
+                if (reader.Read())
+                {
+                    lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
+                    lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
+                }
+                else
+                {
+                    lblTotalVendasPagas.Text = "R$ 0,00";
+                    lblTotalVendasRegistradas.Text = "0";
                 }
             }
         }

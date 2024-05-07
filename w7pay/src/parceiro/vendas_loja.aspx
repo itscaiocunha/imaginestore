@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
     <asp:HiddenField ID="hdfIdEmpresa" runat="server" />
-    <script src="js/mascara.js"></script>
+    <script src="../js/mascara.js"></script>
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -24,24 +24,43 @@
             </div>
             <!-- Title and Top Buttons End -->
 
-            <!-- Controls Start -->
+                        <!-- Controls Start -->
             <div class="row mb-2">
                 <!-- Search Start -->
                 <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                     <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
-                        <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
-                        <span class="search-magnifier-icon">
-                            <i data-acorn-icon="search"></i>
-                        </span>
-                        <span class="search-delete-icon d-none">
-                            <i data-acorn-icon="close"></i>
-                        </span>
+                        <asp:DropDownList ID="ddlLoja" CssClass="form-control" runat="server" DataSourceID="sdsLojas" DataTextField="client_name" DataValueField="location_id" AppendDataBoundItems="true">
+                            <asp:ListItem Text="Selecione uma loja" Value="0"></asp:ListItem>
+                        </asp:DropDownList>
+                        <asp:SqlDataSource ID="sdsLojas" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT location_id, max(location_name) as client_name FROM vendas v where v.manufacturer_id = @id and v.occurred_at > GETDATE() - 7
+group by location_id">
+                            <SelectParameters>
+                                <asp:SessionParameter Name="id" SessionField="idempresa" />
+                            </SelectParameters>
+                        </asp:SqlDataSource>
                     </div>
-                            <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
-                                        <asp:LinkButton ID="lkbFiltro" runat="server" CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-<i data-acorn-icon="send"></i> Atualizar Dados</asp:LinkButton>
-            </div>
-                    
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                        <asp:TextBox ID="txtDataInicio" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                        <asp:TextBox ID="txtDataFim" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <asp:LinkButton ID="lkbFiltro" runat="server"
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
+   <i data-acorn-icon="search"></i> Atualizar
+                    </asp:LinkButton>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <asp:LinkButton ID="lkbLimpar" runat="server"
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbLimpar_Click">
+<i data-acorn-icon="close"></i> Limpar
+                    </asp:LinkButton>
                 </div>
                 <!-- Search End -->
 

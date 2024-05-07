@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
     <asp:HiddenField ID="hdfIdEmpresa" runat="server" />
-    <script src="js/mascara.js"></script>
+    <script src="../js/mascara.js"></script>
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
@@ -24,25 +24,45 @@
             </div>
             <!-- Title and Top Buttons End -->
 
-            <!-- Controls Start -->
+                                  <!-- Controls Start -->
             <div class="row mb-2">
                 <!-- Search Start -->
                 <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                     <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
-                        <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
-                        <span class="search-magnifier-icon">
-                            <i data-acorn-icon="search"></i>
-                        </span>
-                        <span class="search-delete-icon d-none">
-                            <i data-acorn-icon="close"></i>
-                        </span>
+                       <asp:DropDownList ID="ddlProduto" CssClass="form-control" runat="server" DataSourceID="sdsProduto" DataTextField="product_name" DataValueField="product_id" AppendDataBoundItems="true">
+    <asp:ListItem Text="Selecione um produto" Value="0"></asp:ListItem>
+</asp:DropDownList>
+<asp:SqlDataSource ID="sdsProduto" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT good_id as product_id, max(product_name) as product_name FROM vendas v where v.manufacturer_id = @id group by good_id">
+    <SelectParameters>
+        <asp:SessionParameter Name="id" SessionField="idempresa" />
+    </SelectParameters>
+</asp:SqlDataSource>
                     </div>
                 </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                        <asp:TextBox ID="txtDataInicio" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                        <asp:TextBox ID="txtDataFim" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <asp:LinkButton ID="LinkButton1" runat="server"
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
+   <i data-acorn-icon="search"></i> Atualizar
+                    </asp:LinkButton>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <asp:LinkButton ID="lkbLimpar" runat="server"
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbLimpar_Click">
+<i data-acorn-icon="close"></i> Limpar
+                    </asp:LinkButton>
+                </div>
                 <!-- Search End -->
-                        <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
-                                        <asp:LinkButton ID="lkbFiltro" runat="server" CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-<i data-acorn-icon="send"></i> Atualizar Dados</asp:LinkButton>
-            </div>
+                                      
                 <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                     <div class="d-inline-block">
                         <!-- Print Button Start -->

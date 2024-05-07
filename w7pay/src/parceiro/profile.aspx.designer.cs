@@ -78,6 +78,24 @@ namespace w7pay.src.parceiro
         protected global::System.Web.UI.WebControls.TextBox txtEmailUsuario;
 
         /// <summary>
+        /// Controle txtNovaSenha.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNovaSenha;
+
+        /// <summary>
+        /// Controle Button1.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
+
+        /// <summary>
         /// Controle txtNomeEmpresa.
         /// </summary>
         /// <remarks>

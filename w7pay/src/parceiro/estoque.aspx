@@ -41,7 +41,7 @@
     <!-- Search End -->
 
     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
-        <div class="d-inline-block">
+       <%-- <div class="d-inline-block">
             <!-- Print Button Start -->
             <asp:LinkButton ID="btnImprimir" runat="server" CssClass="btn btn-icon btn-icon-only btn-foreground-alternate shadow"><i data-acorn-icon="print"></i></asp:LinkButton>
             <!-- Print Button End -->
@@ -85,7 +85,7 @@
                 </div>
             </div>
             <!-- Length End -->
-        </div>
+        </div>--%>
     </div>
 </div>
     <!-- Order List Start -->
@@ -103,8 +103,9 @@
                       </asp:TemplateField>
                       <asp:BoundField DataField="id" HeaderText="#Cod" SortExpression="id" />                      
                       <asp:BoundField DataField="descricao" HeaderText="Categoria" SortExpression="descricao" />                      
-                      <asp:BoundField DataField="produto" HeaderText="Produto" SortExpression="produto" />                     
-                      <asp:BoundField DataField="sald" HeaderText="Saldo" SortExpression="sald" />
+                      <asp:BoundField DataField="produto" HeaderText="Produto" SortExpression="produto" />
+                      <asp:BoundField DataField="saldocd" HeaderText="Saldo CD" SortExpression="saldocd" />
+                      <asp:BoundField DataField="sald" HeaderText="Saldo em loja" SortExpression="sald" />
                   </Columns>
                   <EditRowStyle BackColor="#7C6F57" />
                   <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
@@ -117,12 +118,14 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select e.id, f.name as fornecedor, ct.descricao, e.name as produto, p.image, e.upc_code, e.total_quantity, e.committed_quantity, sald from estoque1 e (nolock)
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select e.id, max(f.name) as fornecedor, max(ct.descricao) as descricao, max(e.name) as produto, max(p.image) as image, max(e.upc_code) as upc_code, 
+max(e.total_quantity) as total_quantity, max(e.committed_quantity) as committed_quantity, max(e.sald) as sald, isnull(max(es.sald), '0') as saldocd from estoque1 e (nolock)
 join fornecedores f on f.id = e.manufacturer_id
 join categorias ct on ct.id = e.category_id
 join produtos p on p.id = e.id
-             where e.manufacturer_id = @id 
-order by f.name, ct.descricao, e.NAME">
+left join estoque es on es.id = e.id 
+where e.manufacturer_id = @id 
+group by e.id">
                <SelectParameters>
       <asp:SessionParameter Name="id" SessionField="idempresa" />
   </SelectParameters>

@@ -5427,8 +5427,7 @@ button {
 
 .btn-icon {
   padding: 9px 20px;
-  height: var(--input-height);
-}
+  }
 .btn-icon span {
   vertical-align: middle;
 }

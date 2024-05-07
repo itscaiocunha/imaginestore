@@ -123,6 +123,15 @@ namespace w7pay.src
         protected global::System.Web.UI.WebControls.DropDownList ddlPlano;
 
         /// <summary>
+        /// Controle lblsalvo.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblsalvo;
+
+        /// <summary>
         /// Controle lblMensagem.
         /// </summary>
         /// <remarks>
@@ -229,5 +238,14 @@ namespace w7pay.src
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnLogin;
+
+        /// <summary>
+        /// Controle LoaderBar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress LoaderBar;
     }
 }

@@ -28,7 +28,7 @@
         <!-- Title and Top Buttons End -->
     </div>
     <!-- Stats Start -->
-    <div class="row">
+    <%--<div class="row">
         <div class="col-12">
             <div class="d-flex">
                 <h2 class="small-title">Estatísticas em tempo real</h2>
@@ -147,9 +147,9 @@
         </div>
     </div>
     </div>
-        <div class="row">
+        <div class="row">--%>
         <!-- Recent Orders Start -->
-        <div class="col-xl-4 mb-5">
+        <%--<div class="col-xl-4 mb-5">
             <h2 class="small-title">Quantidade de Vendas por Fornecedor</h2>
             <div class="card h-xl-100-card">
                 <div class="card-body h-100">
@@ -194,11 +194,11 @@ order by qtde">
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
         <!-- Recent Orders End -->
 
         <!-- Performance Start -->
-        <div class="col-xl-4 mb-5">
+        <%--<div class="col-xl-4 mb-5">
             <div class="d-flex">
                 <h2 class="small-title">Faturamento por Fornecedor</h2>
             </div>
@@ -245,10 +245,10 @@ order by qtde  ">
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
 
         <!-- Performance Start -->
-        <div class="col-xl-4 mb-5">
+        <%--<div class="col-xl-4 mb-5">
             <div class="d-flex">
                 <h2 class="small-title">Faturamento por Produto</h2>
             </div>
@@ -295,11 +295,11 @@ order by fatura desc">
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
         <!-- Performance End -->
 
                     <!-- Performance Start -->
-        <div class="col-xl-12 mb-5">
+       <%-- <div class="col-xl-12 mb-5">
             <div class="d-flex">
                 <h2 class="small-title">Quantidade/Faturamento por mês</h2>
             </div>
@@ -346,7 +346,7 @@ order by year(v.occurred_at), month(v.occurred_at)">
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
         <!-- Performance End -->
     </div>
 </asp:Content>

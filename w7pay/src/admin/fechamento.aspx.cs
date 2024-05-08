@@ -166,6 +166,8 @@ namespace w7pay.src
 
         protected void btnDownloadExcel_Click(object sender, EventArgs e)
         {
+            System.Threading.Thread.Sleep(200);
+
             try
             {
                 var lista = GenerateDataFromGridView(gdvDetalhes);
@@ -174,7 +176,7 @@ namespace w7pay.src
 
                 string filePath = Path.Combine(Server.MapPath("~/assets"), fileName);
 
-                GenerateFile("Fechamento Financeiro", filePath, lista);
+                GenerateExcel("Fechamento Financeiro", filePath, lista);
 
                 lblMensagem.Text = "Arquivo de Excel gerado com sucesso.";
 
@@ -182,9 +184,9 @@ namespace w7pay.src
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
                 Response.TransmitFile(filePath);
+
                 Response.End();
 
-                lkDownload.Visible = true;
             }
             catch (Exception ex)
             {
@@ -192,7 +194,7 @@ namespace w7pay.src
             }
         }
 
-        static void GenerateFile(string tabName, string filePath, ICollection<FechamentoModel> lista)
+        public void GenerateExcel(string tabName, string filePath, ICollection<FechamentoModel> lista)
         {
             if (File.Exists(filePath))
                 File.Delete(filePath);
@@ -201,24 +203,24 @@ namespace w7pay.src
             {
                 var planilha = workbook.Worksheets.Add(tabName);
 
-                int line = 1;
-                GenerateHeader(planilha);
+                int line = 12;
+                GenerateHeader(planilha, lblQtdeTotal.Text, lblSaldoVendas.Text, lblValorImagine.Text, lblValorAReceber.Text, Session["nomeusuario"].ToString(), ddlMes.SelectedValue + "/" + ddlAnoMes.SelectedValue);
                 line++;
 
                 foreach (var item in lista)
                 {
-                    planilha.Cell("C" + line).Value = item.ean;
-                    planilha.Cell("D" + line).Value = item.nomeproduto;
-                    planilha.Cell("E" + line).Value = item.qtde_mes_anterior;
-                    planilha.Cell("F" + line).Value = item.entrada;
-                    planilha.Cell("G" + line).Value = item.valor;
-                    planilha.Cell("H" + line).Value = item.qtde_venda;
-                    planilha.Cell("I" + line).Value = item.faturamento;
-                    planilha.Cell("J" + line).Value = item.qtde_dishonest;
-                    planilha.Cell("K" + line).Value = item.valor_dishonest;
-                    planilha.Cell("L" + line).Value = item.estoquecd;
-                    planilha.Cell("M" + line).Value = item.estoqueloja;
-                    planilha.Cell("N" + line).Value = item.saldo;
+                    planilha.Cell("A" + line).Value = item.ean;
+                    planilha.Cell("B" + line).Value = item.nomeproduto.Replace("&amp;", "&");
+                    planilha.Cell("C" + line).Value = item.qtde_mes_anterior.Replace("&nbsp;", "-");
+                    planilha.Cell("D" + line).Value = item.entrada.Replace("&nbsp;", "-");
+                    planilha.Cell("E" + line).Value = item.valor.Replace("&nbsp;", "-");
+                    planilha.Cell("F" + line).Value = item.qtde_venda.Replace("&nbsp;", "-");
+                    planilha.Cell("G" + line).Value = item.faturamento.Replace("&nbsp;", "-");
+                    planilha.Cell("H" + line).Value = item.qtde_dishonest.Replace("&nbsp;", "-");
+                    planilha.Cell("I" + line).Value = item.valor_dishonest.Replace("&nbsp;", "-");
+                    planilha.Cell("J" + line).Value = item.estoquecd.Replace("&nbsp;", "-");
+                    planilha.Cell("K" + line).Value = item.estoqueloja.Replace("&nbsp;", "-");
+                    planilha.Cell("L" + line).Value = item.saldo.Replace("&nbsp;", "-");
                     line++;
                 }
 
@@ -227,23 +229,93 @@ namespace w7pay.src
 
         }
 
-
-        static void GenerateHeader(IXLWorksheet planilha)
+        static void GenerateHeader(IXLWorksheet planilha, string qtdetotal, string saldovendas, string valorimagine, string areceber, string fornecedor, string mesano)
         {
-            planilha.Cell("A1").Value = "Mês/Ano";
-            planilha.Cell("B1").Value = "Fornecedor";
-            planilha.Cell("C1").Value = "EAN";
-            planilha.Cell("D1").Value = "Produto";
-            planilha.Cell("E1").Value = "Quant. Mês Anterior";
-            planilha.Cell("F1").Value = "Entrada";
-            planilha.Cell("G1").Value = "Valor";
-            planilha.Cell("H1").Value = "Quant. Venda";
-            planilha.Cell("I1").Value = "Valor Venda";
-            planilha.Cell("J1").Value = "Quant. Dishonest";
-            planilha.Cell("K1").Value = "Valor Dishonest";
-            planilha.Cell("L1").Value = "Estoque CD";
-            planilha.Cell("M1").Value = "Estoque Loja";
-            planilha.Cell("N1").Value = "Saldo";
+            planilha.Cell("A2").Value = "FECHAMENTO FINANCEIRO";
+            planilha.Cell("A2").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            planilha.Cell("A2").Style.Font.Bold = true;
+            planilha.Cell("A2").Style.Font.FontSize = 20;
+            planilha.Range("A2:E2").Merge();
+
+            planilha.Cell("A3").Value = "Fornecedor: ";
+            planilha.Cell("A3").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            planilha.Cell("A3").Style.Font.Bold = true;
+            planilha.Cell("A3").Style.Font.FontSize = 14;
+
+            planilha.Cell("B3").Value = fornecedor;
+            planilha.Cell("B3").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            planilha.Cell("B3").Style.Font.Bold = true;
+            planilha.Cell("B3").Style.Font.FontSize = 14;
+
+            planilha.Cell("A4").Value = "Mês de fechamento: ";
+            planilha.Cell("A4").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            planilha.Cell("A4").Style.Font.Bold = true;
+            planilha.Cell("A4").Style.Font.FontSize = 14;
+
+            planilha.Cell("B4").Value = mesano;
+            planilha.Cell("B4").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            planilha.Cell("B4").Style.Font.Bold = true;
+            planilha.Cell("B4").Style.Font.FontSize = 14;
+
+            planilha.Cell("A6").Value = "Total de Vendas: ";
+            planilha.Cell("B6").Value = qtdetotal;
+            planilha.Cell("A7").Value = "Saldo Vendas: ";
+            planilha.Cell("B7").Value = saldovendas;
+            planilha.Cell("A8").Value = "Valor Imagine(26,5%): ";
+            planilha.Cell("B8").Value = valorimagine;
+            planilha.Cell("A9").Value = "Valor a Receber: ";
+            planilha.Cell("B9").Value = areceber;
+
+            /* ADICIONANDO IMAGEM */
+            planilha.Range("I2:L2").Merge();
+
+            //string imagePath = @"https://imaginestore.azurewebsites.net/src/img/logo/logo.png";
+
+            ////Adding image to the worksheet and moving it to the cell
+            //var image = planilha.AddPicture(new Bitmap(imagePath)).MoveTo(planilha.Cell("I2"));
+            //image.Name = "Logo";
+            ////Scaling down image as per our cell size
+            //image.Scale(.5);
+
+            planilha.Cell("A12").Value = "EAN";
+            planilha.Cell("A12").Style.Font.Bold = true;
+            planilha.Cell("A12").Style.Font.FontSize = 14;
+            planilha.Cell("B12").Value = "Produto";
+            planilha.Cell("B12").Style.Font.Bold = true;
+            planilha.Cell("B12").Style.Font.FontSize = 14;
+            planilha.Cell("C12").Value = "Quant. Mês Anterior";
+            planilha.Cell("C12").Style.Font.Bold = true;
+            planilha.Cell("C12").Style.Font.FontSize = 14;
+            planilha.Cell("D12").Value = "Entrada";
+            planilha.Cell("D12").Style.Font.Bold = true;
+            planilha.Cell("D12").Style.Font.FontSize = 14;
+            planilha.Cell("E12").Value = "Valor";
+            planilha.Cell("E12").Style.Font.Bold = true;
+            planilha.Cell("E12").Style.Font.FontSize = 14;
+            planilha.Cell("F12").Value = "Quant. Venda";
+            planilha.Cell("F12").Style.Font.Bold = true;
+            planilha.Cell("F12").Style.Font.FontSize = 14;
+            planilha.Cell("G12").Value = "Valor Venda";
+            planilha.Cell("G12").Style.Font.Bold = true;
+            planilha.Cell("G12").Style.Font.FontSize = 14;
+            planilha.Cell("H12").Value = "Quant. Dishonest";
+            planilha.Cell("H12").Style.Font.Bold = true;
+            planilha.Cell("H12").Style.Font.FontSize = 14;
+            planilha.Cell("I12").Value = "Valor Dishonest";
+            planilha.Cell("I12").Style.Font.Bold = true;
+            planilha.Cell("I12").Style.Font.FontSize = 14;
+            planilha.Cell("J12").Value = "Estoque CD";
+            planilha.Cell("J12").Style.Font.Bold = true;
+            planilha.Cell("J12").Style.Font.FontSize = 14;
+            planilha.Cell("K12").Value = "Estoque Loja";
+            planilha.Cell("K12").Style.Font.Bold = true;
+            planilha.Cell("K12").Style.Font.FontSize = 14;
+            planilha.Cell("L12").Value = "Saldo";
+            planilha.Cell("L12").Style.Font.Bold = true;
+            planilha.Cell("L12").Style.Font.FontSize = 14;
+
+            //ajusta o tamanho da coluna com o conteudo
+            planilha.Columns("A", "L").AdjustToContents();
         }
 
         //protected void btnDownloadPDf_Click(object sender, EventArgs e)

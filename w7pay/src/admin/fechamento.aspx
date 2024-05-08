@@ -32,28 +32,62 @@
                 <!-- Title and Top Buttons End -->
 
                 <!-- Controls Start -->
-                <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block">
 
                             <!-- Export Dropdown Start -->
                             <div class="d-inline-block">
-                                <button class="btn p-0" data-bs-toggle="dropdown" type="button" data-bs-offset="0,3">
-                                    <span class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown"
-                                        data-bs-delay="0" data-bs-placement="top" data-bs-toggle="tooltip"
-                                        title="Export">
-                                        <i data-acorn-icon="download"></i>
-                                    </span>
-                                </button>
-                                <div class="dropdown-menu shadow dropdown-menu-end">
-                                    <asp:LinkButton ID="btnDownloadExcel" runat="server"
+                                <asp:LinkButton ID="btnDownloadExcel" runat="server"
                                         CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Exportar Excel
-                                    </asp:LinkButton>
-                                    <a runat="server" id="lkDownload" href="../../assets/FechamentoFinanceiro.xlsx" visible="false">Abrir Excel</a>
+                                    </asp:LinkButton>                                
+                            </div>
+                                <div>
+                                    <br />
+                                    <a runat="server" id="lkDownload" visible="true" href="../../assets/FechamentoFinanceiro.xlsx" style="font-size: 14px; color: #FF5858;">Abrir Excel</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                     <asp:UpdateProgress ID="LoaderBar" runat="server" DisplayAfter="300" DynamicLayout="true">
+                        <ProgressTemplate>
+                        <style type="text/css">
+                            .updateprogress-overlay {
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-color: rgba(0, 0, 0, 0.5);
+                                z-index: 1000; 
+                            }
+
+                            .updateprogress-centered {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                z-index: 1001; 
+                            }
+
+                            h1 {
+                                font-size: 24px;
+                                color: white;
+                            }
+
+                            h5 {
+                                font-size: 18px;
+                                color: white;
+                                text-align: center;
+                            }
+                            </style>
+                            <div class="updateprogress-centered">
+                                <h1>Gerando arquivo... Por favor aguarde!</h1>
+                                <h5>Clique em "Abrir Excel" para abrir o arquivo</h5>
+                            </div>
+                            <div class="updateprogress-overlay"></div>
+                        </ProgressTemplate>
+                    </asp:UpdateProgress>
                     <!-- Export Dropdown End -->
 
 
@@ -81,7 +115,7 @@
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="sdsAnoMes" runat="server"
                                 ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-                                SelectCommand="select distinct convert(varchar,year(occurred_at)) as anomes from vendas where occurred_at is not null order by anomes desc">
+                                SelectCommand=" select distinct substring(convert(varchar, mesano),3,4) as anomes from fechamento">
                             </asp:SqlDataSource>
                         </div>
                     </div>
@@ -94,7 +128,7 @@
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="sdsMes" runat="server"
                                 ConnectionString="<%$ ConnectionStrings:ConnectionString %>"
-                                SelectCommand="select distinct convert(varchar,month(occurred_at)) as anomes, year(getDate()), month(getdate()) from vendas where occurred_at is not null order by year(getDate()) desc, month(getdate()) desc">
+                                SelectCommand="select distinct substring(convert(varchar, mesano),1,1) as anomes from fechamento">
                             </asp:SqlDataSource>
                         </div>
                     </div>

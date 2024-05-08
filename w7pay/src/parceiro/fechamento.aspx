@@ -48,8 +48,6 @@
                                 <a runat="server" id="lkDownload" visible="true" href="../../assets/FechamentoFinanceiro.xlsx" style="font-size: 14px; color: #FF5858;">Abrir Excel</a>
                                 <br />
                             </div>
-                        </div>
-                    </div>
 
                     <asp:UpdateProgress ID="LoaderBar" runat="server" DisplayAfter="300" DynamicLayout="true">
                         <ProgressTemplate>

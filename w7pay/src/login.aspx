@@ -42,9 +42,9 @@
                         <div class="mb-3 w-100" align="right">
                          <a href="esqueceu.aspx" class="text-center">
                   <span>Esqueceu a senha?</span></a>
-                            <br />
-                          <a href="cadastro.aspx" class="text-center">
-                  <span>Ainda não tem conta?</span></a></div>
+                  <br />
+                         <a href="cadastro.aspx" class="text-center">
+                  <span>ainda não tem conta?</span></a></div>
                       
                       <div class="w-100 mb-0">
          <asp:Button ID="Button1" runat="server" Text="Acessar" CssClass="btn btn-outline-primary btn-icon btn-icon-start" OnClick="Button1_Click" />              

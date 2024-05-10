@@ -74,21 +74,21 @@ namespace w7pay.src
                                                 //aqui envia o email ao cliente cadastrado
                                                 // corpo do e-mail
                                                 string strhtml = "<html xmlns='http://www.w3.org/1999/xhtml'><head><meta http-equiv='content-type' content='text/html; charset=iso-8859-1'>";
-                                                strhtml = strhtml + "<title>Imagine Store</title></head><body><br>";
-                                                strhtml = strhtml + "<img src='https://imaginestore.azurewebsites.net/src/img/logo/logo.png' width='200' alt='logo'>";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p>Olá, Seja bem-vindo à Imagine Store!</p><br />";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p>Para acessar a sua plataforma exclusiva, preencha o campo do usuário com o e-mail cadastrado e configure a sua senha. Ao acessar, você poderá ver estatísticas em tempo real, alterar informações do seu perfil, visualizar os produtos cadastrados, vendas por período, fechamento geral e por período, vendas por loja e/ou por produto e as informações de estoque em loja e no Centro de Distribuição (CD). Essa é a primeira versão, alguns dados poderão apresentar certa imprecisão porque alguns processos estão em integração. Novos gráficos e funções serão atualizadas nos próximos dias. Informaremos a vocês todas as etapas de evolução da plataforma.</p><br />";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p>Se surgirem dúvidas durante o processo, estamos à disposição para ajudar. Para esclarecimentos adicionais, fale com: Fabio Passos (11) 94712-9181</p><br />";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p><strong>E-mail: </strong>" + txtEmail.Text + "</p>";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p><strong>Senha: </strong>" + pw + "</p><br />";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p><a href='https://imaginestore.azurewebsites.net/'>Plataforma Imagine Store</a></p><br><br>";
-                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p>Atenciosamente, Imagine Store.</p><br />";
+                                                strhtml = strhtml + "</head><body><br>";
+                                                strhtml = strhtml + "<img src='https://imaginestore.azurewebsites.net/src/img/logo/imaginelogo.png' width='200' alt='logo'><br><br>";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 16px'>Seja bem-vindo à Imagine Store!</p><br />";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 14px'>Para acessar a sua plataforma exclusiva, preencha o campo do usuário com o e-mail cadastrado e configure a sua senha. Ao acessar, você poderá ver estatísticas em tempo real, alterar informações do seu perfil, visualizar os produtos cadastrados, vendas por período, fechamento geral e por período, vendas por loja e/ou por produto e as informações de estoque em loja e no Centro de Distribuição (CD). Essa é a primeira versão, alguns dados poderão apresentar certa imprecisão porque alguns processos estão em integração. Novos gráficos e funções serão atualizadas nos próximos dias. Informaremos a vocês todas as etapas de evolução da plataforma.</p><br />";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 14px'>Se surgirem dúvidas durante o processo, estamos à disposição para ajudar. Para esclarecimentos adicionais, fale com: Fabio Passos (11) 94712-9181</p><br />";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 14px'><strong>E-mail: </strong>" + txtEmail.Text + "</p>";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 14px'><strong>Senha: </strong>" + pw + "</p><br />";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 14px'><a href='https://imaginestore.azurewebsites.net/'>Clique aqui para acessar</a></p><br>";
+                                                strhtml = strhtml + "<font size='2' face='verdana, arial, helvetica, sans-serif'><p style='font-size: 14px'>Atenciosamente, Imagine Store.</p><br />";
                                                 strhtml = strhtml + "</font><img src=''></body></html>";
 
                                                 //base teste
-                                                Email.emailTxt("contato@w7agencia.com.br", "contato@w7agencia.com.br", "", "", "Imagine Store", strhtml, 1);
+                                                Email.emailTxt("contato@w7agencia.com.br", "contato@w7agencia.com.br", "", "", "Imagine Store - Plataforma Digital", strhtml, 1);
                                                 //base oficial
-                                                Email.emailTxt("contato@w7agencia.com.br", txtEmail.Text, "", "", "imagine store - novo cadastro", strhtml, 1);
+                                                Email.emailTxt("contato@w7agencia.com.br", txtEmail.Text, "", "", "Imagine Store - Plataforma Digital", strhtml, 1);
                                                 
                                                 lblMensagem.Text = "Dados cadastrados com sucesso! Você receberá um e-mail com mais informações!";
                                             }

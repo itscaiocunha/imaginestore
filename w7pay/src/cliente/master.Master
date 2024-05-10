@@ -348,7 +348,7 @@ order by descricao"></asp:SqlDataSource>
             <div class="offcanvas__content">
                 <div class="offcanvas__logo mb-40">
                     <a href="dashboard.aspx">
-                        <img src="../img/logo/logo.png" alt="logo" height="40">
+                        <img src="../img/logo/imaginelogo.png" alt="logo" height="40">
                     </a>
                 </div>
                 <div class="offcanvas__search mb-25">

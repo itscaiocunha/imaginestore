@@ -14,7 +14,7 @@
               <!-- Title Start -->
               <div class="col-auto mb-3 mb-md-0 me-auto">
                 <div class="w-auto sw-md-30">
-                  <img src="img/logo/logo.png" alt="Logo" width="100">
+                  <img src="img/logo/imaginelogo.png" alt="Logo" width="100">
                 </div>
               </div>
               <!-- Title End -->

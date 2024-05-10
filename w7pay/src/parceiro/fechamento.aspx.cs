@@ -236,7 +236,7 @@ namespace w7pay.src.parceiro
             /* ADICIONANDO IMAGEM */
             planilha.Range("I2:L2").Merge();
             
-            //string imagePath = @"https://imaginestore.azurewebsites.net/src/img/logo/logo.png";
+            //string imagePath = @"https://imaginestore.azurewebsites.net/src/img/logo/imaginelogo.png";
 
             ////Adding image to the worksheet and moving it to the cell
             //var image = planilha.AddPicture(new Bitmap(imagePath)).MoveTo(planilha.Cell("I2"));

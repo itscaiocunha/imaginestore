@@ -116,7 +116,7 @@ namespace w7pay.src
             // corpo do e-mail
             string strHtml = "<html /*xmlns='http://www.w3.org/1999/xhtml*/'><head><meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>";
             strHtml = strHtml + "<title>ImagineStore</title></head><body><br>";
-            strHtml = strHtml + "<img src='https://imaginestore.azurewebsites.net/src/img/logo/logo.png' width='200' alt='Logo'>";
+            strHtml = strHtml + "<img src='https://imaginestore.azurewebsites.net/src/img/logo/imaginelogo.png' width='200' alt='Logo'>";
             strHtml = strHtml + "<p><strong><font size='2' face='Verdana, Arial, Helvetica, sans-serif'>Novo Cadastro<br>ImagineStore</font></strong></p>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p>Olá, tudo bem?</p>";
             strHtml = strHtml + "<font size='2' face='Verdana, Arial, Helvetica, sans-serif'><p>Seu cadastro foi realizado com sucesso na plataforma.</p>";

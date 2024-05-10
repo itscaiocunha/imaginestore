@@ -50,7 +50,7 @@ namespace w7pay.src.parceiro
                 }
 
                 //atualizacao.GETVendas();
-            }        
+            }
         }
 
         protected void lkbFiltro_Click(object sender, EventArgs e)

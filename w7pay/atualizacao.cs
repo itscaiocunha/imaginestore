@@ -405,7 +405,7 @@ namespace w7pay
             //{
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=08/05/2024&end_date=10/05/2024&page=1&per_page=1000");
+            var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=10/05/2024&end_date=13/05/2024&page=1&per_page=1000");
             var request = new RestRequest(Method.GET);
             request.AddHeader("Accept", "application/json");
 

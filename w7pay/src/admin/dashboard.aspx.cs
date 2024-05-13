@@ -96,5 +96,14 @@ namespace w7pay.src
         {
 
         }
+
+        protected void rodarVendas(object sender, EventArgs e)
+        {
+            atualizacao.GETVendas();
+        }
+        protected void rodarFornecedores(object sender, EventArgs e)
+        {
+            atualizacao.GETFornecedores();
+        }
     }
 }

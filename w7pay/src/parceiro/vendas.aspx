@@ -45,13 +45,13 @@
                 <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                     <asp:LinkButton ID="lkbFiltro" runat="server"
                         CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-   <i data-acorn-icon="search"></i> Atualizar
+                        <i data-acorn-icon="search"></i> Atualizar
                     </asp:LinkButton>
                 </div>
                 <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                     <asp:LinkButton ID="lkbLimpar" runat="server"
                         CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbLimpar_Click">
-<i data-acorn-icon="close"></i> Limpar
+                        <i data-acorn-icon="close"></i> Limpar
                     </asp:LinkButton>
                 </div>
                 <!-- Search End -->

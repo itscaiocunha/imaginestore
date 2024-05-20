@@ -54,7 +54,7 @@ namespace w7pay.src
                     Response.Redirect("../sessao.aspx", false);
                 }
 
-                atualizacao.GETEstoque();               
+                //atualizacao.GETEstoque();               
             }
         }
     }

@@ -25,95 +25,86 @@
               <!-- Title End -->
             </div>--%>
         </div>
-        <!-- Title and Top Buttons End -->
     </div>
-    <!-- Stats Start -->
-    <%--<div class="row">
+
+    <div class="row">
         <div class="col-12">
             <div class="d-flex">
                 <h2 class="small-title">Estatísticas em tempo real</h2>
             </div>
-            <div class="mb-5">
-                <div class="row g-2">
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card h-100 hover-scale-up cursor-pointer">
-                            <div class="card-body d-flex flex-column align-items-center">
-                                <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                    <i data-acorn-icon="cart" class="text-primary"></i>
-                                </div>
-                                <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">VENDAS</div>
-                                <div class="text-primary cta-4">
-                                    <asp:Label ID="lblTotalVendasRegistradas" runat="server"></asp:Label></div>
-                            </div>
+            <div class="row mb-2">
+                <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+                    <div class="">
+                        <label class="form-label">Fornecedores</label>
+                        <asp:DropDownList ID="ddlFornecedores" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsFornecedores" DataTextField="name" DataValueField="id">
+                        </asp:DropDownList>
+                        <asp:SqlDataSource ID="sdsFornecedores" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from fornecedores order by name"></asp:SqlDataSource>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+                    <div class="">
+                        <label class="form-label">Data Início</label>
+                        <asp:TextBox ID="txtDataInicio" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+                    <div class="">
+                        <label class="form-label">Data Final</label>
+                        <asp:TextBox ID="txtDataFim" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-2 col-xxl-2 mb-1">
+                    <asp:LinkButton ID="lkbFiltro" runat="server"
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
+                        <i data-acorn-icon="search"></i> Atualizar
+                    </asp:LinkButton>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                    <asp:LinkButton ID="lkbLimpar" runat="server"
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbLimpar_Click">
+                        <i data-acorn-icon="close"></i> Limpar
+                    </asp:LinkButton>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+    <div class="mb-5">
+        <div class="row g-2">
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 hover-scale-up cursor-pointer">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
+                            <i data-acorn-icon="cart" class="text-primary"></i>
+                        </div>
+                        <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">
+                            VENDAS TOTAIS
+                        </div>
+                        <div class="text-primary cta-4">
+                            <asp:Label ID="lblTotalVendasRegistradas" runat="server"></asp:Label>
                         </div>
                     </div>
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card h-100 hover-scale-up cursor-pointer">
-                            <div class="card-body d-flex flex-column align-items-center">
-                                <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                    <i data-acorn-icon="dollar" class="text-primary"></i>
-                                </div>
-                                <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">VENDAS</div>
-                                <div class="text-primary cta-4">
-                                    <asp:Label ID="lblTotalVendasPagas" runat="server"></asp:Label></div>
-                            </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 hover-scale-up cursor-pointer">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
+                            <i data-acorn-icon="dollar" class="text-primary"></i>
                         </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card h-100 hover-scale-up cursor-pointer">
-                            <div class="card-body d-flex flex-column align-items-center">
-                                <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                    <i data-acorn-icon="tag" class="text-primary"></i>
-                                </div>
-                                <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">PRODUTOS</div>
-                                <div class="text-primary cta-4">
-                                    <asp:Label ID="lblTotalNaoPagas" runat="server"></asp:Label></div>
-                            </div>
+                        <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">
+                            VENDAS TOTAIS
                         </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card h-100 hover-scale-up cursor-pointer">
-                            <div class="card-body d-flex flex-column align-items-center">
-                                <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                    <i data-acorn-icon="dollar" class="text-primary"></i>
-                                </div>
-                                <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">VENDAS 7 DIAS</div>
-                                <div class="text-primary cta-4">
-                                    <asp:Label ID="lblTotalVendas7dias" runat="server"></asp:Label></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card h-100 hover-scale-up cursor-pointer">
-                            <div class="card-body d-flex flex-column align-items-center">
-                                <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                    <i data-acorn-icon="dollar" class="text-primary"></i>
-                                </div>
-                                <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">VENDAS 30 DIAS</div>
-                                <div class="text-primary cta-4">
-                                    <asp:Label ID="lblTotalVendas30dias" runat="server"></asp:Label></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card h-100 hover-scale-up cursor-pointer">
-                            <div class="card-body d-flex flex-column align-items-center">
-                                <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                    <i data-acorn-icon="arrow-top-left" class="text-primary"></i>
-                                </div>
-                                <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">FORNECEDORES</div>
-                                <div class="text-primary cta-4">
-                                    <asp:Label ID="lblTotalMensagens" runat="server"></asp:Label></div>
-                            </div>
+                        <div class="text-primary cta-4">
+                            <asp:Label ID="lblTotalVendasPagas" runat="server"></asp:Label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Stats End -->
 
-    <!-- Controls Start -->
+    <%--<!-- Controls Start -->
     <div class="row mb-2">
     <!-- Search Start -->
     <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
@@ -144,10 +135,10 @@
  </asp:DropDownList>
             </div>
             <!-- Length End -->
+            </div>
         </div>
-    </div>
-    </div>
-        <div class="row">--%>
+    </div>--%>
+        <%--<div class="row">--%>
         <!-- Recent Orders Start -->
         <%--<div class="col-xl-4 mb-5">
             <h2 class="small-title">Quantidade de Vendas por Fornecedor</h2>

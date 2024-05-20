@@ -26,27 +26,27 @@
 
     <!-- Controls Start -->
     <div class="row mb-2">
-    <!-- Search Start -->
-    <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
-        <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
-            <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
-            <span class="search-magnifier-icon">
-                <i data-acorn-icon="search"></i>
-            </span>
-            <span class="search-delete-icon d-none">
-                <i data-acorn-icon="close"></i>
-            </span>
+        <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+            <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
+                <span class="search-magnifier-icon">
+                    <i data-acorn-icon="search"></i>
+                </span>
+                <span class="search-delete-icon d-none">
+                    <i data-acorn-icon="close"></i>
+                </span>
                                 
+            </div>
         </div>
-    </div>
 
         <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
-                                        <asp:LinkButton ID="lkbFiltro" runat="server" CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-<i data-acorn-icon="send"></i> Atualizar Dados</asp:LinkButton>
-            </div>
-    <!-- Search End -->
+            <asp:LinkButton ID="lkbFiltro" runat="server" CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
+                <i data-acorn-icon="send"></i>
+                Atualizar Dados
+            </asp:LinkButton>
+        </div>
 
-    <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
+<%--    <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">--%>
         <%--<div class="d-inline-block">
             <!-- Print Button Start -->
             <asp:LinkButton ID="btnImprimir" runat="server" CssClass="btn btn-icon btn-icon-only btn-foreground-alternate shadow"><i data-acorn-icon="print"></i></asp:LinkButton>
@@ -92,8 +92,8 @@
             </div>
             <!-- Length End -->
         </div>--%>
-    </div>
-</div>
+<%--    </div>
+</div>--%>
     <!-- Order List Start -->            
           <div class="row">
             <div class="col-12 mb-5">              
@@ -124,9 +124,10 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select case when default_price = 0 or default_price is null then isnull(cost_price,0) else default_price end as valorcorreto, * from produtos p 
-left join categorias c on c.id = p.category_id
-where manufacturer_id = @id order by name">
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
+             "select case when default_price = 0 or default_price is null then isnull(cost_price,0) else default_price end as valorcorreto, * from produtos p  
+             left join categorias c on c.id = p.category_id 
+             where manufacturer_id = @id order by name">
                 <SelectParameters>
                     <asp:SessionParameter Name="id" SessionField="idempresa" />
                 </SelectParameters>

@@ -29,14 +29,10 @@ namespace w7pay.src
                 //atualizacao.GETProdutos();
             }
         }
-
-        protected void txtBuscar_TextChanged(object sender, EventArgs e)
+        protected void lkbFiltro_Click(object sender, EventArgs e)
         {
-            if(txtBuscar.Text.Length > 3)
-            {
-                sdsDados.SelectCommand = "select top 100 p.image, p.id, p.type, p.name, c.descricao, p.barcode, p.cost_price, f.name as nameF from produtos p left join categorias c on c.id = p.category_idjoin fornecedores f on f.id = p.manufacturer_id where p.cost_price > 0 and p.name like '%"+txtBuscar.Text+"%' order by p.name";
-                gdvDados.DataBind();
-            }
+            sdsDados.SelectCommand = "select top 100 p.image, p.id, p.type, p.name, c.descricao, p.barcode, p.cost_price, f.name as nameF from produtos p left join categorias c on c.id = p.category_id join fornecedores f on f.id = p.manufacturer_id where p.cost_price > 0 and p.name like '%" + txtBuscar.Text + "%' order by name";
+            gdvDados.DataBind();
         }
     }
 }

@@ -49,14 +49,12 @@
                 </div>
                 <div class="col-sm-12 col-md-3 col-lg-2 col-xxl-2 mb-1">
                     <asp:LinkButton ID="lkbFiltro" runat="server"
-                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-   <i data-acorn-icon="search"></i> Atualizar
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click"><i data-acorn-icon="search"></i> Atualizar
                     </asp:LinkButton>
                 </div>
                 <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                     <asp:LinkButton ID="lkbLimpar" runat="server"
-                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbLimpar_Click">
-<i data-acorn-icon="close"></i> Limpar
+                        CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbLimpar_Click"><i data-acorn-icon="close"></i> Limpar
                     </asp:LinkButton>
                 </div>
                  </div>
@@ -316,8 +314,6 @@
                 </div>
             </div>
         </div>
-        <!-- Performance End -->
-    </div>
 
 
 </asp:Content>

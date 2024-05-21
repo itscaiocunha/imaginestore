@@ -57,5 +57,11 @@ namespace w7pay.src
                 //atualizacao.GETEstoque();               
             }
         }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            sdsDados.SelectCommand = "select e.id, f.name as fornecedor, ct.descricao, e.name as produto, p.image, e.upc_code, e.total_quantity, e.committed_quantity, sald from estoque1 e (nolock) join fornecedores f on f.id = e.manufacturer_id join categorias ct on ct.id = e.category_id join produtos p on p.id = e.id where e.name like '%" + txtBuscar.Text + "%' and f.id = '" + ddlFornecedores.SelectedValue + "' order by f.name, ct.descricao, e.NAME";
+            gdvDados.DataBind();
+        }
     }
 }

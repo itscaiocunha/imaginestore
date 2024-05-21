@@ -28,5 +28,25 @@ namespace w7pay.src
                 }                
             }
         }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            sdsDados.SelectCommand =
+                "select cliente, sum(qtde) as qtde, sum(valor) as valor " +
+                "from (select masked_card_number as cliente, count(*) as qtde, sum(value) as valor from vendas " +
+                "where masked_card_number is not null and masked_card_number &lt;&gt; ''" +
+                "group by masked_card_number" +
+                "" +
+                "union all" +
+                "" +
+                "select convert(varchar,id) as cliente, count(*) as qtde, sum(value) as valor from vendas " +
+                "where masked_card_number is null and masked_card_number = ''" +
+                "group by id) as tab" +
+                "" +
+                "where cliente like '%" + txtBuscar.Text + "%'" +
+                "group by cliente" +
+                "order by valor desc, qtde desc";
+            gdvDados.DataBind();
+        }
     }
 }

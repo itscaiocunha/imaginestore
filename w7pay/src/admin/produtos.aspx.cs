@@ -31,7 +31,7 @@ namespace w7pay.src
         }
         protected void lkbFiltro_Click(object sender, EventArgs e)
         {
-            sdsDados.SelectCommand = "select top 100 p.image, p.id, p.type, p.name, c.descricao, p.barcode, p.cost_price, f.name as nameF from produtos p left join categorias c on c.id = p.category_id join fornecedores f on f.id = p.manufacturer_id where p.cost_price > 0 and p.name like '%" + txtBuscar.Text + "%' order by name";
+            sdsDados.SelectCommand = "select top 100 p.image, p.id, p.type, p.name, c.descricao, p.barcode, p.cost_price, f.name as nameF from produtos p left join categorias c on c.id = p.category_id join fornecedores f on f.id = p.manufacturer_id where p.cost_price > 0 and p.name like '%" + txtBuscar.Text + "%' and f.id = '" + ddlFornecedores.SelectedValue + "' order by name";
             gdvDados.DataBind();
         }
     }

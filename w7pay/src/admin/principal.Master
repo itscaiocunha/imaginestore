@@ -142,12 +142,12 @@
                                 <span class="label">Taxas</span>
                             </a>
                         </li>
-                        <li>
+<%--                        <li>
                             <a href="faturas.aspx">
                                 <i data-acorn-icon="file-text" class="icon" data-acorn-size="18"></i>
                                 <span class="label">Notas Fiscais</span>
                             </a>
-                        </li>
+                        </li>--%>
                         <li>
                             <a href="../login.aspx">
                                 <i data-acorn-icon="logout" class="icon" data-acorn-size="18"></i>

@@ -34,8 +34,15 @@
             </span>
             <span class="search-delete-icon d-none">
                 <i data-acorn-icon="close"></i>
-            </span>
-                            
+            </span>          
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+        <div class="">
+            <asp:DropDownList ID="ddlFornecedores" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsFornecedores" DataTextField="name" DataValueField="id">
+            </asp:DropDownList>
+            <asp:SqlDataSource ID="sdsFornecedores" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from fornecedores order by name"></asp:SqlDataSource>
         </div>
     </div>
 
@@ -79,10 +86,10 @@
 
              <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
                  "select top 100 p.image, p.id, p.type, p.name, c.descricao, p.barcode, p.cost_price, f.name as nameF from produtos p 
-                 left join categorias c on c.id = p.category_id
-                 join fornecedores f on f.id = p.manufacturer_id
-                 where p.cost_price > 0
-                 order by p.name">
+                    left join categorias c on c.id = p.category_id
+                    join fornecedores f on f.id = p.manufacturer_id
+                    where p.cost_price > 0
+                    order by p.name">
              </asp:SqlDataSource>
         </div>
     </div>

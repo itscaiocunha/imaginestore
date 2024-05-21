@@ -24,5 +24,11 @@ namespace w7pay.src
                 //atualizacao.GETLocais();
             }
         }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            sdsDados.SelectCommand = "select c.name as nomecliente, * from locais l left join clientes c on c.id = l.client_id where c.name like '%" + txtBuscar.Text + "%' order by c.name, l.name";
+            gdvDados.DataBind();
+        }
     }
 }

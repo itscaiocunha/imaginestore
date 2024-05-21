@@ -21,8 +21,14 @@ namespace w7pay.src
                     Response.Redirect("../sessao.aspx", false);
                 }
 
-                atualizacao.GETClientes();
+                //atualizacao.GETClientes();
             }
+        }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            sdsDados.SelectCommand = "select *  from clientes where name like '%" + txtBuscar.Text + "%' order by name";
+            gdvDados.DataBind();
         }
     }
 }

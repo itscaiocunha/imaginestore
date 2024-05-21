@@ -24,5 +24,11 @@ namespace w7pay.src
                 //atualizacao.GETFornecedores();
             }
         }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            sdsDados.SelectCommand = "select *  from base_fornecedor_omie o left join fornecedores f on f.name = o.[Razão Social / Nome Completo] where f.name is not null and [Razão Social / Nome Completo] like '%" + txtBuscar.Text + "%' order by f.name";
+            gdvDados.DataBind();
+        }
     }
 }

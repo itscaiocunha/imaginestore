@@ -21,8 +21,14 @@ namespace w7pay.src
                     Response.Redirect("../sessao.aspx", false);
                 }
 
-                atualizacao.GETMaquinas();
+                //atualizacao.GETMaquinas();
             }
+        }
+
+        protected void lkbFiltro_Click(object sender, EventArgs e)
+        {
+            sdsDados.SelectCommand = "select m.id, asset_number, l.name as nomelocal, cash_mode from maquinas m left join locais l on l.id = m.location_id where asset_number like '%" + txtBuscar.Text + "%' order by l.name, m.asset_number";
+            gdvDados.DataBind();
         }
     }
 }

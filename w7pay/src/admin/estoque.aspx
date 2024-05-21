@@ -28,18 +28,32 @@
     <!-- Controls Start -->
     <div class="row mb-2">
     <!-- Search Start -->
-    <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
-        <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
-            <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
-            <span class="search-magnifier-icon">
-                <i data-acorn-icon="search"></i>
-            </span>
-            <span class="search-delete-icon d-none">
-                <i data-acorn-icon="close"></i>
-            </span>
+        <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+            <div class="">
+                <asp:DropDownList ID="ddlFornecedores" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsFornecedores" DataTextField="name" DataValueField="id">
+                </asp:DropDownList>
+                <asp:SqlDataSource ID="sdsFornecedores" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from fornecedores order by name"></asp:SqlDataSource>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+            <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
+                <span class="search-magnifier-icon">
+                    <i data-acorn-icon="search"></i>
+                </span>
+                <span class="search-delete-icon d-none">
+                    <i data-acorn-icon="close"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+            <asp:LinkButton ID="lkbFiltro" runat="server" CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
+                <i data-acorn-icon="send"></i>
+                Atualizar Dados
+            </asp:LinkButton>
         </div>
     </div>
-    <!-- Search End -->
 
     <!-- Order List Start -->
           <div class="row">

@@ -21,7 +21,48 @@ namespace w7pay.src.parceiro
             {
                 try
                 {
-                    //hdfIdEmpresa.Value = Session["idempresa"].ToString();
+                    hdfIdEmpresa.Value = Session["idempresa"].ToString();
+                    
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                             "select sum(sald) as saldo from estoque1 where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblTotalVendasPagas.Text =  reader["saldo"].ToString();
+                        }
+                        else
+                        {
+                            lblTotalVendasPagas.Text = "0";
+                        
+                        }
+                    }
+
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                             "select sum(sald) as saldo from estoque where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblTotalVendasRegistradas.Text = reader["saldo"].ToString();
+                        }
+                        else
+                        {
+                            lblTotalVendasRegistradas.Text = "0";
+
+                        }
+                    }
+
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                              "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblTotalNaoPagas.Text = reader["qtdeloja"].ToString();
+                        }
+                        else
+                            lblTotalNaoPagas.Text = "0";
+                    }
+
+                    lblTotalMensagens.Text = (Convert.ToInt16(lblTotalVendasPagas.Text) + Convert.ToInt16(lblTotalVendasRegistradas.Text)).ToString();
                 }
                 catch
                 {

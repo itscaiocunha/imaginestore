@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
     <asp:HiddenField ID="hdfIdEmpresa" runat="server" />
-     <script src="js/mascara.js"></script>
+    <script src="../js/mascara.js"></script>
      <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>

@@ -120,6 +120,42 @@ group by location_id">
                 </div>
             </div>
             <!-- Order List End -->
+
+            <asp:Panel id="pnlDados" Visible="false" runat="server">
+                 <div class="col-12 mb-5">
+     <asp:GridView ID="gdvDados" Width="100%" runat="server" CellPadding="4" EmptyDataText="Não há dados para visualizar" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" DataSourceID="sdsDados">
+         <AlternatingRowStyle />
+         <Columns>
+             <asp:BoundField DataField="id" HeaderText="#Venda" SortExpression="id" />
+             <asp:BoundField DataField="location_name" HeaderText="Local" SortExpression="location_name" />
+             <asp:BoundField DataField="client_name" HeaderText="Cliente" SortExpression="client_name" />
+             <asp:BoundField DataField="machine_model_name" HeaderText="Máquina" SortExpression="machine_model_name" />
+             <asp:BoundField DataField="descricao" HeaderText="Categoria" SortExpression="descricao" />
+             <asp:BoundField DataField="product_name" HeaderText="Produto" SortExpression="product_name" />
+             <asp:BoundField DataField="occurred_at" HeaderText="Data da Venda" SortExpression="occurred_at" />
+             <asp:BoundField DataField="quantity" HeaderText="Quant." SortExpression="quantity" />
+             <asp:BoundField DataField="value" HeaderText="Valor" DataFormatString="R{0:c2}" SortExpression="value" />
+         </Columns>
+         <EditRowStyle BackColor="#7C6F57" />
+         <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+         <HeaderStyle />
+         <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+         <RowStyle Height="4em" BackColor="White" ForeColor="#a59e9e" CssClass="fix-margin" />
+         <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+         <SortedAscendingCellStyle BackColor="#F8FAFA" />
+         <SortedAscendingHeaderStyle BackColor="#246B61" />
+         <SortedDescendingCellStyle BackColor="#D4DFE1" />
+         <SortedDescendingHeaderStyle BackColor="#15524A" />
+     </asp:GridView>
+     <asp:Label ID="lblteste" runat="server"></asp:Label>
+     <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select top 50 v.id, (f.name) as name, (v.location_name) as location_name, (v.client_name) as client_name, (v.machine_model_name) as machine_model_name ,  (ct.descricao) as descricao, (v.product_name) as product_name, (coil) as coil, (quantity) as quantity, (value) as value , convert(varchar,DATEPART(day,(occurred_at)))+'/'+convert(varchar,DATEPART(month,(occurred_at)))+'/'+convert(varchar,DATEPART(year,(occurred_at)))+ ' '+ convert(varchar,(occurred_at),108) as occurred_at from vendas v (nolock) join fornecedores f on f.id = v.manufacturer_id join categorias ct on ct.id = v.category_id where v.manufacturer_id = @id and v.location_id = @loja and v.occurred_at > getdate() - 7 order by occurred_at desc">
+         <SelectParameters>
+             <asp:SessionParameter Name="id" SessionField="idempresa" />
+             <asp:SessionParameter Name="loja" DefaultValue="" />
+         </SelectParameters>
+     </asp:SqlDataSource>
+ </div>
+            </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>

@@ -22,6 +22,10 @@ namespace w7pay.src
                 try
                 {
                     //hdfIdEmpresa.Value = Session["idempresa"].ToString();
+
+                    txtDataInicio.Text = DateTime.Now.Date.AddDays(-7).ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);
+                    txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
+
                 }
                 catch
                 {

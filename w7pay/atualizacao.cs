@@ -405,7 +405,7 @@ namespace w7pay
             //{
             JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=05/06/2024&end_date=10/06/2024&page=1&per_page=1000");
+            var client = new RestClient($"https://vmpay.vertitecnologia.com.br/api/v1/cashless_facts?access_token=04PJ5nF3VnLIfNLJRbqmZkEMhU2VNCClOjPoTPCI&start_date=07/06/2024&end_date=12/06/2024&page=1&per_page=1000");
             var request = new RestRequest(Method.GET);
             request.AddHeader("Accept", "application/json");
 
@@ -696,7 +696,6 @@ namespace w7pay
             }
         }
 
-
         public static void GETEstoquesCD()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
@@ -782,7 +781,6 @@ namespace w7pay
             }
         }
 
-
         public static void GETProdutos()
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
@@ -837,7 +835,6 @@ namespace w7pay
                             image = "";
                         }
 
-
                         //    DbCommand command3 = db.GetSqlStringCommand(
                         //    "UPDATE produtos SET name = @name, type = @type, manufacturer_id = @manufacturer_id, category_id = @category_id, upc_code = @upc_code, barcode = @barcode, default_price = @default_price, image = @image, update_date = getdate()  where id = @id");
                         //    db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));
@@ -860,6 +857,7 @@ namespace w7pay
                         //}
                         //else
                         //{
+
                         DbCommand command3 = db.GetSqlStringCommand(
                         "insert into produtos (id, name, type, manufacturer_id, category_id, upc_code, barcode, default_price, image, create_date) values (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @barcode, @default_price, @image, getdate())");
                         db.AddInParameter(command3, "@id", DbType.Int32, Convert.ToInt32(id));

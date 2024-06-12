@@ -343,5 +343,7 @@ order by year(v.occurred_at), month(v.occurred_at)">
     <div>
         <asp:LinkButton ID="rotinaVendas" runat="server" CssClass="dropdown-item export-cvs" onClick="rodarVendas">Vendas</asp:LinkButton>
         <asp:LinkButton ID="rotinaFornecedores" runat="server" CssClass="dropdown-item export-cvs" onClick="rodarFornecedores">Fornecedores</asp:LinkButton>
+        <asp:LinkButton ID="rotinaProdutos" runat="server" CssClass="dropdown-item export-cvs" onClick="rodarProdutos">Produtos</asp:LinkButton>
+
     </div>
 </asp:Content>

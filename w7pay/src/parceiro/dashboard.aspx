@@ -2,8 +2,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
      <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-<asp:UpdatePanel ID="UpdatePanel1" runat="server">
-    <ContentTemplate>
+<%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <ContentTemplate>--%>
     <asp:HiddenField ID="hdfIdEmpresa" runat="server" />
     <!-- Title and Top Buttons Start -->
     <div class="page-title-container">
@@ -123,11 +123,11 @@
     </div>
     <!-- Stats End -->
 
-   <div class="row">
+       <div class="row">
         <!-- Recent Orders Start -->
         <div class="col-xl-3 mb-5">
             <h2 class="small-title">Quantidade de Vendas por Loja</h2>
-            <asp:DropDownList ID="ddlTopQtdeVendas" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopQtdeVendas_SelectedIndexChanged">
+        <asp:DropDownList ID="ddlTopQtdeVendas" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopQtdeVendas_SelectedIndexChanged">
                 <asp:ListItem Text="10 melhores lojas" Value="top 10"></asp:ListItem>
                 <asp:ListItem Text="30 melhores lojas" Value="top 30"></asp:ListItem>
                 <asp:ListItem Text="Todas as Lojas" Value=""></asp:ListItem>
@@ -137,7 +137,7 @@
                     <div class="h-100">
                         <div class="row">
                             <div class="col-12 mb-5" style="overflow: auto">
-                                <asp:Chart ID="Chart1" runat="server" DataSourceID="sdsDados" Height="400px" Palette="EarthTones" OnClick="Chart1_Click">
+                                <asp:Chart ID="Chart1" runat="server" DataSourceID="sdsDados" Height="400px" Palette="EarthTones" >
                                     <Series>
                                         <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" Palette="BrightPastel" YValuesPerPoint="4" XValueMember="nomecliente" YValueMembers="qtde" IsValueShownAsLabel="true" BackImageAlignment="BottomLeft"> </asp:Series>
                                     </Series>
@@ -190,7 +190,7 @@
                     <div class="h-100">
                         <div class="row">
                             <div class="col-12 mb-5" style="overflow: auto">
-                                <asp:Chart ID="Chart2" runat="server" DataSourceID="SqlDataSource1" Height="400px" Palette="EarthTones" OnClick="Chart2_Click">
+                                <asp:Chart ID="Chart2" runat="server" DataSourceID="SqlDataSource1" Height="400px" Palette="EarthTones">
                                     <Series>
                                         <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" LabelFormat="{0:c2}" YValuesPerPoint="4" XValueMember="nomecliente" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
                                     </Series>
@@ -386,6 +386,6 @@
 
 
        </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+        <%--</ContentTemplate>
+    </asp:UpdatePanel>--%>
 </asp:Content>

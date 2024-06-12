@@ -124,5 +124,10 @@ namespace w7pay.src
         {
             atualizacao.GETFornecedores();
         }
+
+        protected void rodarProdutos(object sender, EventArgs e)
+        {
+            atualizacao.GETProdutos();
+        }
     }
 }

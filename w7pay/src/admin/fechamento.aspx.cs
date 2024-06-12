@@ -18,71 +18,71 @@ namespace w7pay.src
         {
             if (!IsPostBack)
             {
-                Database db = DatabaseFactory.CreateDatabase("ConnectionString");
+                //Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
-                try
-                {
-                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                                                                  @"select max(f.name) as fornecedor, manufacturer_id, tab.id, max(codigobarras) as codigobarras, max(nomeproduto) as nomeproduto, max(custo) as custo, max(valor) as valor, max(qtde) as qtde, max(total) as total, sum(qtdediso) as qtdediso, sum(valordiso) as valordiso, sum(qtdecd) as qtdecd, sum(qtdeloja) as qtdeloja, sum(qtdecd) + sum(qtdeloja) as saldo  from (
-                                    select e.manufacturer_id, e.id, max(e.upc_code) as codigobarras, max(e.name) as nomeproduto, 0 as custo, 0 as valor, 0 as qtde, 0 as total, 0 as qtdediso, 0 as valordiso, isnull(sum(e.sald),0) as qtdecd, 0 as qtdeloja from estoque e
-                                    where distribution_center_id = '99999'
-                                    group by e.manufacturer_id, e.id
-                                    union all
-                                    select e.manufacturer_id, e.id, max(e.upc_code) as codigobarras, max(e.name) as nomeproduto, 0 as custo, 0 as valor, 0 as qtde, 0 as total, 0 as qtdediso, 0 as valordiso, 0 as qtdecd, isnull(sum(e.sald),0) as qtdeloja from estoque e
-                                    where distribution_center_id <> '99999'
-                                    group by e.manufacturer_id, e.id
-                                    union all
-                                    select p.manufacturer_id, v.good_id as id, max(p.upc_code) as codigobarras, max(p.name) as nomeproduto, 0 as custo, max(v.value) as valor, isnull(sum(v.quantity),0) as qtde, isnull(sum(v.value),0) as total, 0 as qtdediso, 0 as valordiso, 0 as qtdecd, 0 as qtdeloja from vendas v
-                                    left join produtos p on p.id = convert(varchar,v.good_id)
-                                    where year(v.occurred_at) = '2024' and month(v.occurred_at) = '3' and v.[status] = 'OK'
-                                    group by p.manufacturer_id, v.good_id) as tab
-                                    join fornecedores f on f.id = tab.manufacturer_id
-                                    group by manufacturer_id, tab.id
-                                    having manufacturer_id is not null
-                                    order by total desc"))
-                    {
-                        while (reader.Read())
-                        {
-                            DbCommand command = db.GetSqlStringCommand(
-                                "INSERT INTO fechamento (mesano, idfornecedor, fornecedor, product_id, ean, nomeproduto, qtde_mes_anterior, entrada, custo, valor, qtde_venda, faturamento, qtde_dishonest, valor_dishonest, qtde_combo, devolucao, perdas, estoquecd, estoqueloja, saldo, data_criacao) values (@mesano, @idfornecedor, @fornecedor, @product_id, @ean, @nomeproduto, @qtde_mes_anterior, @entrada, @custo, @valor, @qtde_venda, @faturamento, @qtde_dishonest, @valor_dishonest, @qtde_combo, @devolucao, @perdas, @estoquecd, @estoqueloja, @saldo, getDate())");
-                            db.AddInParameter(command, "@mesano", DbType.String, "5/2024");
-                            db.AddInParameter(command, "@idfornecedor", DbType.Int32, Convert.ToInt32(reader["manufacturer_id"].ToString()));
-                            db.AddInParameter(command, "@fornecedor", DbType.String, reader["fornecedor"].ToString());
-                            db.AddInParameter(command, "@product_id", DbType.Int32, Convert.ToInt32(reader["id"].ToString()));
-                            db.AddInParameter(command, "@ean", DbType.String, reader["codigobarras"].ToString());
-                            db.AddInParameter(command, "@nomeproduto", DbType.String, reader["nomeproduto"].ToString());
-                            db.AddInParameter(command, "@qtde_mes_anterior", DbType.Int16, 0);
-                            db.AddInParameter(command, "@entrada", DbType.Int16, 0);
-                            db.AddInParameter(command, "@custo", DbType.Double, Convert.ToDouble(reader["custo"].ToString()));
-                            db.AddInParameter(command, "@valor", DbType.Double, Convert.ToDouble(reader["valor"].ToString()));
-                            db.AddInParameter(command, "@qtde_venda", DbType.Int16, Convert.ToInt16(reader["qtde"].ToString()));
-                            db.AddInParameter(command, "@faturamento", DbType.Double, Convert.ToDouble(reader["total"].ToString()));
-                            db.AddInParameter(command, "@qtde_dishonest", DbType.Int16, 0);
-                            db.AddInParameter(command, "@valor_dishonest", DbType.Double, 0);
-                            db.AddInParameter(command, "@qtde_combo", DbType.Int16, 0);
-                            db.AddInParameter(command, "@devolucao", DbType.Int16, 0);
-                            db.AddInParameter(command, "@perdas", DbType.Int16, 0);
-                            db.AddInParameter(command, "@estoquecd", DbType.Int16, Convert.ToInt16(reader["qtdecd"].ToString()));
-                            db.AddInParameter(command, "@estoqueloja", DbType.Int16, Convert.ToInt16(reader["qtdeloja"].ToString()));
-                            db.AddInParameter(command, "@saldo", DbType.Int16, Convert.ToInt16(reader["saldo"].ToString()));
+                //try
+                //{
+                //    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                //                                                  @"select max(f.name) as fornecedor, manufacturer_id, tab.id, max(codigobarras) as codigobarras, max(nomeproduto) as nomeproduto, max(custo) as custo, max(valor) as valor, max(qtde) as qtde, max(total) as total, sum(qtdediso) as qtdediso, sum(valordiso) as valordiso, sum(qtdecd) as qtdecd, sum(qtdeloja) as qtdeloja, sum(qtdecd) + sum(qtdeloja) as saldo  from (
+                //                    select e.manufacturer_id, e.id, max(e.upc_code) as codigobarras, max(e.name) as nomeproduto, 0 as custo, 0 as valor, 0 as qtde, 0 as total, 0 as qtdediso, 0 as valordiso, isnull(sum(e.sald),0) as qtdecd, 0 as qtdeloja from estoque e
+                //                    where distribution_center_id = '99999'
+                //                    group by e.manufacturer_id, e.id
+                //                    union all
+                //                    select e.manufacturer_id, e.id, max(e.upc_code) as codigobarras, max(e.name) as nomeproduto, 0 as custo, 0 as valor, 0 as qtde, 0 as total, 0 as qtdediso, 0 as valordiso, 0 as qtdecd, isnull(sum(e.sald),0) as qtdeloja from estoque e
+                //                    where distribution_center_id <> '99999'
+                //                    group by e.manufacturer_id, e.id
+                //                    union all
+                //                    select p.manufacturer_id, v.good_id as id, max(p.upc_code) as codigobarras, max(p.name) as nomeproduto, 0 as custo, max(v.value) as valor, isnull(sum(v.quantity),0) as qtde, isnull(sum(v.value),0) as total, 0 as qtdediso, 0 as valordiso, 0 as qtdecd, 0 as qtdeloja from vendas v
+                //                    left join produtos p on p.id = convert(varchar,v.good_id)
+                //                    where year(v.occurred_at) = '2024' and month(v.occurred_at) = '3' and v.[status] = 'OK'
+                //                    group by p.manufacturer_id, v.good_id) as tab
+                //                    join fornecedores f on f.id = tab.manufacturer_id
+                //                    group by manufacturer_id, tab.id
+                //                    having manufacturer_id is not null
+                //                    order by total desc"))
+                //    {
+                //        while (reader.Read())
+                //        {
+                //            DbCommand command = db.GetSqlStringCommand(
+                //                "INSERT INTO fechamento (mesano, idfornecedor, fornecedor, product_id, ean, nomeproduto, qtde_mes_anterior, entrada, custo, valor, qtde_venda, faturamento, qtde_dishonest, valor_dishonest, qtde_combo, devolucao, perdas, estoquecd, estoqueloja, saldo, data_criacao) values (@mesano, @idfornecedor, @fornecedor, @product_id, @ean, @nomeproduto, @qtde_mes_anterior, @entrada, @custo, @valor, @qtde_venda, @faturamento, @qtde_dishonest, @valor_dishonest, @qtde_combo, @devolucao, @perdas, @estoquecd, @estoqueloja, @saldo, getDate())");
+                //            db.AddInParameter(command, "@mesano", DbType.String, "5/2024");
+                //            db.AddInParameter(command, "@idfornecedor", DbType.Int32, Convert.ToInt32(reader["manufacturer_id"].ToString()));
+                //            db.AddInParameter(command, "@fornecedor", DbType.String, reader["fornecedor"].ToString());
+                //            db.AddInParameter(command, "@product_id", DbType.Int32, Convert.ToInt32(reader["id"].ToString()));
+                //            db.AddInParameter(command, "@ean", DbType.String, reader["codigobarras"].ToString());
+                //            db.AddInParameter(command, "@nomeproduto", DbType.String, reader["nomeproduto"].ToString());
+                //            db.AddInParameter(command, "@qtde_mes_anterior", DbType.Int16, 0);
+                //            db.AddInParameter(command, "@entrada", DbType.Int16, 0);
+                //            db.AddInParameter(command, "@custo", DbType.Double, Convert.ToDouble(reader["custo"].ToString()));
+                //            db.AddInParameter(command, "@valor", DbType.Double, Convert.ToDouble(reader["valor"].ToString()));
+                //            db.AddInParameter(command, "@qtde_venda", DbType.Int16, Convert.ToInt16(reader["qtde"].ToString()));
+                //            db.AddInParameter(command, "@faturamento", DbType.Double, Convert.ToDouble(reader["total"].ToString()));
+                //            db.AddInParameter(command, "@qtde_dishonest", DbType.Int16, 0);
+                //            db.AddInParameter(command, "@valor_dishonest", DbType.Double, 0);
+                //            db.AddInParameter(command, "@qtde_combo", DbType.Int16, 0);
+                //            db.AddInParameter(command, "@devolucao", DbType.Int16, 0);
+                //            db.AddInParameter(command, "@perdas", DbType.Int16, 0);
+                //            db.AddInParameter(command, "@estoquecd", DbType.Int16, Convert.ToInt16(reader["qtdecd"].ToString()));
+                //            db.AddInParameter(command, "@estoqueloja", DbType.Int16, Convert.ToInt16(reader["qtdeloja"].ToString()));
+                //            db.AddInParameter(command, "@saldo", DbType.Int16, Convert.ToInt16(reader["saldo"].ToString()));
 
-                            try
-                            {
-                                db.ExecuteNonQuery(command);
-                                lblMensagem.Text = "Informações atualizadas com sucesso!";
-                            }
-                            catch (Exception ex)
-                            {
-                                lblMensagem.Text = "Erro ao tentar gerar informação. " + ex.Message;
-                            }
-                            gdvDetalhes.DataBind();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    lblMensagem.Text = ex.Message;
-                }
+                //            try
+                //            {
+                //                db.ExecuteNonQuery(command);
+                //                lblMensagem.Text = "Informações atualizadas com sucesso!";
+                //            }
+                //            catch (Exception ex)
+                //            {
+                //                lblMensagem.Text = "Erro ao tentar gerar informação. " + ex.Message;
+                //            }
+                //            gdvDetalhes.DataBind();
+                //        }
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    lblMensagem.Text = ex.Message;
+                //}
             }
         }
 
@@ -92,7 +92,7 @@ namespace w7pay.src
             try
             {
                 using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                                  @"select  sum(f.qtde_venda) as qtde, max(taxa) as tx,  convert(varchar,cast(isnull(sum(faturamento),0) as decimal(10,2))) as valortotal, case when max(s.idfornecedor) is not null then (isnull(sum(faturamento),0) * 26,5) / 100 else 0 end as taxa from fechamento f
+                                  @"select  sum(f.qtde_venda) as qtde, max(taxa) as tx,  convert(varchar,cast(isnull(sum(faturamento),0) as decimal(10,2))) as valortotal, case when max(s.idfornecedor) is not null then (isnull(sum(faturamento),0) * 26.5) / 100 else 0 end as taxa from fechamento f
             left join split s on s.idfornecedor = f.idfornecedor
             where f.idfornecedor = '" + ddlFornecedor.SelectedValue + "' and mesano = '" + mesano + "' group by f.idfornecedor"))
                 {

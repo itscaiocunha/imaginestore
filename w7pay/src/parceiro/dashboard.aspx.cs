@@ -140,13 +140,13 @@ namespace w7pay.src.parceiro
                 {
                     lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
                     lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
-                }
-                else
-                {
-                    lblTotalVendasPagas.Text = "R$ 0,00";
-                    lblTotalVendasRegistradas.Text = "0";
-                }
             }
+                else
+            {
+                lblTotalVendasPagas.Text = "R$ 0,00";
+                lblTotalVendasRegistradas.Text = "0";
+            }
+        }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                       "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + ""))

@@ -14,6 +14,8 @@ using System.IO;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Net;
+using System.Web.Script.Serialization;
+using System.Data.Common;
 
 namespace w7pay.src
 {
@@ -29,6 +31,7 @@ namespace w7pay.src
                 Session["nomeusuario"] = "";
                 Session["token"] = "";
                 Session.Clear();
+
 
 
                 ////aqui envia o email ao cliente cadastrado
@@ -101,5 +104,7 @@ namespace w7pay.src
             //    }
             }
         }
+
+        
     }
 }

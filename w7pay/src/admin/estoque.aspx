@@ -61,17 +61,17 @@
              <asp:GridView ID="gdvDados" Width="100%" runat="server" CellPadding="4" EmptyDataText="Não há dados para visualizar" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" DataSourceID="sdsDados">
                   <AlternatingRowStyle />
                   <Columns>
-                      <asp:TemplateField>
+                      <%--<asp:TemplateField>
                           <ItemTemplate>
                               <asp:Image ID="Image1" ImageUrl='<%# Eval("image") %>' Height="80px" runat="server" />
                           </ItemTemplate>
-                      </asp:TemplateField>
+                      </asp:TemplateField>--%>
                       <asp:BoundField DataField="id" HeaderText="#Cod" SortExpression="id" />
                       <asp:BoundField DataField="fornecedor" HeaderText="Fornecedor" SortExpression="fornecedor" />
                       <asp:BoundField DataField="descricao" HeaderText="Categoria" SortExpression="descricao" />                      
                       <asp:BoundField DataField="produto" HeaderText="Produto" SortExpression="produto" />                     
-                      <asp:BoundField DataField="total_quantity" HeaderText="Total" SortExpression="total_quantity" />
-                      <asp:BoundField DataField="committed_quantity" HeaderText="Reservado" SortExpression="committed_quantity" />
+                      <%--<asp:BoundField DataField="total_quantity" HeaderText="Total" SortExpression="total_quantity" />
+                      <asp:BoundField DataField="committed_quantity" HeaderText="Reservado" SortExpression="committed_quantity" />--%>
                       <asp:BoundField DataField="sald" HeaderText="Saldo" SortExpression="sald" />
                   </Columns>
                   <EditRowStyle BackColor="#7C6F57" />
@@ -85,11 +85,13 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select e.id, f.name as fornecedor, ct.descricao, e.name as produto, p.image, e.upc_code, e.total_quantity, e.committed_quantity, sald from estoque1 e (nolock)
-join fornecedores f on f.id = e.manufacturer_id
-join categorias ct on ct.id = e.category_id
-join produtos p on p.id = e.id
-order by f.name, ct.descricao, e.NAME">
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
+             "SELECT e.id, MAX(f.name) AS fornecedor, MAX(ct.descricao) AS descricao, MAX(e.name) AS produto, MAX(p.image) AS imagem, MAX(e.upc_code) AS upc_code, MAX(e.sald) AS sald 
+             FROM estoque1 e (nolock) 
+             JOIN fornecedores f ON f.id = e.manufacturer_id JOIN categorias ct ON ct.id = e.category_id 
+             JOIN produtos p ON p.id = e.id 
+             GROUP BY e.id 
+             ORDER BY MAX(f.name), MAX(ct.descricao), MAX(e.name);">
                 </asp:SqlDataSource>
             </div>
           </div>

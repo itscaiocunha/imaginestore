@@ -60,14 +60,14 @@
               <asp:GridView ID="gdvDados" Width="100%" runat="server" CellPadding="4" EmptyDataText="Não há dados para visualizar" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" DataSourceID="sdsDados">
                   <AlternatingRowStyle />
                   <Columns>
-                      <asp:BoundField DataField="Situação" HeaderText="Situação" SortExpression="Situação" />
+                      <%--<asp:BoundField DataField="Situação" HeaderText="Situação" SortExpression="Situação" />--%>
                       <asp:BoundField DataField="Tags" HeaderText="Tipo" SortExpression="Tags" />
                       <asp:BoundField DataField="CNPJ / CPF" HeaderText="CNPJ / CPF" SortExpression="CNPJ / CPF" />
                       <asp:BoundField DataField="name" HeaderText="Nome na VMPay" SortExpression="name" />
                       <asp:BoundField DataField="Razão Social / Nome Completo" HeaderText="Razão Social / Nome Completo" SortExpression="Razão Social / Nome Completo" />
                       <asp:BoundField DataField="Nome Fantasia / Nome Abreviado" HeaderText="Nome Fantasia / Nome Abreviado" SortExpression="Nome Fantasia / Nome Abreviado" />
                       <asp:BoundField DataField="Telefone" HeaderText="Telefone" SortExpression="Telefone" />
-                      <asp:BoundField DataField="Contato" HeaderText="Contato" SortExpression="Contato" />
+                      <%--<asp:BoundField DataField="Contato" HeaderText="Contato" SortExpression="Contato" />--%>
                       <asp:BoundField DataField="E-mail" HeaderText="E-mail" Visible="false" SortExpression="E-mail" />                      
                       <asp:BoundField DataField="Cidade" HeaderText="Cidade" SortExpression="Cidade" />
                       <asp:BoundField DataField="Estado" HeaderText="Estado" SortExpression="Estado" />
@@ -86,10 +86,11 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select *  from base_fornecedor_omie o
-left join fornecedores f on f.name = o.[Razão Social / Nome Completo]
-where f.name is not null
-order by f.name">
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
+             "select * from base_fornecedor_omie o
+             left join fornecedores f on f.name = o.[Razão Social / Nome Completo]
+             where f.name is not null
+             order by f.name">
                 </asp:SqlDataSource>
             </div>
           </div>

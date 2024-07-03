@@ -52,11 +52,11 @@
               <asp:GridView ID="gdvDados" Width="100%" runat="server" CellPadding="4" EmptyDataText="Não há dados para visualizar" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" DataSourceID="sdsDados">
                   <AlternatingRowStyle />
                   <Columns>
-                      <asp:BoundField DataField="id" HeaderText="#Cod" SortExpression="id" />
+                      <%--<asp:BoundField DataField="id" HeaderText="#Cod" SortExpression="id" />--%>
                       <asp:BoundField DataField="name" HeaderText="Clientes" SortExpression="name" />
                       <asp:BoundField DataField="corporate_name" HeaderText="Empresa" SortExpression="corporate_name" />
                       <asp:BoundField DataField="cnpj" HeaderText="CNPJ" SortExpression="cnpj" />
-                      <asp:BoundField DataField="contact_name" HeaderText="Contato" SortExpression="contact_name" />
+                      <%--<asp:BoundField DataField="contact_name" HeaderText="Contato" SortExpression="contact_name" />--%>
                   </Columns>
                   <EditRowStyle BackColor="#7C6F57" />
                   <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />

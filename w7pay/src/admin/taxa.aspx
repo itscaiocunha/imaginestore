@@ -42,49 +42,21 @@
                 </div>
                 <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
                     <asp:LinkButton ID="lkbFiltro" runat="server" CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-<i data-acorn-icon="search"></i> Filtrar Cliente</asp:LinkButton>
+                        <i data-acorn-icon="search"></i> 
+                        Filtrar Cliente
+                    </asp:LinkButton>
                 </div>
                 <!-- Search End -->
-
-                <div class="col-sm-12 col-md-7 col-lg-4 col-xxl-10 text-end mb-1">
-                    <div class="d-inline-block">
-                        <!-- Print Button Start -->
-                        <asp:LinkButton ID="btnImprimir" runat="server" CssClass="btn btn-icon btn-icon-only btn-foreground-alternate shadow"><i data-acorn-icon="print"></i></asp:LinkButton>
-                        <!-- Print Button End -->
-
-                        <!-- Export Dropdown Start -->
-                        <div class="d-inline-block">
-                            <button class="btn p-0" data-bs-toggle="dropdown" type="button" data-bs-offset="0,3">
-                                <span
-                                    class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown"
-                                    data-bs-delay="0"
-                                    data-bs-placement="top"
-                                    data-bs-toggle="tooltip"
-                                    title="Export">
-                                    <i data-acorn-icon="download"></i>
-                                </span>
-                            </button>
-                            <div class="dropdown-menu shadow dropdown-menu-end">
-                                <asp:LinkButton ID="btnDownloadExcel" runat="server" CssClass="dropdown-item export-excel">Excel</asp:LinkButton>
-                                <asp:LinkButton ID="btnDownloadPDf" runat="server" CssClass="dropdown-item export-pdf">Pdf</asp:LinkButton>
-                                <asp:LinkButton ID="btnDownloadCSV" runat="server" CssClass="dropdown-item export-cvs">Csv</asp:LinkButton>
-                            </div>
-
-                        </div>
-                        <!-- Export Dropdown End -->
-                    </div>
-                </div>
-            </div>
-            <!-- Controls End -->
             <!-- Discount List Start -->
             <div class="row">
                 <div class="col-12 mb-5">
                     <asp:GridView ID="gdvDados" runat="server" Width="100%" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" EmptyDataText="Não há dados para visualizar" DataSourceID="sdsDados" OnRowCommand="gdvDados_RowCommand">
                         <Columns>
-                                                                                    <asp:TemplateField>
-    <ItemTemplate>
-        <asp:Button data-bs-offset="0,3" data-bs-toggle="modal" data-bs-target="#discountAddModal" ID="btnEditar" CssClass="btn btn-icon btn-icon-end btn-primary" CommandArgument='<%# Eval("idfornecedor") %>' CommandName="Editar" runat="server" Text="Editar" /></ItemTemplate>
-</asp:TemplateField>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:Button data-bs-offset="0,3" data-bs-toggle="modal" data-bs-target="#pnlModal" ID="btnEditar" CssClass="btn btn-icon btn-icon-end btn-primary" CommandArgument='<%# Eval("idfornecedor") %>' CommandName="Editar" runat="server" Text="Editar" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:BoundField DataField="idfornecedor" Visible="false" HeaderText="idfornecedor" SortExpression="idfornecedor" />
                             <asp:BoundField DataField="name" HeaderText="Fornecedor" SortExpression="name" />
                             <asp:BoundField DataField="taxa" HeaderText="Taxa(%)" SortExpression="taxa" />
@@ -102,10 +74,14 @@
                         <SortedDescendingCellStyle BackColor="#D4DFE1" />
                         <SortedDescendingHeaderStyle BackColor="#15524A" />
                     </asp:GridView>
-                    <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="select * from split t
-join fornecedores f on f.id = t.idfornecedor"></asp:SqlDataSource>
+                    <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
+                        "select t.idfornecedor as idfornecedor, t.taxa, t.[status], t.data_cadastro, t.dia_pagamento, f.id, f.name from split t
+                        join fornecedores f on f.id = t.idfornecedor"></asp:SqlDataSource>
                 </div>
             </div>
+
+
+
             <!-- Discount Add Modal Start -->
             <asp:Panel ID="pnlModal" runat="server" CssClass="modal-right" Visible="false">
                 <div class="modal-dialog">
@@ -142,7 +118,9 @@ join fornecedores f on f.id = t.idfornecedor"></asp:SqlDataSource>
                             <br />
                             <asp:Button ID="btnSalvar" CssClass="btn btn-icon btn-icon-end btn-success" runat="server" Text="Salvar" OnClick="btnSalvar_Click" />
                             <asp:LinkButton ID="lkbFechar" runat="server" CssClass="btn btn-danger btn-icon btn-icon-start" OnClick="lkbFechar_Click">
-<i data-acorn-icon="close"></i> Fechar </asp:LinkButton>
+                                <i data-acorn-icon="close"></i>
+                                Fechar 
+                            </asp:LinkButton>
                         </div>
                     </div>
                 </div>

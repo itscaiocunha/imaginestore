@@ -37,29 +37,73 @@ namespace w7pay.src
             gdvDados.DataBind();
         }
 
+        //protected void gdvDados_RowCommand(object sender, GridViewCommandEventArgs e)
+        //{
+        //    hdfId.Value = e.CommandArgument.ToString();
+        //    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+        //                  "SELECT * from split where idfornecedor = '" + hdfId.Value + "'"))
+        //    {
+        //        if (reader.Read())
+        //        {
+        //            ddlFornecedor.SelectedValue = reader["idfornecedor"].ToString();
+        //            txtTaxa.Text = reader["taxa"].ToString();
+        //            ddlStatus.SelectedValue = reader["status"].ToString();
+        //            txtDiaPagamento.Text = reader["dia_pagamento"].ToString();
+        //            pnlModal.Visible = true;
+        //            lblMensagem.Text = "";
+        //            txtTaxa.Focus();
+
+        //        }
+        //    }
+        //}
+
         protected void gdvDados_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            hdfId.Value = e.CommandArgument.ToString();
-            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                          "SELECT * from split where idfornecedor = '" + hdfId.Value + "'"))
+            if (e.CommandName == "Editar")
             {
-                if (reader.Read())
+                hdfId.Value = e.CommandArgument.ToString();
+                string query = "SELECT * from split where idfornecedor = @idfornecedor";
+
+                // Use a conexão com o banco de dados
+                Database db = DatabaseFactory.CreateDatabase("ConnectionString");
+
+                using (DbCommand cmd = db.GetSqlStringCommand(query))
                 {
-                    ddlFornecedor.SelectedValue = reader["idfornecedor"].ToString();
-                    txtTaxa.Text = reader["valor"].ToString();
-                    ddlStatus.SelectedValue = reader["status"].ToString();
-                    txtDiaPagamento.Text = reader["dia_pagamento"].ToString();
-                    txtTaxa.Focus();
-                    pnlModal.Visible = true;
-                    lblMensagem.Text = "";
+                    db.AddInParameter(cmd, "@idfornecedor", DbType.String, hdfId.Value);
+                    using (IDataReader reader = db.ExecuteReader(cmd))
+                    {
+                        if (reader.Read())
+                        {
+                            ddlFornecedor.SelectedValue = reader["idfornecedor"].ToString();
+                            txtTaxa.Text = reader["taxa"].ToString();
+
+                            // Verifica se o valor existe no DropDownList antes de atribuir
+                            string status = reader["status"].ToString();
+                            if (ddlStatus.Items.FindByValue(status) != null)
+                            {
+                                ddlStatus.SelectedValue = status;
+                            }
+                            else
+                            {
+                                // Handle the case where the value is not found
+                                lblMensagem.Text = "Status inválido.";
+                            }
+
+                            txtDiaPagamento.Text = reader["dia_pagamento"].ToString();
+                            pnlModal.Visible = true;
+                            lblMensagem.Text = "";
+                            txtTaxa.Focus();
+                        }
+                    }
                 }
             }
         }
 
+
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
-            //aqui vai inserir um registro novo no sistema
+            
             if (hdfId.Value == "")
             {
                 DbCommand command = db.GetSqlStringCommand(
@@ -83,7 +127,6 @@ namespace w7pay.src
                     lblMensagem.Text = "Erro ao tentar salvar informação. " + ex.Message;
                 }
             }
-            //aqui vai editar um registro dentro do sistema
             else
             {
                 DbCommand command = db.GetSqlStringCommand(

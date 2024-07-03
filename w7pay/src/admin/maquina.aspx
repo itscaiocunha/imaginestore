@@ -53,9 +53,9 @@
                   <AlternatingRowStyle />
                   <Columns>
                       <asp:BoundField DataField="id" HeaderText="#Cod" SortExpression="id" />                      
-                      <asp:BoundField DataField="nomelocal" HeaderText="Local" SortExpression="nomelocal" />
+                      <%--<asp:BoundField DataField="nomelocal" HeaderText="Local" SortExpression="nomelocal" />--%>
                       <asp:BoundField DataField="asset_number" HeaderText="Número" SortExpression="asset_number" />
-                      <asp:BoundField DataField="cash_mode" HeaderText="Cash Mode" SortExpression="cash_mode" />
+                      <%--<asp:BoundField DataField="cash_mode" HeaderText="Cash Mode" SortExpression="cash_mode" />--%>
                   </Columns>
                   <EditRowStyle BackColor="#7C6F57" />
                   <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />

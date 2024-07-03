@@ -37,7 +37,7 @@
                         <asp:TextBox id="txtSenha" TextMode="Password" CssClass="form-control" runat="server" Required></asp:TextBox>
                       </div>
                       <div class="w-100 mb-0" align="left">
-         <asp:Label ID="lblMensagem" runat="server" Text=""></asp:Label>
+                      <asp:Label ID="lblMensagem" runat="server" Text=""></asp:Label>
               </div>  
                         <div class="mb-3 w-100" align="right">
                          <a href="esqueceu.aspx" class="text-center">

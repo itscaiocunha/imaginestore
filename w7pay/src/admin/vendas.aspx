@@ -27,31 +27,103 @@
     <!-- Controls Start -->
     <div class="row mb-2">
     <!-- Search Start -->
-
-        <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
-            <div class="">
-                <label class="form-label">Data Início</label>
-                <asp:TextBox ID="txtDataInicio" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+            <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                    <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
+                </div>
             </div>
-        </div>
-
-        <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
-            <div class="">
-                <label class="form-label">Data Final</label>
-                <asp:TextBox ID="txtDataFim" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+            <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+                <div class="">
+                    <asp:DropDownList ID="ddlFornecedores" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsFornecedores" DataTextField="name" DataValueField="id">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="sdsFornecedores" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from fornecedores order by name"></asp:SqlDataSource>
+                </div>
             </div>
-        </div>
-
-        <div class="col-sm-12 col-md-3 col-lg-2 col-xxl-2 mb-1">
-            <asp:LinkButton ID="lkbFiltro" runat="server"
-                CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
-                <i data-acorn-icon="search"></i> Atualizar
-            </asp:LinkButton>
-        </div>
-
-    <asp:Label ID="lblteste" runat="server"></asp:Label>  
-</div>
+            <%--<div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                    <asp:TextBox ID="txtDataInicio" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
+                    <asp:TextBox ID="txtDataFim" runat="server" MaxLength="10"  onkeyup="formataData(this,event);" CssClass="form-control" placeholder="__/__/____" Required></asp:TextBox>
+                </div>
+            </div>--%>
+            <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
+                <asp:LinkButton ID="lkbFiltro" runat="server"
+                    CssClass="btn btn-outline-primary btn-icon btn-icon-start ms-0 ms-sm-1 w-100 w-md-auto" OnClick="lkbFiltro_Click">
+                    <i data-acorn-icon="search"></i> Atualizar
+                </asp:LinkButton>
+            </div>
+        <asp:Label ID="lblteste" runat="server"></asp:Label>  
+    </div>
             <asp:Label ID="lblErro" runat="server" Text=""></asp:Label>
+
+
+             <div class="row">
+     <div class="mb-5">
+         <div class="row g-2">
+             <div class="col-6 col-md-4 col-lg-2">
+                 <div class="card h-100 hover-scale-up cursor-pointer">
+                     <div class="card-body d-flex flex-column align-items-center">
+                         <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
+                             <i data-acorn-icon="cart" class="text-primary"></i>
+                         </div>
+                         <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">VENDAS REALIZADAS</div>
+                         <div class="text-primary cta-4">
+                             <asp:Label ID="lblTotalVendasRegistradas" runat="server"></asp:Label>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-6 col-md-4 col-lg-2">
+                 <div class="card h-100 hover-scale-up cursor-pointer">
+                     <div class="card-body d-flex flex-column align-items-center">
+                         <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
+                             <i data-acorn-icon="dollar" class="text-primary"></i>
+                         </div>
+                         <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">FATURAMENTO</div>
+                         <div class="text-primary cta-4">
+                             <asp:Label ID="lblTotalVendasPagas" runat="server"></asp:Label>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+            <asp:UpdateProgress ID="LoaderBar" runat="server" DisplayAfter="300" DynamicLayout="true">
+                <ProgressTemplate>
+                <style type="text/css">
+                    .updateprogress-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        z-index: 1000; 
+                    }
+
+                    .updateprogress-centered {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 1001; 
+                    }
+
+                    h1 {
+                        font-size: 20px;
+                        color: white;
+                    }
+                    </style>
+                    <div class="updateprogress-centered">
+                        <h1>Salvando... Por favor aguarde!</h1>
+                    </div>
+                    <div class="updateprogress-overlay"></div>
+                </ProgressTemplate>
+            </asp:UpdateProgress>
     <!-- Order List Start -->
           <div class="row">
             <div class="col-12 mb-5">              
@@ -79,16 +151,16 @@
                   <SortedDescendingCellStyle BackColor="#D4DFE1" />
                   <SortedDescendingHeaderStyle BackColor="#15524A" />
                 </asp:GridView>
-         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand=
+         <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand= 
              "select f.name, l.name, c.name, m.asset_number, ct.descricao, p.name, coil, quantity, value, occurred_at from vendas v (nolock)
-                join clientes c on c.id = v.client_id
-                join locais l on l.id = v.location_id
-                join maquinas m on m.id = v.machine_id
-                join produtos p on p.id = v.good_id
-                join fornecedores f on f.id = p.manufacturer_id
-                join categorias ct on ct.id = p.category_id
-                where occurred_at > getDate() - 7
-                order by f.name, l.name, c.name, m.asset_number, ct.descricao, p.name">
+             join clientes c on c.id = v.client_id
+             join locais l on l.id = v.location_id
+             join maquinas m on m.id = v.machine_id
+             join produtos p on p.id = v.good_id
+             join fornecedores f on f.id = p.manufacturer_id
+             join categorias ct on ct.id = p.category_id
+             where occurred_at > getDate() - 7
+             order by f.name, l.name, c.name, m.asset_number, ct.descricao, p.name">
                 </asp:SqlDataSource>
             </div>
           </div>

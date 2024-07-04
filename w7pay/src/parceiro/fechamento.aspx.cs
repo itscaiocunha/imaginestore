@@ -31,7 +31,7 @@ namespace w7pay.src.parceiro
                 try
                 {
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                                      @"select  sum(f.qtde_venda) as qtde, max(taxa) as tx, cast(isnull(sum(faturamento),0) as decimal(10,2)) as valortotal, case when max(s.idfornecedor) is not null then cast((isnull(sum(faturamento),0) * max(s.taxa)) / 100  as Decimal(10,2)) else 0 end as taxa from fechamento f
+                                      @"select  count(f.qtde_venda) as qtde, max(taxa) as tx, cast(isnull(sum(faturamento),0) as decimal(10,2)) as valortotal, case when max(s.idfornecedor) is not null then cast((isnull(sum(faturamento),0) * max(s.taxa)) / 100  as Decimal(10,2)) else 0 end as taxa from fechamento f
                         left join split s on s.idfornecedor = f.idfornecedor
                         where f.idfornecedor = '" + hdfId.Value + "' and mesano = '" + mesano + "' group by f.idfornecedor"))
                     {

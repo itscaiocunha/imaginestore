@@ -56,54 +56,6 @@
                 </div>
                 <!-- Search End -->
 
-                <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
-                    <div class="d-inline-block">
-                        <!-- Print Button Start -->
-                        <%--<asp:LinkButton ID="btnImprimir" runat="server" CssClass="btn btn-icon btn-icon-only btn-foreground-alternate shadow"><i data-acorn-icon="print"></i></asp:LinkButton>
-            <!-- Print Button End -->--%>
-
-                        <!-- Export Dropdown Start -->
-                        <%--<div class="d-inline-block">
-                <button class="btn p-0" data-bs-toggle="dropdown" type="button" data-bs-offset="0,3">
-                    <span
-                        class="btn btn-icon btn-icon-only btn-foreground-alternate shadow dropdown"
-                        data-bs-delay="0"
-                        data-bs-placement="top"
-                        data-bs-toggle="tooltip"
-                        title="Export">
-                        <i data-acorn-icon="download"></i>
-                    </span>
-                </button>
-                <div class="dropdown-menu shadow dropdown-menu-end">
-                    <asp:LinkButton ID="btnDownloadExcel" runat="server" CssClass="dropdown-item export-excel">Excel</asp:LinkButton>
-                    <asp:LinkButton ID="btnDownloadPDf" runat="server" CssClass="dropdown-item export-pdf">Pdf</asp:LinkButton>
-                    <asp:LinkButton ID="btnDownloadCSV" runat="server" CssClass="dropdown-item export-cvs">Csv</asp:LinkButton>
-                </div>
-
-            </div>--%>
-                        <!-- Export Dropdown End -->
-
-                        <!-- Length Start -->
-                        <%--<div class="dropdown-as-select d-inline-block" data-childselector="span">
-                <button class="btn p-0 shadow" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-offset="0,3">
-                    <span
-                        class="btn btn-foreground-alternate dropdown-toggle"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        data-bs-delay="0"
-                        title="Item Count">10 Items
-</span>
-                </button>
-                <div class="dropdown-menu shadow dropdown-menu-end">
-                    <asp:LinkButton ID="btnView5" runat="server" CssClass="dropdown-item">5 Itens</asp:LinkButton>
-                    <asp:LinkButton ID="btnView20" runat="server" CssClass="dropdown-item active">20 Itens</asp:LinkButton>
-                    <asp:LinkButton ID="btnView50" runat="server" CssClass="dropdown-item">50 Itens</asp:LinkButton>
-                </div>
-            </div>--%>
-                        <!-- Length End -->
-                    </div>
-                </div>
-            </div>
             <!-- Order List Start -->
             <div class="row">
                 <div class="mb-5">

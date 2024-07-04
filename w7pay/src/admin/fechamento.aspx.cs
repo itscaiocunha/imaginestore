@@ -92,7 +92,7 @@ namespace w7pay.src
             try
             {
                 using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                                  @"select  sum(f.qtde_venda) as qtde, max(taxa) as tx,  convert(varchar,cast(isnull(sum(faturamento),0) as decimal(10,2))) as valortotal, case when max(s.idfornecedor) is not null then (isnull(sum(faturamento),0) * 26.5) / 100 else 0 end as taxa from fechamento f
+                                  @"select count(f.qtde_venda) as qtde, max(taxa) as tx,  convert(varchar,cast(isnull(sum(faturamento),0) as decimal(10,2))) as valortotal, case when max(s.idfornecedor) is not null then (isnull(sum(faturamento),0) * 26.5) / 100 else 0 end as taxa from fechamento f
             left join split s on s.idfornecedor = f.idfornecedor
             where f.idfornecedor = '" + ddlFornecedor.SelectedValue + "' and mesano = '" + mesano + "' group by f.idfornecedor"))
                 {

@@ -109,131 +109,125 @@
                         <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
                             <i data-acorn-icon="tag" class="text-primary"></i>
                         </div>
-                        <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">LOJAS COM VENDAS</div>
-                            <div class="text-primary cta-4">
-                                <asp:Label ID="lblTotalNaoPagas" runat="server"></asp:Label>
-                            </div>
+                        <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">
+                            LOJAS COM VENDAS
+                        </div>
+                        <div class="text-primary cta-4">
+                            <asp:Label ID="lblTotalNaoPagas" runat="server"></asp:Label>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="card h-100 hover-scale-up cursor-pointer">
-                        <div class="card-body d-flex flex-column align-items-center">
-                            <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
-                                <i data-acorn-icon="arrow-top-left" class="text-primary"></i>
-                            </div>
-                            <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">Nº DE COMPRAS/CLIENTE</div>
-                            <div class="text-primary cta-4">
-                                <asp:Label ID="lblTotalMensagens" runat="server"></asp:Label>
-                            </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card h-100 hover-scale-up cursor-pointer">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="sw-6 sh-6 rounded-xl d-flex justify-content-center align-items-center border border-primary mb-4">
+                            <i data-acorn-icon="arrow-top-left" class="text-primary"></i>
+                        </div>
+                        <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">
+                            Nº DE COMPRAS/CLIENTE
+                        </div>
+                        <div class="text-primary cta-4">
+                            <asp:Label ID="lblTotalMensagens" runat="server"></asp:Label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
     
-        <div class="row">        
-            <div class="col-xl-3 mb-5">
-                <h2 class="small-title">Quantidade de Vendas por Loja</h2>
-                <asp:DropDownList ID="ddlTopQtdeVendas" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopQtdeVendas_SelectedIndexChanged">
-                    <asp:ListItem Text="10 melhores lojas" Value="top 10"></asp:ListItem>
-                    <asp:ListItem Text="30 melhores lojas" Value="top 30"></asp:ListItem>
-                    <asp:ListItem Text="Todas as Lojas" Value=""></asp:ListItem>
-                </asp:DropDownList>
-                <div class="card h-xl-100-card">
-                    <div class="card-body h-100">
-                        <div class="h-100">
-                            <div class="row">
-                                <div class="col-12 mb-5" style="overflow: auto">
-                                    <asp:Chart ID="Chart1" runat="server" DataSourceID="sdsDados" Height="400px" Palette="EarthTones" >
-                                    <Series>
-                                        <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" Palette="BrightPastel" YValuesPerPoint="4" XValueMember="nomecliente" YValueMembers="qtde" IsValueShownAsLabel="true" BackImageAlignment="BottomLeft"> </asp:Series>
-                                    </Series>
-                                    <ChartAreas>
-                                        <asp:ChartArea Name="ChartArea1">
-                                            <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="false" />
-                                            </AxisY>
-                                            <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="true" />
-                                            </AxisX>
-                                            <AxisX2>
-                                                <MajorTickMark Enabled="False" />
-                                            </AxisX2>
-                                        </asp:ChartArea>
-                                    </ChartAreas>
-                                </asp:Chart>
-                                <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand= "
-                                    select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente, v.client_id from vendas v (nolock) 
-                                    where v.manufacturer_id = @id and occurred_at > getdate() - 7
-                                    group by v.client_id
-                                    having count(quantity) > 0
-                                    order by qtde desc">
-                                    <SelectParameters>
-                                        <asp:SessionParameter Name="id" SessionField="idempresa" />
-                                    </SelectParameters>
-                                </asp:SqlDataSource>
-                            </div>
-                        </div>
-                    </div>
+    <%-- Gráficos --%>
+    <div class="row">
+        <div class="col-xl-3 mb-5">
+            <h2 class="small-title">Quantidade de Vendas por Loja</h2>
+            <asp:DropDownList ID="ddlTopQtdeVendas" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopQtdeVendas_SelectedIndexChanged">
+                <asp:ListItem Text="10 melhores lojas" Value="top 10"></asp:ListItem>
+                <asp:ListItem Text="30 melhores lojas" Value="top 30"></asp:ListItem>
+                <asp:ListItem Text="Todas as Lojas" Value=""></asp:ListItem>
+            </asp:DropDownList>
+            <div class="card h-xl-100-card">
+                <div class="card-body h-100">
+                    <asp:Chart ID="Chart1" runat="server" DataSourceID="sdsDados" Height="400px" Palette="EarthTones">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" Palette="BrightPastel" YValuesPerPoint="4" XValueMember="nomecliente" YValueMembers="qtde" IsValueShownAsLabel="true" BackImageAlignment="BottomLeft"> </asp:Series>
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="false" />
+                                </AxisY>
+                                <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="true" />
+                                </AxisX>
+                                <AxisX2>
+                                    <MajorTickMark Enabled="False" />
+                                </AxisX2>
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                    <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                        select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente, v.client_id from vendas v (nolock) 
+                        where v.manufacturer_id = @id and occurred_at > getdate() - 7
+                        group by v.client_id
+                        having count(quantity) > 0
+                        order by qtde desc">
+                        <SelectParameters>
+                            <asp:SessionParameter Name="id" SessionField="idempresa" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xl-3 mb-5">
-        <h2 class="small-title">Faturamento/Loja</h2>
-        <asp:DropDownList ID="ddlTopFaturamentoLoja" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopFaturamentoLoja_SelectedIndexChanged">
-            <asp:ListItem Text="10 melhores lojas" Value="top 10"></asp:ListItem>
-            <asp:ListItem Text="30 melhores lojas" Value="top 30"></asp:ListItem>
-            <asp:ListItem Text="Todas as Lojas" Value=""></asp:ListItem>
-        </asp:DropDownList>
-        <div class="card h-xl-100-card">
-            <div class="card-body h-100">
-                <div class="h-100">
-                    <div class="row">
-                        <div class="col-12 mb-5" style="overflow: auto">
-                            <asp:Chart ID="Chart2" runat="server" DataSourceID="SqlDataSource1" Height="400px" Palette="EarthTones">
-                                <Series>
-                                    <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" LabelFormat="{0:c2}" YValuesPerPoint="4" XValueMember="nomecliente" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
-                                </Series>
-                                <ChartAreas>
-                                    <asp:ChartArea Name="ChartArea1">
-                                        <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                            <MajorGrid Enabled="False" />
-                                            <MajorTickMark Enabled="False" />
-                                            <LabelStyle Enabled="false" />
-                                        </AxisY>
-                                        <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                            <MajorGrid Enabled="False" />
-                                            <MajorTickMark Enabled="False" />
-                                            <LabelStyle Enabled="true" />
-                                        </AxisX>
-                                        <AxisX2>
-                                            <MajorTickMark Enabled="False" />
-                                        </AxisX2>
-                                    </asp:ChartArea>
-                                </ChartAreas>
-                            </asp:Chart>
-                            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-                                select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)
-                                where v.manufacturer_id = @id and occurred_at > getdate() - 7
-                                group by v.client_id
-                                having count(quantity) > 0
-                                order by fatura desc">
-                                <SelectParameters>
-                                    <asp:SessionParameter Name="id" SessionField="idempresa" />
-                                </SelectParameters>
-                            </asp:SqlDataSource>
-                        </div>
-                    </div>
+
+        <div class="col-xl-3 mb-5">
+            <h2 class="small-title">Faturamento/Loja</h2>
+            <asp:DropDownList ID="ddlTopFaturamentoLoja" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopFaturamentoLoja_SelectedIndexChanged">
+                <asp:ListItem Text="10 melhores lojas" Value="top 10"></asp:ListItem>
+                <asp:ListItem Text="30 melhores lojas" Value="top 30"></asp:ListItem>
+                <asp:ListItem Text="Todas as Lojas" Value=""></asp:ListItem>
+            </asp:DropDownList>
+            <div class="card h-xl-100-card">
+                <div class="card-body h-100">
+                    <asp:Chart ID="Chart2" runat="server" DataSourceID="SqlDataSource1" Height="400px" Palette="EarthTones">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" LabelFormat="{0:c2}" YValuesPerPoint="4" XValueMember="nomecliente" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="false" />
+                                </AxisY>
+                                <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="true" />
+                                </AxisX>
+                                <AxisX2>
+                                    <MajorTickMark Enabled="False" />
+                                </AxisX2>
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                        select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)
+                        where v.manufacturer_id = @id and occurred_at > getdate() - 7
+                        group by v.client_id
+                        having count(quantity) > 0
+                        order by fatura desc">
+                        <SelectParameters>
+                            <asp:SessionParameter Name="id" SessionField="idempresa" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="col-xl-3 mb-5">
             <h2 class="small-title">Quantidade de Venda/Produto</h2>
@@ -243,44 +237,38 @@
             </asp:DropDownList>
             <div class="card h-xl-100-card">
                 <div class="card-body h-100">
-                    <div class="h-100">
-                        <div class="row">
-                            <div class="col-12 mb-5" style="overflow: auto">
-                                <asp:Chart ID="Chart3" runat="server" DataSourceID="SqlDataSource2" Height="400px" Palette="EarthTones">
-                                    <Series>
-                                        <asp:Series Name="Series1" ChartType="Bar" YValuesPerPoint="4" XValueMember="nomeproduto" YValueMembers="qtde" IsValueShownAsLabel="true"></asp:Series>
-                                    </Series>
-                                    <ChartAreas>
-                                        <asp:ChartArea Name="ChartArea1">
-                                            <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="false" />
-                                            </AxisY>
-                                            <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="true" />
-                                            </AxisX>
-                                            <AxisX2>
-                                                <MajorTickMark Enabled="False" />
-                                            </AxisX2>
-                                        </asp:ChartArea>
-                                    </ChartAreas>
-                                </asp:Chart>
-                                <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-                                    select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)
-                                    where v.manufacturer_id = @id and occurred_at > getdate() - 7
-                                    group by v.good_id
-                                    having count(quantity) > 0
-                                    order by qtde desc">
-                                    <SelectParameters>
-                                        <asp:SessionParameter Name="id" SessionField="idempresa" />
-                                    </SelectParameters>
-                                </asp:SqlDataSource>
-                            </div>
-                        </div>
-                    </div>
+                    <asp:Chart ID="Chart3" runat="server" DataSourceID="SqlDataSource2" Height="400px" Palette="EarthTones">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Bar" YValuesPerPoint="4" XValueMember="nomeproduto" YValueMembers="qtde" IsValueShownAsLabel="true"></asp:Series>
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="false" />
+                                </AxisY>
+                                <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="true" />
+                                </AxisX>
+                                <AxisX2>
+                                    <MajorTickMark Enabled="False" />
+                                </AxisX2>
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                    <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                        select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)
+                        where v.manufacturer_id = @id and occurred_at > getdate() - 7
+                        group by v.good_id
+                        having count(quantity) > 0
+                        order by qtde desc">
+                        <SelectParameters>
+                            <asp:SessionParameter Name="id" SessionField="idempresa" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
                 </div>
             </div>
         </div>
@@ -293,101 +281,125 @@
             </asp:DropDownList>
             <div class="card h-xl-100-card">
                 <div class="card-body h-100">
-                    <div class="h-100">
-                        <div class="row">
-                            <div class="col-12 mb-5" style="overflow: auto">
-                                <asp:Chart ID="Chart5" runat="server" DataSourceID="SqlDataSource4" Height="400px" Palette="EarthTones">
-                                    <Series>
-                                        <asp:Series Name="Series1" ChartType="Bar" YValuesPerPoint="4" XValueMember="nomeproduto" LabelFormat="{0:c2}" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
-                                    </Series>
-                                    <ChartAreas>
-                                        <asp:ChartArea Name="ChartArea1">
-                                            <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="false" />
-                                            </AxisY>
-                                            <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="true" />
-                                            </AxisX>
-                                            <AxisX2>
-                                                <MajorTickMark Enabled="False" />
-                                            </AxisX2>
-                                        </asp:ChartArea>
-                                    </ChartAreas>
-                                </asp:Chart>
-                                <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-                                    select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)
-                                    where v.manufacturer_id = @id and occurred_at > getdate() - 7
-                                    group by v.good_id
-                                    having count(quantity) > 0
-                                    order by fatura desc">
-                                    <SelectParameters>
-                                        <asp:SessionParameter Name="id" SessionField="idempresa" />
-                                    </SelectParameters>
-                                </asp:SqlDataSource>
-                            </div>
-                        </div>
-                    </div>
+                    <asp:Chart ID="Chart5" runat="server" DataSourceID="SqlDataSource4" Height="400px" Palette="EarthTones">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Bar" YValuesPerPoint="4" XValueMember="nomeproduto" LabelFormat="{0:c2}" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="false" />
+                                </AxisY>
+                                <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="true" />
+                                </AxisX>
+                                <AxisX2>
+                                    <MajorTickMark Enabled="False" />
+                                </AxisX2>
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                    <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                        select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)
+                        where v.manufacturer_id = @id and occurred_at > getdate() - 7
+                        group by v.good_id
+                        having count(quantity) > 0
+                        order by fatura desc">
+                        <SelectParameters>
+                            <asp:SessionParameter Name="id" SessionField="idempresa" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="row">
         <div class="col-xl-10 mb-5">
             <br /><br />
-                <h2 class="small-title">Quantidade/Faturamento por mês</h2>
+            <h2 class="small-title">Quantidade/Faturamento por mês</h2>
             <div class="card h-xl-100-card">
                 <div class="card-body h-100">
-                    <div class="h-100">
-                        <div class="row">
-                            <div class="col-12 mb-5" style="overflow: auto">
-                                <asp:Chart ID="Chart4" runat="server" Width="970px" DataSourceID="SqlDataSource3" Palette="EarthTones">
-                                    <Series>
-                                        <asp:Series Name="Series1" ChartType="Spline" LabelFormat="R{0:c2}" YValuesPerPoint="4" XValueMember="mesano" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
-                                    </Series>
-                                    <ChartAreas>
-                                        <asp:ChartArea Name="ChartArea1">
-                                            <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="false" />
-                                            </AxisY>
-                                            <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                                <MajorGrid Enabled="False" />
-                                                <MajorTickMark Enabled="False" />
-                                                <LabelStyle Enabled="true" />
-                                            </AxisX>
-                                            <AxisX2>
-                                                <MajorTickMark Enabled="False" />
-                                            </AxisX2>
-                                        </asp:ChartArea>
-                                    </ChartAreas>
-                                </asp:Chart>
-                                <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-                                    select count(quantity) as qtde, cast(sum(value) as decimal (10,2)) as fatura, convert(varchar,month(v.occurred_at))+'/'+  convert(varchar,year(v.occurred_at)) as mesano from vendas v (nolock)
-                                    where v.manufacturer_id = @id
-                                    group by month(v.occurred_at), year(v.occurred_at)
-                                    having count(quantity) > 0
-                                    order by year(v.occurred_at), month(v.occurred_at)">
-                                    <SelectParameters>
-                                        <asp:SessionParameter Name="id" SessionField="idempresa" />
-                                    </SelectParameters>
-                                </asp:SqlDataSource>
-                            </div>
-                        </div>
-                    </div>
+                    <asp:Chart ID="Chart4" runat="server" Width="970px" DataSourceID="SqlDataSource3" Palette="EarthTones">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Spline" LabelFormat="R{0:c2}" YValuesPerPoint="4" XValueMember="mesano" YValueMembers="fatura" IsValueShownAsLabel="true"></asp:Series>
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="false" />
+                                </AxisY>
+                                <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="true" />
+                                </AxisX>
+                                <AxisX2>
+                                    <MajorTickMark Enabled="False" />
+                                </AxisX2>
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                    <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                        select count(quantity) as qtde, cast(sum(value) as decimal (10,2)) as fatura, convert(varchar,month(v.occurred_at))+'/'+  convert(varchar,year(v.occurred_at)) as mesano from vendas v (nolock)
+                        where v.manufacturer_id = @id
+                        group by month(v.occurred_at), year(v.occurred_at)
+                        having count(quantity) > 0
+                        order by year(v.occurred_at), month(v.occurred_at)">
+                        <SelectParameters>
+                            <asp:SessionParameter Name="id" SessionField="idempresa" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
                 </div>
             </div>
         </div>
+    </div>
+
 
 
     <%-- Botões de Rotina --%>
-    <div>
-        <asp:LinkButton ID="rotinaVendas" runat="server" CssClass="dropdown-item export-cvs" onClick="rodarVendas">Vendas</asp:LinkButton>
-        <asp:LinkButton ID="rotinaFornecedores" runat="server" CssClass="dropdown-item export-cvs" onClick="rodarFornecedores">Fornecedores</asp:LinkButton>
-        <asp:LinkButton ID="rotinaProdutos" runat="server" CssClass="dropdown-item export-cvs" onClick="rodarProdutos">Produtos</asp:LinkButton>
+    <br />
+    <div class="row gx-2">
+        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
+            <asp:LinkButton ID="rotinaVendas" runat="server"
+                CssClass="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto"
+                OnClick="rodarVendas">
+                <i data-acorn-icon="sales"></i> Vendas
+            </asp:LinkButton>
+        </div>
 
+        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
+            <asp:LinkButton ID="rotinaFornecedores" runat="server"
+                CssClass="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto"
+                OnClick="rodarFornecedores">
+                <i data-acorn-icon="supplier"></i> Fornecedores
+            </asp:LinkButton>
+        </div>
+
+        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
+            <asp:LinkButton ID="rotinaProdutos" runat="server"
+                CssClass="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto"
+                OnClick="rodarProdutos">
+                <i data-acorn-icon="product"></i> Produtos
+            </asp:LinkButton>
+        </div>
     </div>
+    <style>
+        .btn-icon {
+            margin-right: 10px; /* Adjust the margin as needed */
+        }
+        .row {
+            justify-content: center; /* Center the buttons horizontally */
+        }
+    </style>
+
+
+
+
 </asp:Content>

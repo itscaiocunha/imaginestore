@@ -8,6 +8,7 @@ using System.Data.Common;
 using System.IO;
 using System.Web.UI.WebControls;
 using w7pay.src.cliente;
+using w7pay.src.parceiro;
 
 
 namespace w7pay.src
@@ -86,20 +87,33 @@ namespace w7pay.src
             }
         }
 
-            protected void lkbFiltro_Click(object sender, EventArgs e)
+        protected void lkbFiltro_Click(object sender, EventArgs e)
         {
             string mesano = ddlMes.SelectedValue + "/" + ddlAnoMes.SelectedValue;
+            using (IDataReader reader1 = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                "select count(*) as qtde from vendas where manufacturer_id = '" + ddlFornecedor.SelectedValue + "' and month(occurred_at) = '" + ddlMes.SelectedValue + "' and year(occurred_at) = '" + ddlAnoMes.SelectedValue + "'  and status = 'OK'"))
+            {
+                if (reader1.Read())
+                {
+                    lblQtdeTotal.Text = reader1["qtde"].ToString();
+                }
+                else
+                {
+                    lblQtdeTotal.Text = "0";
+                }
+            }
+
             try
             {
                 using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                                  @"select count(f.qtde_venda) as qtde, max(taxa) as tx,  convert(varchar,cast(isnull(sum(faturamento),0) as decimal(10,2))) as valortotal, case when max(s.idfornecedor) is not null then (isnull(sum(faturamento),0) * 26.5) / 100 else 0 end as taxa from fechamento f
+                                  @"select count(*) as qtde, max(taxa) as tx,  convert(varchar,cast(isnull(sum(faturamento),0) as decimal(10,2))) as valortotal, case when max(s.idfornecedor) is not null then (isnull(sum(faturamento),0) * 26.5) / 100 else 0 end as taxa from fechamento f
             left join split s on s.idfornecedor = f.idfornecedor
             where f.idfornecedor = '" + ddlFornecedor.SelectedValue + "' and mesano = '" + mesano + "' group by f.idfornecedor"))
                 {
                     if (reader.Read())
                     {
                         gdvDetalhes.DataBind();
-                        lblQtdeTotal.Text = reader["qtde"].ToString();
+
                         lblSaldoVendas.Text = "R$ " + Convert.ToDecimal(reader["valortotal"]).ToString("N2");
                         lblValorImagine.Text = "R$ " + Convert.ToDecimal(reader["taxa"]).ToString("N2");
                         lblTaxa.Text = Convert.ToDecimal(reader["tx"]).ToString("N2");

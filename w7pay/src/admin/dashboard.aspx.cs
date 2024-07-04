@@ -39,27 +39,27 @@ namespace w7pay.src
                         }
                     }
 
-                    //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                    //          "SELECT count(*) as qtde from produtos where manufacturer_id  = '" + hdfIdEmpresa.Value + "'"))
-                    //{
-                    //    if (reader.Read())
-                    //    {
-                    //        lblTotalNaoPagas.Text = reader["qtde"].ToString();
-                    //    }
-                    //    else
-                    //        lblTotalNaoPagas.Text = "0";
-                    //}
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                              "SELECT count(*) as qtde from produtos where manufacturer_id  = '" + ddlFornecedores.SelectedValue + "'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblTotalNaoPagas.Text = reader["qtde"].ToString();
+                        }
+                        else
+                            lblTotalNaoPagas.Text = "0";
+                    }
 
-                    //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                    //          "select count(*) as qtde from base_dishonest d join produtos p on p.upc_code = d.[CÓDIGO EM BARRAS] where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
-                    //{
-                    //    if (reader.Read())
-                    //    {
-                    //        lblTotalMensagens.Text = reader["qtde"].ToString();
-                    //    }
-                    //    else
-                    //        lblTotalMensagens.Text = "0";
-                    //}
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                              "select count(*) as qtde from base_dishonest d join produtos p on p.upc_code = d.[CÓDIGO EM BARRAS] where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblTotalMensagens.Text = reader["qtde"].ToString();
+                        }
+                        else
+                            lblTotalMensagens.Text = "0";
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -148,7 +148,7 @@ namespace w7pay.src
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' " + filtrodata + ""))
+                      "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' " + filtrodata + ""))
             {
                 if (reader.Read())
                 {
@@ -159,7 +159,7 @@ namespace w7pay.src
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' " + filtrodata + " and masked_card_number <> '' group by masked_card_number"))
+                      "select count(*) as qtde from vendas v where v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' " + filtrodata + " and masked_card_number <> '' group by masked_card_number"))
             {
                 if (reader.Read())
                 {

@@ -15,7 +15,6 @@ namespace w7pay.src.parceiro
 
             try
             {
-                //hdfIdEmpresa.Value = Session["idempresa"].ToString();
                 hdfIdUsuario.Value = Session["idusuario"].ToString();
 
                 //informações do usuario que está logado
@@ -34,7 +33,7 @@ namespace w7pay.src.parceiro
 
                 //informações da empresa que está logada
                 using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                       "select e.[Razão Social / Nome Completo] as razao_social, e.[Nome Fantasia / Nome Abreviado] as nome_empresa, e.cep, e.telefone, e.[CNPJ / CPF] as cnpj, e.[E-mail] as email, e.estado as uf, e.cidade, e.bairro, e.[Endereço] as endereco from fornecedores f join base_fornecedor_omie e on e.[Razão Social / Nome Completo] = f.name where f.id = '" + hdfIdEmpresa.Value + "'"))
+                       "select e.[Razão Social / Nome Completo] as razao_social, e.[Nome Fantasia / Nome Abreviado] as nome_empresa, e.cep, e.telefone, e.[CNPJ / CPF] as cnpj, e.Email as email, e.estado as uf, e.cidade, e.bairro, e.[Endereço] as endereco from fornecedores f join base_fornecedor_omie e on e.[Razão Social / Nome Completo] = f.name where f.id = '" + hdfIdEmpresa.Value + "'"))
                 {
                     if (reader.Read())
                     {
@@ -131,7 +130,7 @@ namespace w7pay.src.parceiro
             }
             catch(Exception ex)
             {
-                lblMensagem.Text = "Erro ao tentar salvar informações.";
+                lblMensagem.Text = "Erro ao tentar salvar informações." + ex;
             }
         }
                

@@ -30,6 +30,21 @@ namespace w7pay.src.parceiro
                 string mesano = ddlMes.SelectedValue + "/" + ddlAnoMes.SelectedValue;
                 try
                 {
+
+                    using (IDataReader reader1 = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                "select count(*) as qtde, sum(value) as valortotal from vendas where manufacturer_id = '" + hdfId.Value + "' and month(occurred_at) = '" + ddlMes.SelectedValue + "' and year(occurred_at) = '" + ddlAnoMes.SelectedValue + "'  and status = 'OK'"))
+                    {
+                        if (reader1.Read())
+                        {
+                            lblQtdeTotal.Text = reader1["qtde"].ToString();
+                            lblSaldoVendas.Text = "R$ " + Convert.ToDecimal(reader1["valortotal"]).ToString("N2");
+                        }
+                        else
+                        {
+                            lblQtdeTotal.Text = "0";
+                        }
+                    }
+
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                                       @"select  count(f.qtde_venda) as qtde, max(taxa) as tx, cast(isnull(sum(faturamento),0) as decimal(10,2)) as valortotal, case when max(s.idfornecedor) is not null then cast((isnull(sum(faturamento),0) * max(s.taxa)) / 100  as Decimal(10,2)) else 0 end as taxa from fechamento f
                         left join split s on s.idfornecedor = f.idfornecedor
@@ -38,8 +53,6 @@ namespace w7pay.src.parceiro
                         if (reader.Read())
                         {
                             gdvDetalhes.DataBind();
-                            lblQtdeTotal.Text = reader["qtde"].ToString();
-                            lblSaldoVendas.Text = "R$ " + Convert.ToDecimal(reader["valortotal"]).ToString("N2");
                             lblValorImagine.Text = "R$ " + Convert.ToDecimal(reader["taxa"]).ToString("N2");
                             lblTaxa.Text = Convert.ToDecimal(reader["tx"]).ToString("N2");
                             decimal receber = Convert.ToDecimal(reader["valortotal"]) - Convert.ToDecimal(reader["taxa"]);

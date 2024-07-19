@@ -49,8 +49,6 @@ namespace w7pay.src
             {
                 lblTotalVendasRegistradas.Text = "0";
                 lblTotalVendasPagas.Text = "0";
-                lblTotalNaoPagas.Text = "0";
-                lblTotalMensagens.Text = "0";
                 //atualizacao.GETEstoque();
 
             }
@@ -91,18 +89,18 @@ namespace w7pay.src
                     }
                 }
 
-                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                          "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
-                {
-                    if (reader.Read())
-                    {
-                        lblTotalNaoPagas.Text = reader["qtdeloja"].ToString();
-                    }
-                    else
-                        lblTotalNaoPagas.Text = "0";
-                }
+                //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                //          "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                //{
+                //    if (reader.Read())
+                //    {
+                //        lblTotalNaoPagas.Text = reader["qtdeloja"].ToString();
+                //    }
+                //    else
+                //        lblTotalNaoPagas.Text = "0";
+                //}
 
-                lblTotalMensagens.Text = (Convert.ToInt16(lblTotalVendasPagas.Text) + Convert.ToInt16(lblTotalVendasRegistradas.Text)).ToString();
+                //lblTotalMensagens.Text = (Convert.ToInt16(lblTotalVendasPagas.Text) + Convert.ToInt16(lblTotalVendasRegistradas.Text)).ToString();
             }
             catch
             {

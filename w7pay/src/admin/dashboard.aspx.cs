@@ -25,41 +25,76 @@ namespace w7pay.src
                     txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK'"))
                     {
                         if (reader.Read())
                         {
-                            lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
-                            lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
+                            lblFaturamento.Text = "R$ " + reader["ganho"].ToString();
+                            lblVendas.Text = reader["qtde"].ToString();
                         }
                         else
                         {
-                            lblTotalVendasPagas.Text = "R$ 0,00";
-                            lblTotalVendasRegistradas.Text = "0";
+                            lblFaturamento.Text = "R$ 0,00";
+                            lblVendas.Text = "0";
                         }
                     }
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT count(*) as qtde from produtos where manufacturer_id  = '" + ddlFornecedores.SelectedValue + "'"))
+                              "SELECT count(*) as qtde from produtos where manufacturer_id  = '" + hdfIdEmpresa.Value + "'"))
                     {
                         if (reader.Read())
                         {
-                            lblTotalNaoPagas.Text = reader["qtde"].ToString();
+                            lblProdutos.Text = reader["qtde"].ToString();
                         }
                         else
-                            lblTotalNaoPagas.Text = "0";
+                            lblProdutos.Text = "0";
                     }
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "select count(*) as qtde from base_dishonest d join produtos p on p.upc_code = d.[CÓDIGO EM BARRAS] where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                      "SELECT COUNT(*) as qtde FROM fornecedores"))
                     {
                         if (reader.Read())
                         {
-                            lblTotalMensagens.Text = reader["qtde"].ToString();
+                            lblFornecedores.Text = reader["qtde"].ToString();
                         }
                         else
-                            lblTotalMensagens.Text = "0";
+                            lblFornecedores.Text = "0";
                     }
+
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT COUNT(*) as qtde FROM clientes"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblClientes.Text = reader["qtde"].ToString();
+                        }
+                        else
+                            lblClientes.Text = "0";
+                    }
+
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT SUM(CAST(value AS DECIMAL(10,2))) / NULLIF(COUNT(*), 0) AS ticket FROM vendas where manufacturer_id = '" + ddlFornecedores.SelectedValue + "' and occurred_at > getDate() - 7 " + "and [status] = 'OK'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblTicket.Text = reader["ticket"].ToString();
+                        }
+                        else
+                            lblTicket.Text = "0";
+                    }
+
+                    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT SUM(CAST(value AS DECIMAL(10,2))) / COUNT(DISTINCT client_name) AS receita_media FROM vendas WHERE occurred_at > GETDATE() - 7 AND [status] = 'OK' AND manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                    {
+                        if (reader.Read())
+                        {
+                            lblReceita.Text = reader["receita_media"].ToString();
+                        }
+                        else
+                            lblReceita.Text = "0";
+                    }
+
+
                 }
                 catch (Exception ex)
                 {
@@ -74,40 +109,73 @@ namespace w7pay.src
             txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
             {
                 if (reader.Read())
                 {
-                    lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
-                    lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
+                    lblFaturamento.Text = "R$ " + reader["ganho"].ToString();
+                    lblVendas.Text = reader["qtde"].ToString();
                 }
                 else
                 {
-                    lblTotalVendasPagas.Text = "R$ 0,00";
-                    lblTotalVendasRegistradas.Text = "0";
+                    lblFaturamento.Text = "R$ 0,00";
+                    lblVendas.Text = "0";
                 }
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                              "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
             {
                 if (reader.Read())
                 {
-                    lblTotalNaoPagas.Text = reader["qtdelojas"].ToString();
+                    lblProdutos.Text = reader["qtdelojas"].ToString();
                 }
                 else
-                    lblTotalNaoPagas.Text = "0";
+                    lblProdutos.Text = "0";
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' and masked_card_number <> '' group by masked_card_number"))
+                      "SELECT COUNT(*) as qtde FROM fornecedores"))
             {
                 if (reader.Read())
                 {
-                    lblTotalMensagens.Text = reader["qtde"].ToString();
+                    lblFornecedores.Text = reader["qtde"].ToString();
                 }
                 else
-                    lblTotalMensagens.Text = "0";
+                    lblFornecedores.Text = "0";
+            }
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT COUNT(*) as qtde FROM clientes"))
+            {
+                if (reader.Read())
+                {
+                    lblClientes.Text = reader["qtde"].ToString();
+                }
+                else
+                    lblClientes.Text = "0";
+            }
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT SUM(CAST(value AS DECIMAL(10,2))) / NULLIF(COUNT(*), 0) AS ticket FROM vendas where manufacturer_id = '" + ddlFornecedores.SelectedValue + "' and occurred_at > getDate() - 7 " + "and [status] = 'OK'"))
+            {
+                if (reader.Read())
+                {
+                    lblTicket.Text = reader["ticket"].ToString();
+                }
+                else
+                    lblTicket.Text = "0";
+            }
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT SUM(CAST(value AS DECIMAL(10,2))) / COUNT(DISTINCT client_name) AS receita_media FROM vendas WHERE occurred_at > GETDATE() - 7 AND [status] = 'OK' AND manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+            {
+                if (reader.Read())
+                {
+                    lblReceita.Text = reader["receita_media"].ToString();
+                }
+                else
+                    lblReceita.Text = "0";
             }
 
             sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' and occurred_at > getdate() - 7 group by v.client_id    having count(quantity) > 0    order by qtde desc";
@@ -137,13 +205,13 @@ namespace w7pay.src
             {
                 if (reader.Read())
                 {
-                    lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
-                    lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
+                    lblFaturamento.Text = "R$ " + reader["ganho"].ToString();
+                    lblVendas.Text = reader["qtde"].ToString();
                 }
                 else
                 {
-                    lblTotalVendasPagas.Text = "R$ 0,00";
-                    lblTotalVendasRegistradas.Text = "0";
+                    lblFaturamento.Text = "R$ 0,00";
+                    lblVendas.Text = "0";
                 }
             }
 
@@ -152,21 +220,54 @@ namespace w7pay.src
             {
                 if (reader.Read())
                 {
-                    lblTotalNaoPagas.Text = reader["qtdelojas"].ToString();
+                    lblProdutos.Text = reader["qtdelojas"].ToString();
                 }
                 else
-                    lblTotalNaoPagas.Text = "0";
+                    lblProdutos.Text = "0";
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "select count(*) as qtde from vendas v where v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "' " + filtrodata + " and masked_card_number <> '' group by masked_card_number"))
+                      "SELECT COUNT(*) as qtde FROM fornecedores"))
             {
                 if (reader.Read())
                 {
-                    lblTotalMensagens.Text = reader["qtde"].ToString();
+                    lblFornecedores.Text = reader["qtde"].ToString();
                 }
                 else
-                    lblTotalMensagens.Text = "0";
+                    lblFornecedores.Text = "0";
+            }
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT COUNT(*) as qtde FROM clientes"))
+            {
+                if (reader.Read())
+                {
+                    lblClientes.Text = reader["qtde"].ToString();
+                }
+                else
+                    lblClientes.Text = "0";
+            }
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT SUM(CAST(value AS DECIMAL(10,2))) / NULLIF(COUNT(*), 0) AS ticket FROM vendas where manufacturer_id = '" + ddlFornecedores.SelectedValue + "' " + filtrodata + "and [status] = 'OK'"))
+            {
+                if (reader.Read())
+                {
+                    lblTicket.Text = reader["ticket"].ToString();
+                }
+                else
+                    lblTicket.Text = "0";
+            }
+
+            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                      "SELECT SUM(CAST(value AS DECIMAL(10,2))) / COUNT(DISTINCT client_name) AS receita_media FROM vendas WHERE [status] = 'OK' AND manufacturer_id = '" + ddlFornecedores.SelectedValue + "'" + filtrodata ))
+            {
+                if (reader.Read())
+                {
+                    lblReceita.Text = reader["receita_media"].ToString();
+                }
+                else
+                    lblReceita.Text = "0";
             }
 
 
@@ -207,18 +308,44 @@ namespace w7pay.src
             SqlDataSource4.DataBind();
         }
 
-        protected void rodarVendas(object sender, EventArgs e)
+        protected void ddlTopProdutoVenda_SelectedIndexChanged(object sender, EventArgs e)
         {
-            atualizacao.GETVendas();
-        }
-        protected void rodarFornecedores(object sender, EventArgs e)
-        {
-            atualizacao.GETFornecedores();
+            string topValue = ddlTopProdutoVenda.SelectedValue;
+            string topClause = string.IsNullOrEmpty(topValue) ? "" : $"{topValue} ";
+
+            SqlDataSource7.SelectCommand = $@"
+        select {topClause}count(v.category_id) as qtde, max(c.descricao) as descricao 
+        from vendas v 
+        inner join categorias c on c.id = v.category_id 
+        group by category_id 
+        order by qtde desc";
+            SqlDataSource7.DataBind();
         }
 
-        protected void rodarProdutos(object sender, EventArgs e)
+        protected void ddlTopVendasCliente_SelectedIndexChanged(object sender, EventArgs e)
         {
-            atualizacao.GETProdutos();
+            SqlDataSource5.SelectCommand = "select " + ddlTopVendasCliente.SelectedValue + " client_name as client, count(*) as qtde from vendas where manufacturer_id = '" + ddlFornecedores.SelectedValue + "' group by client_name order by qtde desc";
+            SqlDataSource5.DataBind();
+        }
+
+        //protected void rodarVendas(object sender, EventArgs e)
+        //{
+        //    atualizacao.GETVendas();
+        //}
+        //protected void rodarFornecedores(object sender, EventArgs e)
+        //{
+        //    atualizacao.GETFornecedores();
+        //}
+
+        //protected void rodarProdutos(object sender, EventArgs e)
+        //{
+        //    atualizacao.GETProdutos();
+        //}
+
+        protected void ddlCategoria_DataBound(object sender, EventArgs e)
+        {
+            ddlCategoria.Items.Insert(0, new ListItem("TODOS", "0"));
+            ddlProduto.Items.Insert(0, new ListItem("TODOS", "0"));
         }
     }
 }

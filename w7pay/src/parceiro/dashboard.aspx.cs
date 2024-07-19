@@ -25,7 +25,7 @@ namespace w7pay.src.parceiro
                     txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK'"))
                     {
                         if (reader.Read())
                         {
@@ -40,7 +40,7 @@ namespace w7pay.src.parceiro
                     }
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                              "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK'"))
                     {
                         if (reader.Read())
                         {
@@ -51,7 +51,7 @@ namespace w7pay.src.parceiro
                     }
 
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and masked_card_number <> '' group by masked_card_number"))
+                              "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK' "))
                     {
                         if (reader.Read())
                         {
@@ -75,7 +75,7 @@ namespace w7pay.src.parceiro
             txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                             "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK'"))
             {
                 if (reader.Read())
                 {
@@ -90,7 +90,7 @@ namespace w7pay.src.parceiro
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
+                              "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK'"))
             {
                 if (reader.Read())
                 {
@@ -101,7 +101,7 @@ namespace w7pay.src.parceiro
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and masked_card_number <> '' group by masked_card_number"))
+                      "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and [status] = 'OK'"))
             {
                 if (reader.Read())
                 {
@@ -111,16 +111,16 @@ namespace w7pay.src.parceiro
                     lblTotalMensagens.Text = "0";
             }
 
-            sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7 group by v.client_id    having count(quantity) > 0    order by qtde desc";
+            sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7 and [status] = 'OK' group by v.client_id    having count(quantity) > 0    order by qtde desc";
             sdsDados.DataBind();
 
-            SqlDataSource1.SelectCommand = "select " + ddlTopFaturamentoLoja.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7    group by v.client_id    having count(quantity) > 0    order by fatura desc";
+            SqlDataSource1.SelectCommand = "select " + ddlTopFaturamentoLoja.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7  and [status] = 'OK'  group by v.client_id    having count(quantity) > 0    order by fatura desc";
             SqlDataSource1.DataBind();
 
-            SqlDataSource2.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7    group by v.good_id    having count(quantity) > 0    order by qtde desc";
+            SqlDataSource2.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7  and [status] = 'OK'  group by v.good_id    having count(quantity) > 0    order by qtde desc";
             SqlDataSource2.DataBind();
 
-            SqlDataSource4.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7    group by v.good_id    having count(quantity) > 0    order by qtde desc";
+            SqlDataSource4.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7  and [status] = 'OK'  group by v.good_id    having count(quantity) > 0    order by qtde desc";
             SqlDataSource4.DataBind();
         }
 
@@ -134,7 +134,7 @@ namespace w7pay.src.parceiro
             filtrodata = " and occurred_at >= '" + datainicio + "' and occurred_at <= '" + datafim + "' ";
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + ""))
+                              "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK'"))
             {
                 if (reader.Read())
                 {
@@ -149,7 +149,7 @@ namespace w7pay.src.parceiro
         }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + ""))
+                      "SELECT count(distinct machine_id) as qtdelojas FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK'"))
             {
                 if (reader.Read())
                 {
@@ -160,7 +160,7 @@ namespace w7pay.src.parceiro
             }
 
             using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                      "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and masked_card_number <> '' group by masked_card_number"))
+                      "select count(*) as qtde from vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK'"))
             {
                 if (reader.Read())
                 {
@@ -171,40 +171,40 @@ namespace w7pay.src.parceiro
             }
 
 
-            sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " group by v.client_id    having count(quantity) > 0    order by qtde desc";
+            sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK' group by v.client_id    having count(quantity) > 0    order by qtde desc";
             sdsDados.DataBind();
 
-            SqlDataSource1.SelectCommand = "select " + ddlTopFaturamentoLoja.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + "    group by v.client_id    having count(quantity) > 0    order by fatura desc";
+            SqlDataSource1.SelectCommand = "select " + ddlTopFaturamentoLoja.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK'  group by v.client_id    having count(quantity) > 0    order by fatura desc";
             SqlDataSource1.DataBind();
 
-            SqlDataSource2.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + "    group by v.good_id    having count(quantity) > 0    order by qtde desc";
+            SqlDataSource2.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK' group by v.good_id    having count(quantity) > 0    order by qtde desc";
             SqlDataSource2.DataBind();
 
-            SqlDataSource4.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + "    group by v.good_id    having count(quantity) > 0    order by qtde desc";
+            SqlDataSource4.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' " + filtrodata + " and [status] = 'OK'  group by v.good_id    having count(quantity) > 0    order by qtde desc";
             SqlDataSource4.DataBind();
         }
 
         protected void ddlTopQtdeVendas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7 group by v.client_id    having count(quantity) > 0    order by qtde desc";
+            sdsDados.SelectCommand = "select " + ddlTopQtdeVendas.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7 and [status] = 'OK' group by v.client_id having count(quantity) > 0    order by qtde desc";
             sdsDados.DataBind();
         }
 
         protected void ddlTopFaturamentoLoja_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlDataSource1.SelectCommand = "select " + ddlTopFaturamentoLoja.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7    group by v.client_id    having count(quantity) > 0    order by fatura desc";
+            SqlDataSource1.SelectCommand = "select " + ddlTopFaturamentoLoja.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7  and [status] = 'OK'  group by v.client_id    having count(quantity) > 0    order by fatura desc";
             SqlDataSource1.DataBind();
         }
 
         protected void ddlTopQtdeVendaProduto_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlDataSource2.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7    group by v.good_id    having count(quantity) > 0    order by qtde desc";
+            SqlDataSource2.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7  and [status] = 'OK'  group by v.good_id    having count(quantity) > 0    order by qtde desc";
             SqlDataSource2.DataBind();
         }
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlDataSource4.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7    group by v.good_id    having count(quantity) > 0    order by qtde desc";
+            SqlDataSource4.SelectCommand = "select " + ddlTopQtdeVendaProduto.SelectedValue + " count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)    where v.manufacturer_id = '" + hdfIdEmpresa.Value + "' and occurred_at > getdate() - 7 and [status] = 'OK' group by v.good_id    having count(quantity) > 0    order by qtde desc";
             SqlDataSource4.DataBind();
         }
 

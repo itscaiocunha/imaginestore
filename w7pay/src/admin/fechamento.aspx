@@ -36,7 +36,7 @@
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block">
 
-                            <!-- Export Dropdown Start -->
+                    <%--        <!-- Export Dropdown Start -->
                             <div class="d-inline-block">
                                 <asp:LinkButton ID="btnDownloadExcel" runat="server"
                                         CssClass="btn btn-primary export-excel" OnClick="btnDownloadExcel_Click">Exportar Excel
@@ -87,7 +87,7 @@
                             </div>
                             <div class="updateprogress-overlay"></div>
                         </ProgressTemplate>
-                    </asp:UpdateProgress>
+                    </asp:UpdateProgress>--%>
                     <!-- Export Dropdown End -->
 
 

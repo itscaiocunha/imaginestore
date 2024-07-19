@@ -32,7 +32,7 @@
                 <!-- Title and Top Buttons End -->
 
                 <!-- Controls Start -->
-                <div class="row mb-2">
+                <%--<div class="row mb-2">
                     <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 text-end mb-1">
                         <div class="d-inline-block">
 
@@ -87,7 +87,7 @@
                             </div>
                             <div class="updateprogress-overlay"></div>
                         </ProgressTemplate>
-                    </asp:UpdateProgress>
+                    </asp:UpdateProgress>--%>
                     <!-- Export Dropdown End -->
 
                     <!-- Search Start -->

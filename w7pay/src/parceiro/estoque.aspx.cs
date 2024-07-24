@@ -26,13 +26,13 @@ namespace w7pay.src.parceiro
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                              "select sum(sald) as saldo from estoque1 where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
                     {
-                        if (reader.Read())
+                        if (reader.Read() && reader["saldo"] != DBNull.Value)
                         {
-                            lblTotalVendasPagas.Text =  reader["saldo"].ToString();
+                            lblEstoqueLoja.Text =  reader["saldo"].ToString();
                         }
                         else
                         {
-                            lblTotalVendasPagas.Text = "0";
+                            lblEstoqueLoja.Text = "0";
                         
                         }
                     }
@@ -40,13 +40,13 @@ namespace w7pay.src.parceiro
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                              "select sum(sald) as saldo from estoque where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
                     {
-                        if (reader.Read())
+                        if (reader.Read() && reader["saldo"] != DBNull.Value)
                         {
-                            lblTotalVendasRegistradas.Text = reader["saldo"].ToString();
+                            lblEstoqueCD.Text = reader["saldo"].ToString();
                         }
                         else
                         {
-                            lblTotalVendasRegistradas.Text = "0";
+                            lblEstoqueCD.Text = "0";
 
                         }
                     }
@@ -54,7 +54,7 @@ namespace w7pay.src.parceiro
                     using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
                               "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + hdfIdEmpresa.Value + "'"))
                     {
-                        if (reader.Read())
+                        if (reader.Read() && reader["qtdeloja"] != DBNull.Value)
                         {
                             lblTotalNaoPagas.Text = reader["qtdeloja"].ToString();
                         }
@@ -62,11 +62,12 @@ namespace w7pay.src.parceiro
                             lblTotalNaoPagas.Text = "0";
                     }
 
-                    lblTotalMensagens.Text = (Convert.ToInt16(lblTotalVendasPagas.Text) + Convert.ToInt16(lblTotalVendasRegistradas.Text)).ToString();
+                    lblTotalMensagens.Text = (Convert.ToInt16(lblEstoqueLoja.Text) + Convert.ToInt16(lblEstoqueCD.Text)).ToString();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Response.Redirect("../sessao.aspx", false);
+                    //Response.Redirect("../sessao.aspx", false);
+                    lblteste.Text = "Erro: " + ex;
                 }
             }
 

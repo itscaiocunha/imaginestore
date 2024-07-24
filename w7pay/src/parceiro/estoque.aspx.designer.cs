@@ -51,22 +51,22 @@ namespace w7pay.src.parceiro
         protected global::System.Web.UI.WebControls.TextBox txtBuscar;
 
         /// <summary>
-        /// Controle lblTotalVendasRegistradas.
+        /// Controle lblEstoqueLoja.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalVendasRegistradas;
+        protected global::System.Web.UI.WebControls.Label lblEstoqueLoja;
 
         /// <summary>
-        /// Controle lblTotalVendasPagas.
+        /// Controle lblEstoqueCD.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalVendasPagas;
+        protected global::System.Web.UI.WebControls.Label lblEstoqueCD;
 
         /// <summary>
         /// Controle lblTotalNaoPagas.

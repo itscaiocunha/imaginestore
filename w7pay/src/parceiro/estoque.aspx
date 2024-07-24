@@ -31,7 +31,7 @@
             <h2 class="small-title">Estatísticas em tempo real</h2>
         </div>
          <div class="row mb-2">
-                        <!-- Search Start -->
+             <!-- Search Start -->
             <div class="col-sm-12 col-md-5 col-lg-3 col-xxl-2 mb-1">
                 <div class="d-inline-block float-md-start me-1 mb-1 search-input-container w-100 shadow bg-foreground">
                     <asp:TextBox ID="txtBuscar" runat="server" CssClass="form-control" placeholder="Filtrar"></asp:TextBox>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">ESTOQUE LOJAS</div>
                             <div class="text-primary cta-4">
-                                <asp:Label ID="lblTotalVendasRegistradas" runat="server"></asp:Label>
+                                <asp:Label ID="lblEstoqueLoja" runat="server"></asp:Label>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                             <div class="mb-1 d-flex align-items-center text-alternate text-small lh-1-25">ESTQOUE CD</div>
                             <div class="text-primary cta-4">
-                                <asp:Label ID="lblTotalVendasPagas" runat="server"></asp:Label>
+                                <asp:Label ID="lblEstoqueCD" runat="server"></asp:Label>
                             </div>
                         </div>
                     </div>

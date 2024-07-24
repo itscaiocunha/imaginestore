@@ -25,7 +25,7 @@ namespace w7pay.src
         {
             Database db = DatabaseFactory.CreateDatabase("ConnectionString");
 
-            if (!auth.VerificaCnpj(txtCNPJ.Text.Replace(".", "").Replace("/", "").Replace("-", "")) && !auth.VerificaEmail(txtEmail.Text))
+            if (!auth.VerificaCnpj(txtCNPJ.Text) && !auth.VerificaEmail(txtEmail.Text))
             {
                 try
                 {

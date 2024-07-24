@@ -42,13 +42,22 @@ namespace w7pay.src
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// Controle txtBuscar.
+        /// Controle txtDataInicio.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBuscar;
+        protected global::System.Web.UI.WebControls.TextBox txtDataInicio;
+
+        /// <summary>
+        /// Controle txtDataFim.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDataFim;
 
         /// <summary>
         /// Controle ddlFornecedores.
@@ -69,6 +78,60 @@ namespace w7pay.src
         protected global::System.Web.UI.WebControls.SqlDataSource sdsFornecedores;
 
         /// <summary>
+        /// Controle ddlProduto.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlProduto;
+
+        /// <summary>
+        /// Controle sdsProduto.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsProduto;
+
+        /// <summary>
+        /// Controle ddlCategoria.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategoria;
+
+        /// <summary>
+        /// Controle sdsCategoria.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsCategoria;
+
+        /// <summary>
+        /// Controle ddlCanal.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCanal;
+
+        /// <summary>
+        /// Controle sdsCanal.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsCanal;
+
+        /// <summary>
         /// Controle lkbFiltro.
         /// </summary>
         /// <remarks>
@@ -78,13 +141,13 @@ namespace w7pay.src
         protected global::System.Web.UI.WebControls.LinkButton lkbFiltro;
 
         /// <summary>
-        /// Controle lblteste.
+        /// Controle lkbLimpar.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblteste;
+        protected global::System.Web.UI.WebControls.LinkButton lkbLimpar;
 
         /// <summary>
         /// Controle lblErro.
@@ -96,22 +159,31 @@ namespace w7pay.src
         protected global::System.Web.UI.WebControls.Label lblErro;
 
         /// <summary>
-        /// Controle lblTotalVendasRegistradas.
+        /// Controle lblVendas.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalVendasRegistradas;
+        protected global::System.Web.UI.WebControls.Label lblVendas;
 
         /// <summary>
-        /// Controle lblTotalVendasPagas.
+        /// Controle lblQtde.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalVendasPagas;
+        protected global::System.Web.UI.WebControls.Label lblQtde;
+
+        /// <summary>
+        /// Controle lblTicket.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTicket;
 
         /// <summary>
         /// Controle LoaderBar.
@@ -121,23 +193,5 @@ namespace w7pay.src
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.UpdateProgress LoaderBar;
-
-        /// <summary>
-        /// Controle gdvDados.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gdvDados;
-
-        /// <summary>
-        /// Controle sdsDados.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sdsDados;
     }
 }

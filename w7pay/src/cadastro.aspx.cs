@@ -86,7 +86,7 @@ namespace w7pay.src
 
                                     lblsalvo.Text = "Cadastro Concluído!";
 
-                                    //EnviarEmailCadastro(txtEmail.Text, txtCNPJCPF.Text, txtSenha.Text);
+                                    EnviarEmailCadastro(txtEmail.Text, txtCNPJCPF.Text, txtSenha.Text);
                                 }
                                 catch( Exception ex)
                                 {
@@ -127,7 +127,7 @@ namespace w7pay.src
             strHtml = strHtml + "</font><img src=''></body></html>";
 
             // Envio do e-mail
-            Email.emailTxt("contato@w7agencia.com.br", email, "", "", "Global 360 - Novo Cadastro", strHtml, 1);
+            Email.emailTxt("contato@w7agencia.com.br", email, "", "", "ImagineStore - Novo Cadastro", strHtml, 1);
         }
 
         protected void Timer1_Tick(object sender, EventArgs e)

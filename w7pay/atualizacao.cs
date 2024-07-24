@@ -709,64 +709,102 @@ namespace w7pay
             IRestResponse responses = cliente.Execute(requere);
 
             dynamic result = serialize.DeserializeObject(responses.Content);
-            int qtde = 47;
 
-            try
+            int ntotalpaginas = Convert.ToInt16(result["nTotPaginas"].ToString());
+
+            for (int i = 1; i <= ntotalpaginas; i++)
             {
-                for (int i = 0; i < qtde; i++)
+                try
                 {
+                    string codigo_local_estoque = result["locaisEncontrados"]["codigo_local_estoque"].ToString();
+                    string descricao = result["locaisEncontrados"]["descricao"].ToString();
+
+                    string dados = "{\"call\": \"ListarPosEstoque\", \"app_key\": \"2985236014761\", \"app_secret\": \"fae7916a76427bddc6488208cf7f45d4\", \"param\": [{\"nPagina\":" + i + ", \"nRegPorPagina\": 1000, \"dDataPosicao\": \"" + DateTime.Now.Date + "\", \"cExibeTodos\": \"S\", \"codigo_local_estoque\": \"0\"}]}";
+
+                    var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
+                    var request = new RestRequest(Method.POST);
+                    request.AddParameter("application/json", dados, ParameterType.RequestBody);
+
+                    IRestResponse response = client.Execute(request);
+
+                    dynamic resultado = serialize.DeserializeObject(response.Content);
+
+
                     try
                     {
-                        string codigo_local_estoque = result["locaisEncontrados"][i]["codigo_local_estoque"].ToString();
-                        string descricao = result["locaisEncontrados"][i]["descricao"].ToString();
+                        // 6879291650, 6902157478, 6900741284, 6910062042, 6903646981, 6900561856
 
-                        string dados = "{\"call\": \"ListarPosEstoque\", \"app_key\": \"2985236014761\", \"app_secret\": \"fae7916a76427bddc6488208cf7f45d4\", \"param\": [{\"nPagina\": 3, \"nRegPorPagina\": 1000, \"dDataPosicao\": \"23/04/2024\", \"cExibeTodos\": \"S\", \"codigo_local_estoque\": \"" + codigo_local_estoque + "\"}]}";
+                        dynamic produtos = resultado["produtos"];
 
-                        var client = new RestClient($"https://app.omie.com.br/api/v1/estoque/consulta/");
-                        var request = new RestRequest(Method.POST);
-                        request.AddParameter("application/json", dados, ParameterType.RequestBody);
-
-                        IRestResponse response = client.Execute(request);
-
-                        dynamic resultado = serialize.DeserializeObject(response.Content);
-
-                        try
+                        foreach (var produto in produtos)
                         {
-                            // 6879291650, 6902157478, 6900741284, 6910062042, 6903646981, 6900561856
+                            string nSaldo = produto["nSaldo"].ToString();
+                            string cCodigo = produto["cCodigo"].ToString();
+                            string cDescricao = produto["cDescricao"].ToString();
 
-                            dynamic produtos = resultado["produtos"];
-
-                            foreach (var produto in produtos)
+                            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                              "SELECT id, convert(varchar, data_criacao, 103) as data, sald FROM estoque where id = '" + cCodigo + "'"))
                             {
-                                string nSaldo = produto["nSaldo"].ToString();
-                                string cCodigo = produto["cCodigo"].ToString();
-                                string cDescricao = produto["cDescricao"].ToString();
-
-                                try
+                                if (reader.Read())
                                 {
-                                    DbCommand command3 = db.GetSqlStringCommand(
-                                        "INSERT INTO estoque3 (id, name, type, manufacturer_id, category_id, upc_code, sald, idclient, name_client, data_criacao) VALUES (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald, @idclient, @name_client, getdate())");
-                                    db.AddInParameter(command3, "@id", DbType.Int32, 0);
-                                    db.AddInParameter(command3, "@name", DbType.String, cDescricao);
-                                    db.AddInParameter(command3, "@type", DbType.String, "ProductCD");
-                                    db.AddInParameter(command3, "@manufacturer_id", DbType.Int32, 0);
-                                    db.AddInParameter(command3, "@category_id", DbType.Int32, 0);
-                                    db.AddInParameter(command3, "@upc_code", DbType.String, cCodigo);
-                                    db.AddInParameter(command3, "@sald", DbType.Int32, nSaldo);
-                                    db.AddInParameter(command3, "@idclient", DbType.String, codigo_local_estoque);
-                                    db.AddInParameter(command3, "@name_client", DbType.String, descricao);
+                                    if (reader["data"].ToString() == DateTime.Now.Date.ToString())
+                                    {
+                                        try
+                                        {
+                                            int soma = Convert.ToInt16(nSaldo) + Convert.ToInt16(reader["sald"].ToString());
+                                            DbCommand command3 = db.GetSqlStringCommand(
+                                                "UPDATE estoque SET sald = @sald where id = @id");
+                                            db.AddInParameter(command3, "@id", DbType.Int32, cCodigo);
+                                            db.AddInParameter(command3, "@sald", DbType.Int32, soma);
 
-                                    db.ExecuteNonQuery(command3);
+                                            db.ExecuteNonQuery(command3);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            string erro = ex.Message;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            DbCommand command4 = db.GetSqlStringCommand(
+                                                "UPDATE estoque SET sald = @sald where id = @id");
+                                            db.AddInParameter(command4, "@id", DbType.Int32, cCodigo);
+                                            db.AddInParameter(command4, "@sald", DbType.Int32, nSaldo);
+
+                                            db.ExecuteNonQuery(command4);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            string erro = ex.Message;
+                                        }
+
+                                    }
                                 }
-                                catch (Exception ex)
+                                else
                                 {
-                                    string erro = ex.Message;
+                                    try
+                                    {
+                                        DbCommand command5 = db.GetSqlStringCommand(
+                                            "INSERT INTO estoque (id, name, type, manufacturer_id, category_id, upc_code, sald, data_criacao) VALUES (@id, @name, @type, @manufacturer_id, @category_id, @upc_code, @sald, getdate())");
+                                        db.AddInParameter(command5, "@id", DbType.Int32, 0);
+                                        db.AddInParameter(command5, "@name", DbType.String, cDescricao);
+                                        db.AddInParameter(command5, "@type", DbType.String, "ProductCD");
+                                        db.AddInParameter(command5, "@manufacturer_id", DbType.Int32, 0);
+                                        db.AddInParameter(command5, "@category_id", DbType.Int32, 0);
+                                        db.AddInParameter(command5, "@upc_code", DbType.String, cCodigo);
+                                        db.AddInParameter(command5, "@sald", DbType.Int32, nSaldo);
+
+                                        db.ExecuteNonQuery(command5);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        string erro = ex.Message;
+                                    }
                                 }
+
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            string erro = ex.Message;
                         }
                     }
                     catch (Exception ex)
@@ -774,10 +812,10 @@ namespace w7pay
                         string erro = ex.Message;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                string erro = ex.Message;
+                catch (Exception ex)
+                {
+                    string erro = ex.Message;
+                }
             }
         }
 

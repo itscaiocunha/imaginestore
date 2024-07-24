@@ -125,11 +125,11 @@
                             </a>
                         </li>
                         <li>
-    <a href="fechamento.aspx">
-        <i data-acorn-icon="file-text" class="icon" data-acorn-size="18"></i>
-        <span class="label">Fechamento</span>
-    </a>
-</li>
+                            <a href="fechamento.aspx">
+                                <i data-acorn-icon="file-text" class="icon" data-acorn-size="18"></i>
+                                <span class="label">Fechamento</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="dishonest.aspx">
                                 <i data-acorn-icon="file-text" class="icon" data-acorn-size="18"></i>

@@ -1,15 +1,9 @@
 ﻿using Microsoft.Practices.EnterpriseLibrary.Data;
-using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.Script.Serialization;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Globalization;
 
 namespace w7pay.src
 {
@@ -19,46 +13,62 @@ namespace w7pay.src
         {
             if (!IsPostBack)
             {
-                //try
-                //{
-                //    //hdfIdEmpresa.Value = Session["idempresa"].ToString();
+                SetInitialDates();
+                LoadData();
+            }
+        }
 
-                //    txtDataInicio.Text = DateTime.Now.Date.AddDays(-7).ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);
-                //    txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
+        private void SetInitialDates()
+        {
+            txtDataInicio.Text = DateTime.Now.Date.AddDays(-7).ToString("dd/MM/yyyy", CultureInfo.CreateSpecificCulture("pt-BR"));
+            txtDataFim.Text = DateTime.UtcNow.ToString("dd/MM/yyyy", CultureInfo.CreateSpecificCulture("pt-BR"));
+        }
 
-                //}
-                //catch
-                //{
-                //    Response.Redirect("../sessao.aspx", false);
-                //}
+        private void LoadData(string filtrodata = "")
+        {
+            try
+            {
+                string manufacturerId = ddlFornecedores.SelectedValue;
+                string queryGanhoQtde = $@"
+                    SELECT ISNULL(SUM(TRY_CAST(v.value AS DECIMAL(10, 2))), 0) AS ganho, 
+                           COUNT(*) AS qtde 
+                    FROM vendas v 
+                    WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK' {filtrodata}";
 
-                //try
-                //{
+                string queryTicket = $@"
+                    SELECT SUM(CAST(value AS DECIMAL(10, 2))) / COUNT(*) AS ticket 
+                    FROM vendas 
+                    WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK'";
 
-                //    txtDataInicio.Text = DateTime.Now.Date.AddDays(-7).ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);
-                //    txtDataFim.Text = DateTime.UtcNow.ToString(CultureInfo.CreateSpecificCulture("pt-BR")).Substring(0, 10);//DateTime.Now.Date.ToShortDateString();
+                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text, queryGanhoQtde))
+                {
+                    if (reader.Read())
+                    {
+                        lblVendas.Text = "R$ " + reader["ganho"].ToString();
+                        lblQtde.Text = reader["qtde"].ToString();
+                    }
+                    else
+                    {
+                        lblVendas.Text = "R$ 0,00";
+                        lblQtde.Text = "0";
+                    }
+                }
 
-                //    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                //              "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where occurred_at > getDate() - 7 and v.manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
-                //    {
-                //        if (reader.Read())
-                //        {
-                //            lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
-                //            lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
-                //        }
-                //        else
-                //        {
-                //            lblTotalVendasPagas.Text = "R$ 0,00";
-                //            lblTotalVendasRegistradas.Text = "0";
-                //        }
-                //    }
-                //}
-                //catch
-                //{
-                //    Response.Redirect("../sessao.aspx", false);
-                //}
-
-                //atualizacao.GETVendas();
+                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text, queryTicket))
+                {
+                    if (reader.Read())
+                    {
+                        lblTicket.Text = "R$ " + reader["ticket"].ToString();
+                    }
+                    else
+                    {
+                        lblTicket.Text = "0";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErro.Text = "Erro: " + ex.Message;
             }
         }
 
@@ -66,33 +76,30 @@ namespace w7pay.src
         {
             System.Threading.Thread.Sleep(200);
 
-            //string filtrodata = "", filtroid = "";
-            //DateTime datainicio = Convert.ToDateTime(txtDataInicio.Text.Substring(3, 2) + "/" + txtDataInicio.Text.Substring(0, 2) + "/" + txtDataInicio.Text.Substring(6, 4));
-            //DateTime datafim = Convert.ToDateTime(txtDataFim.Text.Substring(3, 2) + "/" + txtDataFim.Text.Substring(0, 2) + "/" + txtDataFim.Text.Substring(6, 4));
-            //filtrodata = " and occurred_at >= '" + datainicio + "' and occurred_at <= '" + datafim + "' ";
-            string filtroid = "";
-
-            if (txtBuscar.Text != "")
-                filtroid = " v.id = '" + txtBuscar.Text + "'";
-
-            sdsDados.SelectCommand = "select v.id, (f.name) as name, (v.location_name) as location_name, (v.client_name) as client_name, (v.machine_model_name) as machine_model_name ,  (ct.descricao) as descricao, (v.product_name) as product_name, (coil) as coil, (quantity) as quantity, (value) as value , convert(varchar,DATEPART(day,(occurred_at)))+'/'+convert(varchar,DATEPART(month,(occurred_at)))+'/'+convert(varchar,DATEPART(year,(occurred_at)))+ ' '+ convert(varchar,(occurred_at),108) as occurred_at from vendas v (nolock) join fornecedores f on f.id = v.manufacturer_id join categorias ct on ct.id = v.category_id where " + filtroid + " and p.manufacturer_id = " + ddlFornecedores.SelectedValue + " order by occurred_at desc";
-            sdsDados.DataBind();
-
-            using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                              "SELECT isnull(SUM(try_cast(v.value as decimal(10,2))),0) as ganho, COUNT(*) as qtde FROM vendas v where " + filtroid + ""))
+            try
             {
-                if (reader.Read())
-                {
-                    lblTotalVendasPagas.Text = "R$ " + reader["ganho"].ToString();
-                    lblTotalVendasRegistradas.Text = reader["qtde"].ToString();
-                }
-                else
-                {
-                    lblTotalVendasPagas.Text = "R$ 0,00";
-                    lblTotalVendasRegistradas.Text = "0";
-                }
+                DateTime datainicio = DateTime.ParseExact(txtDataInicio.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime datafim = DateTime.ParseExact(txtDataFim.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                string filtrodata = $" AND occurred_at >= '{datainicio:yyyy-MM-dd}' AND occurred_at <= '{datafim:yyyy-MM-dd}' ";
+                LoadData(filtrodata);
+            }
+            catch (Exception ex)
+            {
+                lblErro.Text = "Erro: " + ex.Message;
             }
         }
 
+        protected void lkbLimpar_Click(object sender, EventArgs e)
+        {
+            SetInitialDates();
+            LoadData();
+        }
+
+        protected void ddlCategoria_DataBound(object sender, EventArgs e)
+        {
+            ddlCategoria.Items.Insert(0, new ListItem("TODOS", "0"));
+            ddlProduto.Items.Insert(0, new ListItem("TODOS", "0"));
+        }
     }
 }

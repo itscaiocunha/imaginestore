@@ -47,17 +47,71 @@ namespace w7pay.src
         {
             if (!IsPostBack)
             {
-                lblTotalVendasRegistradas.Text = "0";
-                lblTotalVendasPagas.Text = "0";
-                //atualizacao.GETEstoque();
+                //sdsDados.SelectCommand = "SELECT e.id, MAX(f.name) AS fornecedor, MAX(ct.descricao) AS descricao, MAX(e.name) AS produto, MAX(p.image) AS image, MAX(e.upc_code) AS upc_code, MAX(e.sald) AS sald from estoque1 e (nolock) join fornecedores f on f.id = e.manufacturer_id join categorias ct on ct.id = e.category_id join produtos p on p.id = e.id where f.id = '" + ddlFornecedores.SelectedValue + "'GROUP BY e.id ORDER BY MAX(f.name), MAX(ct.descricao), MAX(e.name); ";
+                //gdvDados.DataBind();
+
+                //try
+                //{
+                //    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                //             "select sum(sald) as saldo from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                //    {
+                //        if (reader.Read())
+                //        {
+                //            lblEstoque.Text = reader["saldo"].ToString();
+                //        }
+                //        else
+                //        {
+                //            lblEstoque.Text = "0";
+
+                //        }
+                //    }
+
+                //    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                //             "select sum(sald) as saldo from estoque where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                //    {
+                //        if (reader.Read())
+                //        {
+                //            lblEstoqueCD.Text = reader["saldo"].ToString();
+                //        }
+                //        else
+                //        {
+                //            lblEstoqueCD.Text = "0";
+
+                //        }
+                //    }
+
+                //    using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                //              "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                //    {
+                //        if (reader.Read())
+                //        {
+                //            lblLojas.Text = reader["qtdeloja"].ToString();
+                //        }
+                //        else
+                //            lblLojas.Text = "0";
+                //    }
+
+                //    lblTotal.Text = (Convert.ToInt16(lblEstoque.Text) + Convert.ToInt16(lblEstoqueCD.Text)).ToString();
+                //}
+                //    catch (Exception ex)
+                //    {
+                //        lblTotal.Text = ex.Message;
+                //    }
 
             }
         }
 
         protected void lkbFiltro_Click(object sender, EventArgs e)
         {
-            sdsDados.SelectCommand = "SELECT e.id, MAX(f.name) AS fornecedor, MAX(ct.descricao) AS descricao, MAX(e.name) AS produto, MAX(p.image) AS image, MAX(e.upc_code) AS upc_code, MAX(e.sald) AS sald from estoque1 e (nolock) join fornecedores f on f.id = e.manufacturer_id join categorias ct on ct.id = e.category_id join produtos p on p.id = e.id where e.name like '%" + txtBuscar.Text + "%' and f.id = '" + ddlFornecedores.SelectedValue + "'GROUP BY e.id ORDER BY MAX(f.name), MAX(ct.descricao), MAX(e.name); ";
-            gdvDados.DataBind();
+            try
+            {
+                sdsDados.SelectCommand = "SELECT e.id, MAX(f.name) AS fornecedor, MAX(ct.descricao) AS descricao, MAX(e.name) AS produto, MAX(p.image) AS image, MAX(e.upc_code) AS upc_code, MAX(e.sald) AS sald from estoque1 e (nolock) join fornecedores f on f.id = e.manufacturer_id join categorias ct on ct.id = e.category_id join produtos p on p.id = e.id where f.id = '" + ddlFornecedores.SelectedValue + "'GROUP BY e.id ORDER BY MAX(f.name), MAX(ct.descricao), MAX(e.name); ";
+                gdvDados.DataBind();
+            }
+            catch
+            {
+                lblDados.Text = "Não há dados";
+            }
 
             try
             {
@@ -66,11 +120,11 @@ namespace w7pay.src
                 {
                     if (reader.Read())
                     {
-                        lblTotalVendasPagas.Text = reader["saldo"].ToString();
+                        lblEstoque.Text = reader["saldo"].ToString();
                     }
                     else
                     {
-                        lblTotalVendasPagas.Text = "0";
+                        lblEstoque.Text = "0";
 
                     }
                 }
@@ -80,31 +134,102 @@ namespace w7pay.src
                 {
                     if (reader.Read())
                     {
-                        lblTotalVendasRegistradas.Text = reader["saldo"].ToString();
+                        lblEstoqueCD.Text = reader["saldo"].ToString();
                     }
                     else
                     {
-                        lblTotalVendasRegistradas.Text = "0";
+                        lblEstoqueCD.Text = "0";
 
                     }
                 }
 
-                //using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
-                //          "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
-                //{
-                //    if (reader.Read())
-                //    {
-                //        lblTotalNaoPagas.Text = reader["qtdeloja"].ToString();
-                //    }
-                //    else
-                //        lblTotalNaoPagas.Text = "0";
-                //}
+                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                          "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                {
+                    if (reader.Read())
+                    {
+                        lblLojas.Text = reader["qtdeloja"].ToString();
+                    }
+                    else
+                        lblLojas.Text = "0";
+                }
 
-                //lblTotalMensagens.Text = (Convert.ToInt16(lblTotalVendasPagas.Text) + Convert.ToInt16(lblTotalVendasRegistradas.Text)).ToString();
+                lblTotal.Text = (Convert.ToInt16(lblEstoque.Text) + Convert.ToInt16(lblEstoqueCD.Text)).ToString();
+            }
+            catch (Exception ex)
+            {
+                lblErros.Text = ex.Message;
+
+                lblEstoque.Text = "0";
+                lblLojas.Text = "0";
+                lblEstoqueCD.Text = "0";
+                lblTotal.Text = "0";
+            }
+        }
+
+        protected void lkbLimpar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                sdsDados.SelectCommand = "SELECT e.id, MAX(f.name) AS fornecedor, MAX(ct.descricao) AS descricao, MAX(e.name) AS produto, MAX(p.image) AS image, MAX(e.upc_code) AS upc_code, MAX(e.sald) AS sald from estoque1 e (nolock) join fornecedores f on f.id = e.manufacturer_id join categorias ct on ct.id = e.category_id join produtos p on p.id = e.id where f.id = '" + ddlFornecedores.SelectedValue + "'GROUP BY e.id ORDER BY MAX(f.name), MAX(ct.descricao), MAX(e.name); ";
+                gdvDados.DataBind();
             }
             catch
             {
-                Response.Redirect("../sessao.aspx", false);
+                lblDados.Text = "Não há dados";
+            }
+
+            try
+            {
+                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                         "select sum(sald) as saldo from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                {
+                    if (reader.Read())
+                    {
+                        lblEstoque.Text = reader["saldo"].ToString();
+                    }
+                    else
+                    {
+                        lblEstoque.Text = "0";
+
+                    }
+                }
+
+                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                         "select sum(sald) as saldo from estoque where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                {
+                    if (reader.Read())
+                    {
+                        lblEstoqueCD.Text = reader["saldo"].ToString();
+                    }
+                    else
+                    {
+                        lblEstoqueCD.Text = "0";
+
+                    }
+                }
+
+                using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text,
+                          "select count(distinct name_client) as qtdeloja from estoque1 where manufacturer_id = '" + ddlFornecedores.SelectedValue + "'"))
+                {
+                    if (reader.Read())
+                    {
+                        lblLojas.Text = reader["qtdeloja"].ToString();
+                    }
+                    else
+                        lblLojas.Text = "0";
+                }
+
+                lblTotal.Text = (Convert.ToInt16(lblEstoque.Text) + Convert.ToInt16(lblEstoqueCD.Text)).ToString();
+            }
+            catch (Exception ex)
+            {
+                lblErros.Text = ex.Message;
+
+                lblEstoque.Text = "0";
+                lblLojas.Text = "0";
+                lblEstoqueCD.Text = "0";
+                lblTotal.Text = "0";
             }
         }
     }

@@ -618,9 +618,9 @@
 
 
     <%-- Botões de Rotina --%>
-    <%--<br />
+    <br />
     <div class="row gx-2">
-        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
+        <%--<div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
             <asp:LinkButton ID="rotinaVendas" runat="server"
                 CssClass="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto"
                 OnClick="rodarVendas">
@@ -642,6 +642,15 @@
                 OnClick="rodarProdutos">
                 <i data-acorn-icon="product"></i> Produtos
             </asp:LinkButton>
+        </div>--%>
+
+        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
+            <asp:LinkButton ID="rotinaEstoque" runat="server"
+                CssClass="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto"
+                OnClick="rodarEstoque">
+                <i data-acorn-icon="supplier"></i> Estoque CD
+            </asp:LinkButton>
+            <asp:Label ID="lblErros" runat="server"></asp:Label>
         </div>
     </div>
     <style>
@@ -651,7 +660,7 @@
         .row {
             justify-content: center; /* Center the buttons horizontally */
         }
-    </style>--%>
+    </style>
 
 
 

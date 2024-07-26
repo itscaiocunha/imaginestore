@@ -29,17 +29,106 @@ namespace w7pay.src
             try
             {
                 string manufacturerId = ddlFornecedores.SelectedValue;
+
+                // Ajuste as consultas SQL para incluir o filtro corretamente
                 string queryGanhoQtde = $@"
-                    SELECT ISNULL(SUM(TRY_CAST(v.value AS DECIMAL(10, 2))), 0) AS ganho, 
-                           COUNT(*) AS qtde 
-                    FROM vendas v 
-                    WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK' {filtrodata}";
+        SELECT ISNULL(SUM(TRY_CAST(value AS DECIMAL(10, 2))), 0) AS ganho, 
+               COUNT(*) AS qtde 
+        FROM vendas 
+        WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK' {filtrodata}";
 
                 string queryTicket = $@"
-                    SELECT SUM(CAST(value AS DECIMAL(10, 2))) / COUNT(*) AS ticket 
-                    FROM vendas 
-                    WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK'";
+            SELECT SUM(CAST(value AS DECIMAL(10, 2))) / COUNT(*) AS ticket 
+            FROM vendas 
+            WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK'";
 
+                string queryVendasDia = $@"
+            SELECT
+                CAST(occurred_at AS DATE) AS Data,
+                COUNT(*) AS Quantidade_Vendas
+            FROM    
+                vendas
+            WHERE 
+                occurred_at >= DATEADD(DAY, -7, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+            GROUP BY 
+                CAST(occurred_at AS DATE)
+            ORDER BY 
+                Data;";
+
+                string queryItensDia = $@"
+            SELECT top(10)
+                CAST(occurred_at AS DATE) AS Data,
+                product_name,
+                COUNT(*) AS Quantidade_Itens_Vendidos
+            FROM   
+                vendas
+            WHERE 
+                occurred_at >= DATEADD(DAY, -1, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+            GROUP BY 
+                CAST(occurred_at AS DATE),
+                product_name
+            ORDER BY   
+                Data,
+                Quantidade_Itens_Vendidos desc";
+
+                string queryTicketMedio = $@"
+            SELECT 
+                CAST(occurred_at AS DATE) AS Data,
+                SUM(value) / COUNT(*) AS Ticket_Medio
+            FROM 
+                vendas      
+            WHERE 
+                occurred_at >= DATEADD(DAY, -7, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+            GROUP BY 
+                CAST(occurred_at AS DATE)
+            ORDER BY 
+                Data;";
+
+                string queryLojaDia = $@"
+            SELECT top(10)
+                CAST(occurred_at AS DATE) AS Data,
+                client_name,
+                SUM(value) AS faturamento
+            FROM 
+                vendas
+            WHERE 
+                occurred_at >= DATEADD(DAY, -1, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+            GROUP BY 
+                CAST(occurred_at AS DATE),
+                client_name
+            ORDER BY 
+                Data,
+                faturamento DESC;";
+
+                string queryCompraClienteDia = $@"
+            SELECT top(10)
+                CAST(occurred_at AS DATE) AS Data,
+                client_name,
+                COUNT(*) AS compras
+            FROM 
+                vendas
+            WHERE 
+                occurred_at >= DATEADD(DAY, -1, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+            GROUP BY 
+                CAST(occurred_at AS DATE),
+                client_name
+            ORDER BY 
+                Data,
+                compras DESC;";
+
+                string queryComprasCliente = $@"
+            SELECT top(10)
+                client_name,
+                COUNT(*) AS Numero_Compras
+            FROM 
+                vendas
+            WHERE manufacturer_id = '{manufacturerId}'
+            GROUP BY 
+                client_name    
+            ORDER BY 
+                Numero_Compras DESC;";
+
+                // Executar e atualizar os labels
                 using (IDataReader reader = DatabaseFactory.CreateDatabase("ConnectionString").ExecuteReader(CommandType.Text, queryGanhoQtde))
                 {
                     if (reader.Read())
@@ -65,12 +154,33 @@ namespace w7pay.src
                         lblTicket.Text = "0";
                     }
                 }
+
+                // Atualize os DataSources e gráficos
+                sdsDados.SelectCommand = queryVendasDia;
+                sdsDados.DataBind();
+
+                SqlDataSource1.SelectCommand = queryItensDia;
+                SqlDataSource1.DataBind();
+
+                SqlDataSource2.SelectCommand = queryTicketMedio;
+                SqlDataSource2.DataBind();
+
+                SqlDataSource3.SelectCommand = queryLojaDia;
+                SqlDataSource3.DataBind();
+
+                SqlDataSource4.SelectCommand = queryCompraClienteDia;
+                SqlDataSource4.DataBind();
+
+                SqlDataSource5.SelectCommand = queryComprasCliente;
+                SqlDataSource5.DataBind();
+
             }
             catch (Exception ex)
             {
                 lblErro.Text = "Erro: " + ex.Message;
             }
         }
+
 
         protected void lkbFiltro_Click(object sender, EventArgs e)
         {
@@ -96,10 +206,9 @@ namespace w7pay.src
             LoadData();
         }
 
-        protected void ddlCategoria_DataBound(object sender, EventArgs e)
-        {
-            ddlCategoria.Items.Insert(0, new ListItem("TODOS", "0"));
-            ddlProduto.Items.Insert(0, new ListItem("TODOS", "0"));
-        }
+        //protected void ddlCategoria_DataBound(object sender, EventArgs e)
+        //{
+        //    ddlCategoria.Items.Insert(0, new ListItem("TODOS", "0"));        
+        //}
     }
 }

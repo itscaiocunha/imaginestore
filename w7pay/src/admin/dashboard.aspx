@@ -644,7 +644,7 @@
             </asp:LinkButton>
         </div>--%>
 
-        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
+<%--        <div class="col-sm-12 col-md-4 col-lg-2 col-xxl-2 mb-1">
             <asp:LinkButton ID="rotinaEstoque" runat="server"
                 CssClass="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto"
                 OnClick="rodarEstoque">
@@ -660,7 +660,7 @@
         .row {
             justify-content: center; /* Center the buttons horizontally */
         }
-    </style>
+    </style>--%>
 
 
 

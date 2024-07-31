@@ -49,7 +49,7 @@
                 <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
                     <div class="">
                         <label for="ddlForncedores" class="form-label">Fornecedor:</label>
-                        <asp:DropDownList ID="ddlFornecedores" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsFornecedores" DataTextField="name" DataValueField="id">
+                        <asp:DropDownList ID="ddlFornecedores" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsFornecedores" DataTextField="name" DataValueField="id" OnDataBound="ddlTotal_DataBound">
                         </asp:DropDownList>
                         <asp:SqlDataSource ID="sdsFornecedores" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from fornecedores order by name"></asp:SqlDataSource>
                     </div>
@@ -59,41 +59,45 @@
                 <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
                     <div class="">
                         <label for="ddlLojas" class="form-label">Loja:</label>
-                        <asp:DropDownList ID="ddlLojas" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsLojas" DataTextField="loja" DataValueField="loja">
+                        <asp:DropDownList ID="ddlLojas" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsLojas" DataTextField="name" DataValueField="id">
                         </asp:DropDownList>
-                        <asp:SqlDataSource ID="sdsLojas" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from lojas where [STATUS] = 'ATIVA'"></asp:SqlDataSource>
+                        <asp:SqlDataSource ID="sdsLojas" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select * from clientes"></asp:SqlDataSource>
                     </div>
                 </div>
 
                 <%-- Filtro de Canal --%>
-                <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+                <%--<div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
                     <div class="">
                         <label for="ddlCanal" class="form-label">Canal:</label>
                         <asp:DropDownList ID="ddlCanal" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsCanal" DataTextField="canal" DataValueField="canal">
                         </asp:DropDownList>
                         <asp:SqlDataSource ID="sdsCanal" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select canal from lojas group by canal"></asp:SqlDataSource>
                     </div>
-                </div>
+                </div>--%>
 
                 <%-- Filtro de Categoria --%>
                 <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
                     <div class="">
                         <label for="ddlCategoria" class="form-label">Categoria:</label>
-                        <asp:DropDownList ID="ddlCategoria" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsCategoria" DataTextField="descricao" DataValueField="id" OnDataBound="ddlCategoria_DataBound">
+                        <asp:DropDownList ID="ddlCategoria" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsCategoria" DataTextField="descricao" DataValueField="id" OnDataBound="ddlTotal_DataBound">
                         </asp:DropDownList>
                         <asp:SqlDataSource ID="sdsCategoria" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select id, descricao from categorias order by descricao"></asp:SqlDataSource>
                     </div>
                 </div>
 
                 <%-- Filtro de Produto --%>
-                <div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
+                <%--<div class="col-sm-12 col-md-5 col-lg-4 col-xxl-2 mb-1">
                     <div class="">
                         <label for="ddlProduto" class="form-label">Produto:</label>
-                        <asp:DropDownList ID="ddlProduto" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsProduto" DataTextField="name" DataValueField="id" OnDataBound="ddlCategoria_DataBound">
+                        <asp:DropDownList ID="ddlProduto" runat="server" CssClass="form-control shadow dropdown-menu-end" DataSourceID="sdsProduto" DataTextField="name" DataValueField="id" OnDataBound="ddlTotal_DataBound">
                         </asp:DropDownList>
-                        <asp:SqlDataSource ID="sdsProduto" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select id, name from produtos order by name"></asp:SqlDataSource>
+                        <asp:SqlDataSource ID="sdsProduto" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" ProviderName="<%$ ConnectionStrings:ConnectionString.ProviderName %>" SelectCommand="select id, name from produtos where manufacturer_id = @empresa order by name">
+                            <SelectParameters>
+                                <asp:ControlParameter Name="empresa" ControlID="ddlFornecedores" PropertyName="SelectedValue" Type="Int32"/>
+                            </SelectParameters>
+                        </asp:SqlDataSource>
                     </div>
-                </div>
+                </div>--%>
             </div>
 
             <div class="row mb-2">
@@ -281,8 +285,7 @@
                     </asp:Chart>
                     <asp:SqlDataSource ID="sdsDados" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand = "
                         select top 10 count(quantity) as qtde,  max(v.client_name) as nomecliente from vendas v (nolock) 
-                        where v.manufacturer_id = @empresa
-                        and occurred_at > getdate() - 7 
+                        where occurred_at > getdate() - 7 
                         group by v.client_id 
                         having count(quantity) > 0 
                         order by qtde desc">
@@ -328,8 +331,7 @@
                     </asp:Chart>
                     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
                             select top 10 cast(sum(value) as decimal(10,2)) as fatura, max(v.client_name) as nomecliente from vendas v (nolock) 
-                            where v.manufacturer_id = @empresa
-                            and occurred_at > getdate() - 7 
+                            where occurred_at > getdate() - 7 
                             group by v.client_id 
                             having count(quantity) > 0 
                             order by fatura desc">
@@ -374,8 +376,7 @@
                     </asp:Chart>
                     <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
                         select top 10 count(quantity) as qtde, cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)
-                        where v.manufacturer_id = @empresa
-                        and occurred_at > getdate() - 7
+                        where occurred_at > getdate() - 7
                         group by v.good_id
                         having count(quantity) > 0
                         order by qtde desc">
@@ -390,7 +391,7 @@
         <%-- Faturamento por Produto --%>
         <div class="col-xl-3 mb-5">
             <h2 class="small-title">Faturamento por Produto</h2>
-            <asp:DropDownList ID="ddlTopFaturamentoProduto" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged" >
+            <asp:DropDownList ID="ddlTopFaturamentoProduto" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopFaturamentoProduto_SelectedIndexChanged" >
                 <asp:ListItem Text="10 melhores produtos" Value="top 10"></asp:ListItem>
                 <asp:ListItem Text="30 melhores produtos" Value="top 30"></asp:ListItem>
             </asp:DropDownList>
@@ -420,8 +421,7 @@
                     </asp:Chart>
                     <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
                         select top 10 cast(sum(value) as decimal(10,2)) as fatura, max(v.product_name) as nomeproduto from vendas v (nolock)
-                        where v.manufacturer_id = @empresa 
-                        and occurred_at > getdate() - 7
+                        where occurred_at > getdate() - 7
                         group by v.good_id
                         having count(quantity) > 0
                         order by fatura desc">
@@ -465,8 +465,7 @@
                 </asp:Chart>
                 <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
                     select count(quantity) as qtde, cast(sum(value) as decimal (10,2)) as fatura, convert(varchar,month(v.occurred_at))+'/'+  convert(varchar,year(v.occurred_at)) as mesano from vendas v (nolock)
-                    where v.manufacturer_id = @empresa
-                    and occurred_at > getdate() - 90
+                    where occurred_at > getdate() - 90
                     group by month(v.occurred_at), year(v.occurred_at)
                     having count(quantity) > 0
                     order by year(v.occurred_at), month(v.occurred_at)">
@@ -481,51 +480,7 @@
 
 <div class="row mt-4">
     <!-- Faturamento por Loja (metade da tela) -->
-    <div class="col-xl-6 mb-5">
-        <h2 class="small-title">Faturamento por Loja</h2>
-        <div class="card h-xl-100-card">
-            <div class="card-body h-100">
-                <asp:Chart ID="Chart7" runat="server" DataSourceID="SqlDataSource6" Height="400px" Palette="EarthTones">
-                    <Series>
-                        <asp:Series Name="Series1" ChartType="Column" YValuesPerPoint="4" XValueMember="mesano" YValueMembers="qtde" IsValueShownAsLabel="true"></asp:Series>
-                    </Series>
-                    <ChartAreas>
-                        <asp:ChartArea Name="ChartArea1">
-                            <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                <MajorGrid Enabled="False" />
-                                <MajorTickMark Enabled="False" />
-                                <LabelStyle Enabled="false" />
-                            </AxisY>
-                            <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                <MajorGrid Enabled="False" />
-                                <MajorTickMark Enabled="False" />
-                                <LabelStyle Enabled="true" />
-                            </AxisX>
-                            <AxisX2>
-                                <MajorTickMark Enabled="False" />
-                            </AxisX2>
-                        </asp:ChartArea>
-                    </ChartAreas>
-                </asp:Chart>
-                <asp:SqlDataSource ID="SqlDataSource6" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-                        SELECT COUNT(quantity) AS qtde, 
-                        CONVERT(VARCHAR, MONTH(v.occurred_at)) + '/' + CONVERT(VARCHAR, YEAR(v.occurred_at)) AS mesano 
-                        FROM vendas v (NOLOCK)
-                        WHERE v.manufacturer_id = @empresa
-                          AND occurred_at > GETDATE() - 180
-                        GROUP BY MONTH(v.occurred_at), YEAR(v.occurred_at)
-                        HAVING COUNT(quantity) > 0
-                        ORDER BY YEAR(v.occurred_at), MONTH(v.occurred_at)">
-                    <SelectParameters>
-                        <asp:ControlParameter ControlID="ddlFornecedores" Name="empresa" PropertyName="SelectedValue" />
-                    </SelectParameters>
-                </asp:SqlDataSource>
-            </div>
-        </div>
-    </div>
-
-    <!-- Produtos mais Vendidos por Loja (metade da tela) -->
-    <div class="col-xl-6 mb-5">
+    <div class="col-xl-6 mb-4">
         <h2 class="small-title">Produtos mais Vendidos por Loja</h2>
         <asp:DropDownList ID="ddlTopProdutoVenda" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopProdutoVenda_SelectedIndexChanged">
             <asp:ListItem Text="10 melhores produtos" Value="top 10"></asp:ListItem>
@@ -571,7 +526,7 @@
     </div>
 
     <%-- Número de Vendas por Clientes --%>
-    <div class="col-xl-3 mb-5">
+    <div class="col-xl-6 mb-5">
         <h2 class="small-title">Número de Vendas por Cliente</h2>
         <asp:DropDownList ID="ddlTopVendasCliente" runat="server" CssClass="form-control shadow dropdown-menu-end" AutoPostBack="true" OnSelectedIndexChanged="ddlTopVendasCliente_SelectedIndexChanged">
             <asp:ListItem Text="10 melhores produtos" Value="top 10"></asp:ListItem>
@@ -604,7 +559,6 @@
                 </asp:Chart>
                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
                         select top(10) client_name as client, count(*) as qtde from vendas
-                        where manufacturer_id = @empresa
                         group by client_name
                         order by qtde desc">
                     <SelectParameters>
@@ -614,7 +568,55 @@
             </div>
         </div>
     </div>
+
+    <%-- Faturamento por Loja --%>
+    <div class="row mt-4">
+        <div class="col-xl-6 mb-5">
+            <h2 class="small-title">Faturamento por Loja</h2>
+            <div class="card h-xl-100-card">
+                <div class="card-body h-100">
+                    <asp:Chart ID="Chart7" runat="server" DataSourceID="SqlDataSource6" Height="400px" Palette="EarthTones">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Column" YValuesPerPoint="4" XValueMember="mesano" YValueMembers="qtde" IsValueShownAsLabel="true"></asp:Series>
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="false" />
+                                </AxisY>
+                                <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                    <MajorGrid Enabled="False" />
+                                    <MajorTickMark Enabled="False" />
+                                    <LabelStyle Enabled="true" />
+                                </AxisX>
+                                <AxisX2>
+                                    <MajorTickMark Enabled="False" />
+                                </AxisX2>
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                    <asp:SqlDataSource ID="SqlDataSource6" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                        SELECT COUNT(quantity) AS qtde, 
+                        CONVERT(VARCHAR, MONTH(v.occurred_at)) + '/' + CONVERT(VARCHAR, YEAR(v.occurred_at)) AS mesano 
+                        FROM vendas v (NOLOCK)
+                        WHERE occurred_at > GETDATE() - 180
+                        GROUP BY MONTH(v.occurred_at), YEAR(v.occurred_at)
+                        HAVING COUNT(quantity) > 0
+                        ORDER BY YEAR(v.occurred_at), MONTH(v.occurred_at)">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="ddlFornecedores" Name="empresa" PropertyName="SelectedValue" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 
 
     <%-- Botões de Rotina --%>

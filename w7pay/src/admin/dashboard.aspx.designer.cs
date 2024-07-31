@@ -87,24 +87,6 @@ namespace w7pay.src
         protected global::System.Web.UI.WebControls.SqlDataSource sdsLojas;
 
         /// <summary>
-        /// Controle ddlCanal.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCanal;
-
-        /// <summary>
-        /// Controle sdsCanal.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sdsCanal;
-
-        /// <summary>
         /// Controle ddlCategoria.
         /// </summary>
         /// <remarks>
@@ -121,24 +103,6 @@ namespace w7pay.src
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsCategoria;
-
-        /// <summary>
-        /// Controle ddlProduto.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProduto;
-
-        /// <summary>
-        /// Controle sdsProduto.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sdsProduto;
 
         /// <summary>
         /// Controle lkbFiltro.
@@ -348,24 +312,6 @@ namespace w7pay.src
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource3;
 
         /// <summary>
-        /// Controle Chart7.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart Chart7;
-
-        /// <summary>
-        /// Controle SqlDataSource6.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource6;
-
-        /// <summary>
         /// Controle ddlTopProdutoVenda.
         /// </summary>
         /// <remarks>
@@ -418,5 +364,23 @@ namespace w7pay.src
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource5;
+
+        /// <summary>
+        /// Controle Chart7.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.DataVisualization.Charting.Chart Chart7;
+
+        /// <summary>
+        /// Controle SqlDataSource6.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource6;
     }
 }

@@ -35,12 +35,12 @@ namespace w7pay.src
         SELECT ISNULL(SUM(TRY_CAST(value AS DECIMAL(10, 2))), 0) AS ganho, 
                COUNT(*) AS qtde 
         FROM vendas 
-        WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK' {filtrodata}";
+        WHERE status = 'OK' {filtrodata}";
 
                 string queryTicket = $@"
             SELECT SUM(CAST(value AS DECIMAL(10, 2))) / COUNT(*) AS ticket 
             FROM vendas 
-            WHERE manufacturer_id = '{manufacturerId}' AND status = 'OK'";
+            WHERE status = 'OK'";
 
                 string queryVendasDia = $@"
             SELECT
@@ -49,7 +49,7 @@ namespace w7pay.src
             FROM    
                 vendas
             WHERE 
-                occurred_at >= DATEADD(DAY, -7, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+                occurred_at >= DATEADD(DAY, -7, GETDATE())
             GROUP BY 
                 CAST(occurred_at AS DATE)
             ORDER BY 
@@ -63,7 +63,7 @@ namespace w7pay.src
             FROM   
                 vendas
             WHERE 
-                occurred_at >= DATEADD(DAY, -1, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+                occurred_at >= DATEADD(DAY, -1, GETDATE())
             GROUP BY 
                 CAST(occurred_at AS DATE),
                 product_name
@@ -78,7 +78,7 @@ namespace w7pay.src
             FROM 
                 vendas      
             WHERE 
-                occurred_at >= DATEADD(DAY, -7, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+                occurred_at >= DATEADD(DAY, -7, GETDATE())
             GROUP BY 
                 CAST(occurred_at AS DATE)
             ORDER BY 
@@ -92,7 +92,7 @@ namespace w7pay.src
             FROM 
                 vendas
             WHERE 
-                occurred_at >= DATEADD(DAY, -1, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+                occurred_at >= DATEADD(DAY, -1, GETDATE())
             GROUP BY 
                 CAST(occurred_at AS DATE),
                 client_name
@@ -108,7 +108,7 @@ namespace w7pay.src
             FROM 
                 vendas
             WHERE 
-                occurred_at >= DATEADD(DAY, -1, GETDATE()) AND manufacturer_id = '{manufacturerId}'
+                occurred_at >= DATEADD(DAY, -1, GETDATE())
             GROUP BY 
                 CAST(occurred_at AS DATE),
                 client_name
@@ -122,7 +122,6 @@ namespace w7pay.src
                 COUNT(*) AS Numero_Compras
             FROM 
                 vendas
-            WHERE manufacturer_id = '{manufacturerId}'
             GROUP BY 
                 client_name    
             ORDER BY 
@@ -159,17 +158,17 @@ namespace w7pay.src
                 sdsDados.SelectCommand = queryVendasDia;
                 sdsDados.DataBind();
 
-                SqlDataSource1.SelectCommand = queryItensDia;
-                SqlDataSource1.DataBind();
+                //SqlDataSource1.SelectCommand = queryItensDia;
+                //SqlDataSource1.DataBind();
 
                 SqlDataSource2.SelectCommand = queryTicketMedio;
                 SqlDataSource2.DataBind();
 
-                SqlDataSource3.SelectCommand = queryLojaDia;
-                SqlDataSource3.DataBind();
+                //SqlDataSource3.SelectCommand = queryLojaDia;
+                //SqlDataSource3.DataBind();
 
-                SqlDataSource4.SelectCommand = queryCompraClienteDia;
-                SqlDataSource4.DataBind();
+                //SqlDataSource4.SelectCommand = queryCompraClienteDia;
+                //SqlDataSource4.DataBind();
 
                 SqlDataSource5.SelectCommand = queryComprasCliente;
                 SqlDataSource5.DataBind();

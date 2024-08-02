@@ -207,7 +207,7 @@
                  </div>
 
                  <%-- Itens por Dia --%>
-                 <div class="col-xl-3 mb-5">
+                 <%--<div class="col-xl-3 mb-5">
                      <h2 class="small-title">Quantidade de Itens Vendidos por Dia</h2>
                      <div class="card h-xl-100-card">
                          <div class="card-body h-100">
@@ -254,7 +254,7 @@
                              </asp:SqlDataSource>
                          </div>
                      </div>
-                 </div>
+                 </div>--%>
 
                  <%-- Ticket por Dia --%>
                  <div class="col-xl-3 mb-5">
@@ -304,7 +304,7 @@
                  </div>
 
                  <%-- Loja por Dia --%>
-                 <div class="col-xl-3 mb-5">
+                 <%--<div class="col-xl-3 mb-5">
                      <h2 class="small-title">Faturamento de Loja por Dia</h2>
                      <div class="card h-xl-100-card">
                          <div class="card-body h-100">
@@ -352,13 +352,58 @@
                          </div>
                      </div>
                  </div>
+                     <%-- Cliente por Compra --%>
+                    <div class="col-xl-3 mb-5">
+                        <h2 class="small-title">Número de Compras por Cliente</h2>
+                        <div class="card h-xl-100-card">
+                            <div class="card-body h-100">
+                                <asp:Chart ID="Chart6" runat="server" DataSourceID="SqlDataSource5" Height="400px" Palette="EarthTones">
+                                    <Series>
+                                        <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" YValuesPerPoint="4" XValueMember="client_name" YValueMembers="Numero_Compras" IsValueShownAsLabel="true"></asp:Series>
+                                    </Series>
+                                    <ChartAreas>
+                                        <asp:ChartArea Name="ChartArea1">
+                                            <AxisY IntervalType="Number" LineDashStyle="NotSet">
+                                                <MajorGrid Enabled="False" />
+                                                <MajorTickMark Enabled="False" />
+                                                <LabelStyle Enabled="false" />
+                                            </AxisY>
+                                            <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
+                                                <MajorGrid Enabled="False" />
+                                                <MajorTickMark Enabled="False" />
+                                                <LabelStyle Enabled="true" />
+                                            </AxisX>
+                                            <AxisX2>
+                                                <MajorTickMark Enabled="False" />
+                                            </AxisX2>
+                                        </asp:ChartArea>
+                                    </ChartAreas>
+                                </asp:Chart>
+                                <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
+                                        SELECT top(10)
+                                            client_name,
+                                            COUNT(*) AS Numero_Compras
+                                        FROM 
+                                            vendas
+                                        GROUP BY 
+                                            client_name 
+                                        ORDER BY 
+                                            Numero_Compras DESC;">
+                                    <SelectParameters>
+                                        <asp:ControlParameter ControlID="ddlFornecedores" Name="empresa" PropertyName="SelectedValue" />
+                                    </SelectParameters>
+                                </asp:SqlDataSource>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
              </div>
 
             <div class="row">
                 <div class="col-xl-3 mb-5">
 
                     <%-- Cliente por Compra por Dia --%>
-                    <h2 class="small-title">Número de Compras por Cliente por Dia</h2>
+                    <%--<h2 class="small-title">Número de Compras por Cliente por Dia</h2>
                     <div class="card h-xl-100-card">
                         <div class="card-body h-100">
                             <asp:Chart ID="Chart4" runat="server" DataSourceID="SqlDataSource4" Height="400px" Palette="EarthTones">
@@ -404,52 +449,9 @@
                             </asp:SqlDataSource>
                         </div>
                     </div>
-                </div>
+                </div>--%>
 
-                <%-- Cliente por Compra --%>
-                <div class="col-xl-3 mb-5">
-                    <h2 class="small-title">Número de Compras por Cliente</h2>
-                    <div class="card h-xl-100-card">
-                        <div class="card-body h-100">
-                            <asp:Chart ID="Chart6" runat="server" DataSourceID="SqlDataSource5" Height="400px" Palette="EarthTones">
-                                <Series>
-                                    <asp:Series Name="Series1" ChartType="Bar" PostBackValue="#VALX" YValuesPerPoint="4" XValueMember="client_name" YValueMembers="Numero_Compras" IsValueShownAsLabel="true"></asp:Series>
-                                </Series>
-                                <ChartAreas>
-                                    <asp:ChartArea Name="ChartArea1">
-                                        <AxisY IntervalType="Number" LineDashStyle="NotSet">
-                                            <MajorGrid Enabled="False" />
-                                            <MajorTickMark Enabled="False" />
-                                            <LabelStyle Enabled="false" />
-                                        </AxisY>
-                                        <AxisX IntervalType="Days" LineDashStyle="NotSet" Interval="1">
-                                            <MajorGrid Enabled="False" />
-                                            <MajorTickMark Enabled="False" />
-                                            <LabelStyle Enabled="true" />
-                                        </AxisX>
-                                        <AxisX2>
-                                            <MajorTickMark Enabled="False" />
-                                        </AxisX2>
-                                    </asp:ChartArea>
-                                </ChartAreas>
-                            </asp:Chart>
-                            <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="
-                                    SELECT top(10)
-                                        client_name,
-                                        COUNT(*) AS Numero_Compras
-                                    FROM 
-                                        vendas
-                                    GROUP BY 
-                                        client_name 
-                                    ORDER BY 
-                                        Numero_Compras DESC;">
-                                <SelectParameters>
-                                    <asp:ControlParameter ControlID="ddlFornecedores" Name="empresa" PropertyName="SelectedValue" />
-                                </SelectParameters>
-                            </asp:SqlDataSource>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             <%-- Tela de Carregamento --%>
